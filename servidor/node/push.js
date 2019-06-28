@@ -1,23 +1,46 @@
-const url = require('url');
+const paths = [
+    '/push',
+    '/result'
+];
 
-const init = function(request, response) {
-    const urlParsed = url.parse(request.url, true);
+module.exports = (url, request, response) => {
 
-    if (!urlParsed.pathname.startsWith('/push')) {
+    if (!paths.includes(url.pathname)) {
         return;
     }
 
-    const params = {
-        deviceId: urlParsed.query.deviceId,
-        uuid: urlParsed.query.uuid
+    const readBody = (request, callback) => {
+        let chunks = [];
+
+        request.on('data', (chunk) => {
+            chunks.push(chunk);
+        }).on('end', () => callback(chunks));
+    };
+
+    if (url.pathname === '/push') {
+        const params = { deviceId, uuid } = url.query;
+
+        console.log('Push -> ' + JSON.stringify(params));
+
+        //code
+
+        return;
     }
 
-    console.log('Push -> ' + JSON.stringify(params));
+    if (url.pathname === '/result') {
+        const params = { deviceId, uuid, endpoint } = url.query;
 
-    //code
+        console.log('Result query -> ' + JSON.stringify(params));
 
-    response.end();
+        const callback = (chunks) => {
+            var textBody = Buffer.concat(chunks).toString();
+
+            console.log('Result body -> ' + textBody);
+        }
+
+        readBody(request, callback);
+
+        return;
+    }
 
 }
-
-module.exports = { init };

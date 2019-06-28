@@ -1,9 +1,6 @@
-const url = require('url');
+module.exports = (url, request, response) => {
 
-const init = function(request, response) {
-    const urlParsed = url.parse(request.url, true);
-
-    if (!urlParsed.pathname.startsWith('/api/notifications')) {
+    if (!url.pathname.startsWith('/api/notifications')) {
         return;
     }
 
@@ -15,14 +12,12 @@ const init = function(request, response) {
         }).on('end', () => callback(chunks));
     };
 
-    if (urlParsed.pathname.startsWith('/api/notifications/dao')) {
-        const callback = async (chunks) => {
+    if (url.pathname === '/api/notifications/dao') {
+        const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
             console.log('Monitor dao -> ' + textBody);
 
             //code
-
-            response.end();
         }
 
         readBody(request, callback);
@@ -30,14 +25,13 @@ const init = function(request, response) {
         return;
     }
 
-    if (urlParsed.pathname.startsWith('/api/notifications/template')) {
-        const callback = async (chunks) => {
+    if (url.pathname === '/api/notifications/template') {
+        const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
             console.log('Monitor template -> ' + textBody);
 
             //code
 
-            response.end();
         }
 
         readBody(request, callback);
@@ -45,14 +39,13 @@ const init = function(request, response) {
         return;
     }
 
-    if (urlParsed.pathname.startsWith('/api/notifications/card')) {
-        const callback = async (chunks) => {
+    if (url.pathname === '/api/notifications/card') {
+        const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
             console.log('Monitor card -> ' + textBody);
 
             //code
 
-            response.end();
         }
 
         readBody(request, callback);
@@ -60,14 +53,13 @@ const init = function(request, response) {
         return;
     }
 
-    if (urlParsed.pathname.startsWith('/api/notifications/catra_event')) {
-        const callback = async (chunks) => {
+    if (url.pathname === '/api/notifications/catra_event') {
+        const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
             console.log('Monitor catra event -> ' + textBody);
 
             //code
 
-            response.end();
         }
 
         readBody(request, callback);
@@ -75,14 +67,13 @@ const init = function(request, response) {
         return;
     }
 
-    if (urlParsed.pathname.startsWith('/api/notifications/operation_mode')) {
-        const callback = async (chunks) => {
+    if (url.pathname === '/api/notifications/operation_mode') {
+        const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
             console.log('Monitor operation mode -> ' + textBody);
 
             //code
 
-            response.end();
         }
 
         readBody(request, callback);
@@ -90,14 +81,13 @@ const init = function(request, response) {
         return;
     }
 
-    if (urlParsed.pathname.startsWith('/api/notifications/door')) {
-        const callback = async (chunks) => {
+    if (url.pathname === '/api/notifications/door') {
+        const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
             console.log('Monitor door -> ' + textBody);
 
             //code
 
-            response.end();
         }
 
         readBody(request, callback);
@@ -105,14 +95,13 @@ const init = function(request, response) {
         return;
     }
 
-    if (urlParsed.pathname.startsWith('/api/notifications/secbox')) {
-        const callback = async (chunks) => {
+    if (url.pathname === '/api/notifications/secbox') {
+        const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
             console.log('Monitor secbox -> ' + textBody);
 
             //code
 
-            response.end();
         }
 
         readBody(request, callback);
@@ -121,5 +110,3 @@ const init = function(request, response) {
     }
 
 }
-
-module.exports = { init };
