@@ -1,4 +1,4 @@
-package br.com.controlid;
+package br.com.controlid.leitorbiometrico;
 
 import CIDBio.CIDBio;
 import CIDBio.RetCode;
@@ -10,7 +10,7 @@ public class Leitor {
 
 	private static final Logger LOGGER = Logger.getLogger(Leitor.class.getName());
 
-	private CIDBio idBio;
+	private final CIDBio idbio;
 
 	public Leitor() {
 		LOGGER.info("Inicializando iDBio...");
@@ -19,12 +19,11 @@ public class Leitor {
 
 		LOGGER.info("RetCode [" + init.name() + "]");
 
-		idBio = new CIDBio();
+		idbio = new CIDBio();
 	}
 
-
 	public void cadastrar(Long id) {
-		RetCode retCode = idBio.CaptureAndEnroll(id);
+		RetCode retCode = idbio.CaptureAndEnroll(id);
 		System.out.println("Cadastrando...");
 		System.out.println("RetCode [" + retCode.name() + "]");
 	}
@@ -39,12 +38,12 @@ public class Leitor {
 
 	public void formatar() {
 		System.out.println("Formatando...");
-		RetCode retCode = idBio.DeleteAllTemplates();
+		RetCode retCode = idbio.DeleteAllTemplates();
 		System.out.println("RetCode [" + retCode.name() + "]");
 	}
 
 	public void identificar() {
-		IdentifyResult identifyResult = idBio.CaptureAndIdentify();
+		IdentifyResult identifyResult = idbio.CaptureAndIdentify();
 
 		System.out.println("Identificando...");
 
@@ -55,5 +54,9 @@ public class Leitor {
 
 		System.out.println("IdentifyResult - ID: " + id + "| Score: " + score +" | Quality: " + quality);
 
+	}
+
+	public CIDBio getIdbio() {
+		return idbio;
 	}
 }

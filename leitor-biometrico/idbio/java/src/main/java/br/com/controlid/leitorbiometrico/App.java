@@ -1,4 +1,4 @@
-package br.com.controlid;
+package br.com.controlid.leitorbiometrico;
 
 import java.util.Scanner;
 
@@ -6,11 +6,11 @@ public class App {
 
 	public static Leitor leitor = new Leitor();
 
-	public static boolean running = true;
+	public static boolean running = false;
 
 	public static int iteration = 0;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		while (running) {
 			if (iteration > 0) {
 				System.out.println("--------------------------------------------");
