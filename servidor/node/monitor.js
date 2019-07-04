@@ -1,8 +1,20 @@
+const paths = [
+    '/api/notifications/dao',
+    '/api/notifications/template',
+    '/api/notifications/card',
+    '/api/notifications/catra_event',
+    '/api/notifications/operation_mode',
+    '/api/notifications/door',
+    '/api/notifications/secbox',
+];
+
 module.exports = (url, request, response) => {
 
-    if (!url.pathname.startsWith('/api/notifications')) {
+    if (!paths.includes(url.pathname.replace('notification', 'notifications'))) {
         return;
     }
+
+    url.pathname = url.pathname.replace('notification', 'notifications');
 
     const readBody = (request, callback) => {
         let chunks = [];

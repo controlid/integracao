@@ -10,6 +10,7 @@ http.createServer((request, response) => {
   push(urlParsed, request, response);
   monitor(urlParsed, request, response);
   event(urlParsed, request, response);
+
 }).listen(3000, function(){
   console.log("Server start at port 3000");
 });

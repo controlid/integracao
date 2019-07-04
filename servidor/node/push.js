@@ -1,6 +1,6 @@
 const paths = [
     '/push',
-    '/result'
+    '/result',
 ];
 
 module.exports = (url, request, response) => {

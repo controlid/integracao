@@ -5,7 +5,9 @@ const paths = [
     '/new_user_id_and_password.fcgi',
     '/new_user_identified.fcgi',
     '/user_get_image.fcgi',
-    '/device_is_alive.fcgi'
+    '/device_is_alive.fcgi',
+    '/template_create.fcgi',
+    '/card_create.fcgi',
 ];
 
 module.exports = (url, request, response) => {
