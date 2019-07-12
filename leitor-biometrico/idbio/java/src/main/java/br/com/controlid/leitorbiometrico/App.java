@@ -1,6 +1,20 @@
 package br.com.controlid.leitorbiometrico;
 
+import CIDBio.ConfigParam;
+import CIDBio.Image;
+import CIDBio.ImageAndTemplate;
+import CIDBio.Template;
+
+import javax.imageio.ImageIO;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class App {
 
@@ -10,7 +24,29 @@ public class App {
 
 	public static int iteration = 0;
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws IOException {
+		ImageAndTemplate imageAndTemplate = leitor.getIdbio().CaptureImageAndTemplate();
+
+		Template template = imageAndTemplate.getTemplate();
+
+		System.out.println("RetCode [" + template.getRetCode().name() + "]");
+
+		System.out.println("Template base64: " + template.getTemplate());
+
+		byte[] templateData = Base64.getDecoder().decode(template.getTemplate());
+
+		System.out.println("Template length: " + templateData.length);
+
+		Path path = Paths.get("template-data-" + UUID.randomUUID().toString());
+
+		System.out.println("Writing file : \"" + path.getFileName() + "\"");
+
+		Files.write(path, templateData);
+
+		leitor.desconectar();
+
+		System.exit(0);
+
 		while (running) {
 			if (iteration > 0) {
 				System.out.println("--------------------------------------------");
