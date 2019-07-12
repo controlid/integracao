@@ -12,14 +12,12 @@ public abstract class Accesible {
 
 	private String ip;
 
-	//dafault value is 80
-	private final int port;
+	private int port = 80;
 
 	private String session;
 
 	public Accesible(String ip) {
 		this.ip = ip;
-		this.port = 80;
 	}
 
 	public Accesible(String ip, int port) {
@@ -32,13 +30,14 @@ public abstract class Accesible {
 	}
 
 	public String login(String login, String password) {
-		Map<String, String> defaultHeader = HttpHeaders.dafaultHeader();
+		Map<String, String> headers = HttpHeaders.newEmptyHeaders();
+		HttpHeaders.addHeader(headers, HttpHeaders.createContentTypeHeader("application/json"));
 
 		JsonObject body = new JsonObject();
 		body.addProperty("login", login);
 		body.addProperty("password", password);
 
-		HttpURLConnection httpURLConnection = HttpConnectionUtils.post(ip, port, "login.fcgi", defaultHeader, null, body);
+		HttpURLConnection httpURLConnection = HttpConnectionUtils.post(ip, port, "login.fcgi", headers, null, body.toString().getBytes());
 
 		try {
 			if (httpURLConnection.getResponseCode() != 200) {
