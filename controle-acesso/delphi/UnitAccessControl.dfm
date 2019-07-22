@@ -3,8 +3,8 @@ object FormControleAcesso: TFormControleAcesso
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Controle Acesso'
-  ClientHeight = 720
-  ClientWidth = 775
+  ClientHeight = 721
+  ClientWidth = 770
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,14 +19,14 @@ object FormControleAcesso: TFormControleAcesso
     Left = 0
     Top = 0
     Width = 777
-    Height = 721
+    Height = 705
     ActivePage = TabSheetDevice
     TabOrder = 0
     object TabSheetDevice: TTabSheet
       Caption = 'Teste'
       object LabelResponse: TLabel
         Left = 3
-        Top = 391
+        Top = 405
         Width = 49
         Height = 13
         Caption = 'Resposta:'
@@ -169,82 +169,108 @@ object FormControleAcesso: TFormControleAcesso
         object ButtonCreateUser: TButton
           Left = 16
           Top = 80
-          Width = 82
+          Width = 57
           Height = 25
-          Caption = 'Criar usu'#225'rio'
+          Caption = 'Criar'
           TabOrder = 2
           OnClick = ButtonCreateUserClick
         end
         object ButtonListUser: TButton
-          Left = 104
+          Left = 79
           Top = 80
-          Width = 90
+          Width = 57
           Height = 25
-          Caption = 'Listar usu'#225'rios'
+          Caption = 'Listar'
           TabOrder = 3
           OnClick = ButtonListUserClick
         end
         object ButtonDeleteUser: TButton
-          Left = 200
+          Left = 142
           Top = 80
-          Width = 99
+          Width = 57
           Height = 25
-          Caption = 'Apagar usu'#225'rios'
+          Caption = 'Apagar'
           TabOrder = 4
           OnClick = ButtonDeleteUserClick
         end
         object ButtonUpdateUser: TButton
-          Left = 305
+          Left = 205
           Top = 80
-          Width = 88
+          Width = 57
           Height = 25
-          Caption = 'Alterar usu'#225'rio'
+          Caption = 'Alterar'
           TabOrder = 5
+          OnClick = ButtonUpdateUserClick
         end
       end
       object GroupBoxGroup: TGroupBox
         Left = 418
         Top = 151
-        Width = 191
+        Width = 343
         Height = 122
         Caption = 'Grupo'
         TabOrder = 2
         object LabelGroupName: TLabel
-          Left = 16
-          Top = 21
+          Left = 79
+          Top = 24
           Width = 27
           Height = 13
           Caption = 'Nome'
         end
+        object LabelGroupID: TLabel
+          Left = 16
+          Top = 24
+          Width = 43
+          Height = 13
+          Caption = 'ID Grupo'
+        end
         object ButtonListGroup: TButton
-          Left = 98
-          Top = 75
-          Width = 81
+          Left = 74
+          Top = 78
+          Width = 57
           Height = 25
-          Caption = 'Listar grupos'
+          Caption = 'Listar'
           TabOrder = 2
+          OnClick = ButtonListGroupClick
         end
         object ButtonCreateGroup: TButton
-          Left = 17
-          Top = 75
-          Width = 75
+          Left = 11
+          Top = 78
+          Width = 57
           Height = 25
-          Caption = 'Criar grupo'
+          Caption = 'Criar'
           TabOrder = 1
+          OnClick = ButtonCreateGroupClick
         end
         object EditGroupName: TEdit
-          Left = 16
-          Top = 40
+          Left = 80
+          Top = 43
           Width = 121
           Height = 21
           TabOrder = 0
         end
+        object EditGroupID: TEdit
+          Left = 16
+          Top = 43
+          Width = 50
+          Height = 21
+          TabOrder = 3
+        end
+        object ButtonDeleteGroup: TButton
+          Left = 137
+          Top = 78
+          Width = 57
+          Height = 25
+          Caption = 'Apagar'
+          TabOrder = 4
+          OnClick = ButtonDeleteGroupClick
+        end
       end
       object GroupBoxUserGroup: TGroupBox
-        Left = 615
-        Top = 151
-        Width = 146
-        Height = 122
+        Left = 3
+        Top = 279
+        Width = 182
+        Height = 120
         Caption = 'Adicionar usu'#225'rio ao grupo'
         TabOrder = 3
         object LabelUserGroupGroupID: TLabel
@@ -252,43 +278,53 @@ object FormControleAcesso: TFormControleAcesso
           Top = 24
           Width = 43
           Height = 13
-          Caption = 'Grupo ID'
+          Caption = 'ID Grupo'
         end
         object LabelUserGroupUserID: TLabel
           Left = 72
           Top = 24
           Width = 50
           Height = 13
-          Caption = 'Usu'#225'rio ID'
+          Caption = 'ID Usu'#225'rio'
         end
         object ButtonCreateUserGroup: TButton
           Left = 16
-          Top = 80
-          Width = 75
+          Top = 81
+          Width = 57
           Height = 25
-          Caption = 'Adicionar'
+          Caption = 'Criar'
           TabOrder = 2
+          OnClick = ButtonCreateUserGroupClick
         end
-        object EditUserGroupGrupoID: TEdit
+        object EditUserGroupGroupID: TEdit
           Left = 16
           Top = 43
-          Width = 41
+          Width = 50
           Height = 21
           TabOrder = 0
         end
         object EditUserGroupUserID: TEdit
           Left = 72
           Top = 43
-          Width = 49
+          Width = 50
           Height = 21
           TabOrder = 1
         end
+        object ButtonListUserGroup: TButton
+          Left = 79
+          Top = 80
+          Width = 57
+          Height = 25
+          Caption = 'Listar'
+          TabOrder = 3
+          OnClick = ButtonListUserGroupClick
+        end
       end
       object GroupBoxCard: TGroupBox
-        Left = 3
+        Left = 191
         Top = 279
-        Width = 409
-        Height = 106
+        Width = 286
+        Height = 120
         Caption = 'Cart'#227'o de acesso'
         TabOrder = 4
         object LabelCardUserID: TLabel
@@ -298,12 +334,12 @@ object FormControleAcesso: TFormControleAcesso
           Height = 13
           Caption = 'ID Usu'#225'rio'
         end
-        object LabelStatusCardRegistration: TLabel
-          Left = 16
-          Top = 70
-          Width = 42
+        object LabelCardID: TLabel
+          Left = 80
+          Top = 24
+          Width = 47
           Height = 13
-          Caption = 'Status: -'
+          Caption = 'ID Cart'#227'o'
         end
         object EditCardUserID: TEdit
           Left = 16
@@ -312,22 +348,127 @@ object FormControleAcesso: TFormControleAcesso
           Height = 21
           TabOrder = 0
         end
-        object ButtonCardRegister: TButton
-          Left = 296
-          Top = 70
-          Width = 97
+        object ButtonRegisterCard: TButton
+          Left = 16
+          Top = 81
+          Width = 84
           Height = 25
-          Caption = 'Registrar cart'#227'o'
+          Caption = 'Registrar'
           TabOrder = 1
+          OnClick = ButtonRegisterCardClick
+        end
+        object ButtonListCard: TButton
+          Left = 106
+          Top = 80
+          Width = 57
+          Height = 25
+          Caption = 'Listar'
+          TabOrder = 2
+          OnClick = ButtonListCardClick
+        end
+        object EditCardID: TEdit
+          Left = 80
+          Top = 43
+          Width = 50
+          Height = 21
+          TabOrder = 3
+        end
+        object ButtonDeleteCard: TButton
+          Left = 169
+          Top = 80
+          Width = 57
+          Height = 25
+          Caption = 'Apagar'
+          TabOrder = 4
+          OnClick = ButtonDeleteCardClick
         end
       end
       object MemoResponse: TMemo
         Left = 3
-        Top = 410
+        Top = 424
         Width = 758
-        Height = 280
+        Height = 244
+        ScrollBars = ssVertical
         TabOrder = 5
       end
+      object GroupBoxBiometry: TGroupBox
+        Left = 483
+        Top = 279
+        Width = 278
+        Height = 120
+        Caption = 'Biometria'
+        TabOrder = 6
+        object LabelBiometryUserID: TLabel
+          Left = 16
+          Top = 24
+          Width = 50
+          Height = 13
+          Caption = 'ID Usu'#225'rio'
+        end
+        object LabelTemplateID: TLabel
+          Left = 80
+          Top = 24
+          Width = 58
+          Height = 13
+          Caption = 'ID Biometria'
+        end
+        object EditTemplateUserID: TEdit
+          Left = 16
+          Top = 43
+          Width = 50
+          Height = 21
+          TabOrder = 0
+        end
+        object ButtonTemplateRegister: TButton
+          Left = 16
+          Top = 84
+          Width = 84
+          Height = 25
+          Caption = 'Registrar'
+          TabOrder = 1
+          OnClick = ButtonTemplateRegisterClick
+        end
+        object CheckBoxPanicFinger: TCheckBox
+          Left = 144
+          Top = 43
+          Width = 97
+          Height = 17
+          Caption = 'Dedo do p'#226'nico'
+          TabOrder = 2
+        end
+        object ButtonListTemplate: TButton
+          Left = 106
+          Top = 84
+          Width = 57
+          Height = 25
+          Caption = 'Listar'
+          TabOrder = 3
+          OnClick = ButtonListTemplateClick
+        end
+        object EditTemplateID: TEdit
+          Left = 80
+          Top = 43
+          Width = 50
+          Height = 21
+          TabOrder = 4
+        end
+        object ButtonDeleteTemplate: TButton
+          Left = 169
+          Top = 84
+          Width = 57
+          Height = 25
+          Caption = 'Apagar'
+          TabOrder = 5
+          OnClick = ButtonDeleteTemplateClick
+        end
+      end
     end
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 702
+    Width = 770
+    Height = 19
+    Panels = <>
   end
 end
