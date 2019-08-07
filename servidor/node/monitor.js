@@ -1,20 +1,22 @@
+const pathUtils = require('./path-utils');
+
 const paths = [
-    '/api/notifications/dao',
-    '/api/notifications/template',
-    '/api/notifications/card',
-    '/api/notifications/catra_event',
-    '/api/notifications/operation_mode',
-    '/api/notifications/door',
-    '/api/notifications/secbox',
+    'dao',
+    'template',
+    'card',
+    'catra_event',
+    'operation_mode',
+    'door',
+    'secbox',
 ];
 
 module.exports = (url, request, response) => {
 
-    if (!paths.includes(url.pathname.replace('notification', 'notifications'))) {
+    const lastPathname = pathUtils.extractLastPathname(url);
+
+    if (pathUtils.notHasPath(lastPathname, paths)) {
         return;
     }
-
-    url.pathname = url.pathname.replace('notification', 'notifications');
 
     const readBody = (request, callback) => {
         let chunks = [];
@@ -24,10 +26,10 @@ module.exports = (url, request, response) => {
         }).on('end', () => callback(chunks));
     };
 
-    if (url.pathname === '/api/notifications/dao') {
+    if (lastPathname === 'dao') {
         const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
-            console.log('Monitor dao -> ' + textBody);
+            console.log('Response body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
 
             //code
         }
@@ -37,24 +39,10 @@ module.exports = (url, request, response) => {
         return;
     }
 
-    if (url.pathname === '/api/notifications/template') {
+    if (lastPathname === 'template') {
         const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
-            console.log('Monitor template -> ' + textBody);
-
-            //code
-
-        }
-
-        readBody(request, callback);
-
-        return;
-    }
-
-    if (url.pathname === '/api/notifications/card') {
-        const callback = (chunks) => {
-            var textBody = Buffer.concat(chunks).toString();
-            console.log('Monitor card -> ' + textBody);
+            console.log('Response body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
 
             //code
 
@@ -65,10 +53,10 @@ module.exports = (url, request, response) => {
         return;
     }
 
-    if (url.pathname === '/api/notifications/catra_event') {
+    if (lastPathname === 'card') {
         const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
-            console.log('Monitor catra event -> ' + textBody);
+            console.log('Response body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
 
             //code
 
@@ -79,10 +67,10 @@ module.exports = (url, request, response) => {
         return;
     }
 
-    if (url.pathname === '/api/notifications/operation_mode') {
+    if (lastPathname === 'catra_event') {
         const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
-            console.log('Monitor operation mode -> ' + textBody);
+            console.log('Response body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
 
             //code
 
@@ -93,10 +81,10 @@ module.exports = (url, request, response) => {
         return;
     }
 
-    if (url.pathname === '/api/notifications/door') {
+    if (lastPathname === 'operation_mode') {
         const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
-            console.log('Monitor door -> ' + textBody);
+            console.log('Response body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
 
             //code
 
@@ -107,10 +95,24 @@ module.exports = (url, request, response) => {
         return;
     }
 
-    if (url.pathname === '/api/notifications/secbox') {
+    if (lastPathname === 'door') {
         const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
-            console.log('Monitor secbox -> ' + textBody);
+            console.log('Response body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
+
+            //code
+
+        }
+
+        readBody(request, callback);
+
+        return;
+    }
+
+    if (lastPathname === 'secbox') {
+        const callback = (chunks) => {
+            var textBody = Buffer.concat(chunks).toString();
+            console.log('Response body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
 
             //code
 

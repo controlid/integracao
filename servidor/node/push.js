@@ -1,11 +1,15 @@
+const pathUtils = require('./path-utils');
+
 const paths = [
-    '/push',
-    '/result',
+    'push',
+    'result',
 ];
 
 module.exports = (url, request, response) => {
 
-    if (!paths.includes(url.pathname)) {
+    const lastPathname = pathUtils.extractLastPathname(url);
+
+    if (pathUtils.notHasPath(lastPathname, paths)) {
         return;
     }
 
@@ -17,25 +21,20 @@ module.exports = (url, request, response) => {
         }).on('end', () => callback(chunks));
     };
 
-    if (url.pathname === '/push') {
-        const params = { deviceId, uuid } = url.query;
-
-        console.log('Push -> ' + JSON.stringify(params));
+    if (lastPathname === 'push') {
 
         //code
 
         return;
     }
 
-    if (url.pathname === '/result') {
-        const params = { deviceId, uuid, endpoint } = url.query;
-
-        console.log('Result query -> ' + JSON.stringify(params));
-
+    if (lastPathname === 'result') {
         const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
+            console.log('Response body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
 
-            console.log('Result body -> ' + textBody);
+            //code
+
         }
 
         readBody(request, callback);
