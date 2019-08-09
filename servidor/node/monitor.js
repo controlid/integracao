@@ -29,7 +29,7 @@ module.exports = (url, request, response) => {
     if (lastPathname === 'dao') {
         const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
-            console.log('Response body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
+            console.log('Body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
 
             //code
         }
@@ -42,7 +42,7 @@ module.exports = (url, request, response) => {
     if (lastPathname === 'template') {
         const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
-            console.log('Response body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
+            console.log('Body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
 
             //code
 
@@ -56,7 +56,7 @@ module.exports = (url, request, response) => {
     if (lastPathname === 'card') {
         const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
-            console.log('Response body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
+            console.log('Body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
 
             //code
 
@@ -70,7 +70,7 @@ module.exports = (url, request, response) => {
     if (lastPathname === 'catra_event') {
         const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
-            console.log('Response body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
+            console.log('Body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
 
             //code
 
@@ -84,7 +84,7 @@ module.exports = (url, request, response) => {
     if (lastPathname === 'operation_mode') {
         const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
-            console.log('Response body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
+            console.log('Body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
 
             //code
 
@@ -98,7 +98,7 @@ module.exports = (url, request, response) => {
     if (lastPathname === 'door') {
         const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
-            console.log('Response body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
+            console.log('Body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
 
             //code
 
@@ -112,7 +112,7 @@ module.exports = (url, request, response) => {
     if (lastPathname === 'secbox') {
         const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
-            console.log('Response body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
+            console.log('Body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
 
             //code
 
