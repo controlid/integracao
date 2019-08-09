@@ -20,9 +20,7 @@ type
     EditDevicePassword: TEdit;
     LabelDeviceLogin: TLabel;
     LabelDevicePassword: TLabel;
-    ButtonTestConnection: TButton;
     GroupBoxUser: TGroupBox;
-    LabelDeviceStatusTestConnection: TLabel;
     EditUsername: TEdit;
     LabelUsername: TLabel;
     LabelUserID: TLabel;
@@ -47,7 +45,6 @@ type
     EditCardUserID: TEdit;
     ButtonRegisterCard: TButton;
     MemoResponse: TMemo;
-    LabelResponse: TLabel;
     RadioGroupProtocol: TRadioGroup;
     LabelDevicePort: TLabel;
     EditDevicePort: TEdit;
@@ -69,7 +66,18 @@ type
     LabelTemplateID: TLabel;
     EditTemplateID: TEdit;
     ButtonDeleteTemplate: TButton;
-    procedure ButtonTestConnectionClick(Sender: TObject);
+    GroupBoxResponse: TGroupBox;
+    GroupBoxSyncronization: TGroupBox;
+    LabelSyncronizationHostname: TLabel;
+    LabelSyncronizationLogin: TLabel;
+    LabelSyncronizationPassword: TLabel;
+    LabelSyncronizationPort: TLabel;
+    EditSyncronizationHostname: TEdit;
+    ButtonSyncUsers: TButton;
+    EditSyncronizationLogin: TEdit;
+    EditSyncronizationPassword: TEdit;
+    RadioGroupSyncronizationProtocol: TRadioGroup;
+    EditSyncronizationPort: TEdit;
     procedure ButtonDeviceLoginClick(Sender: TObject);
     procedure ButtonCreateUserClick(Sender: TObject);
     procedure ButtonListUserClick(Sender: TObject);
@@ -86,10 +94,12 @@ type
     procedure ButtonDeleteCardClick(Sender: TObject);
     procedure ButtonDeleteTemplateClick(Sender: TObject);
     procedure ButtonListTemplateClick(Sender: TObject);
+    procedure ButtonSyncUsersClick(Sender: TObject);
+    procedure AddMessageInResponse(Text: String); overload;
   private
     { Private declarations }
   public
-    { Public declarations }
+    procedure AddMessageInResponse(ResponseBody: TJSONValue); overload;
   end;
 
 var
@@ -126,7 +136,6 @@ procedure TFormControleAcesso.ButtonRegisterCardClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
 begin
-
   if EditCardUserID.Text = '' then
   begin
     ShowMessage('Preencha o campo Usuário ID');
@@ -136,6 +145,69 @@ begin
   ResponseBody := DeviceAccessControl.RegisterCard(StrToInt(EditCardUserID.Text), 'Encoste o cartão');
 
   MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
+end;
+
+procedure TFormControleAcesso.ButtonSyncUsersClick(Sender: TObject);
+var
+  DeviceSyncronization: TDeviceAccessControl;
+  ResponseBody: TJSONValue;
+  JSON: TJSONObject;
+  ValuesJSON: TJSONArray;
+begin
+  if DeviceAccessControl = nil then
+  begin
+    ShowMessage('Primeiro faça login em um dispositivo');
+    exit;
+  end;
+
+  if EditSyncronizationPort.Text = '' then
+  begin
+    EditSyncronizationPort.Text := '80';
+  end;
+
+  if RadioGroupSyncronizationProtocol.ItemIndex = 0 then
+  begin
+    DeviceSyncronization := TDeviceAccessControl.Create('http', EditSyncronizationHostname.Text, StrToInt(EditSyncronizationPort.Text));
+  end;
+
+  if RadioGroupSyncronizationProtocol.ItemIndex = 1 then
+  begin
+    DeviceSyncronization := TDeviceAccessControl.Create('https', EditSyncronizationHostname.Text, StrToInt(EditSyncronizationPort.Text));
+  end;
+
+  ResponseBody := DeviceSyncronization.Login(EditSyncronizationLogin.Text, EditSyncronizationPassword.Text);
+
+  AddMessageInResponse(ResponseBody);
+
+  ResponseBody := DeviceAccessControl.ListUsers(0);
+
+  AddMessageInResponse(ResponseBody);
+
+  ValuesJSON := ResponseBody.GetValue<TJSONArray>('users');
+
+  JSON := TJSONObject.Create;
+  JSON.AddPair(TJSONPair.Create('object', 'users'));
+  JSON.AddPair(TJSONPair.Create('values', ValuesJSON));
+
+  ResponseBody := DeviceSyncronization.CreateUsers(JSON);
+
+  AddMessageInResponse(ResponseBody);
+end;
+
+procedure TFormControleAcesso.AddMessageInResponse(ResponseBody: TJSONValue);
+begin
+  AddMessageInResponse(TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString);
+end;
+
+procedure TFormControleAcesso.AddMessageInResponse(Text: String);
+begin
+  if Text.Length > 140 then
+  begin
+    delete(Text, 130, Text.Length);
+    Text := Text + '...';
+  end;
+
+  MemoResponse.Text := Text + #13#10 + MemoResponse.Text;
 end;
 
 procedure TFormControleAcesso.ButtonCreateGroupClick(Sender: TObject);
@@ -300,7 +372,7 @@ begin
       ResponseBody := DeviceAccessControl.DeleteUsers(StrToInt(EditUserID.Text));
     end;
 
-    MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
+    AddMessageInResponse(ResponseBody);
   end;
 
 end;
@@ -309,100 +381,6 @@ procedure TFormControleAcesso.ButtonDeviceLoginClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
 begin
-  if DeviceAccessControl <> nil then
-  begin
-    ResponseBody := DeviceAccessControl.Login(EditDeviceLogin.Text, EditDevicePassword.Text);
-    MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
-  end
-  else
-  begin
-    ShowMessage('Primeiro teste a conexão');
-  end;
-end;
-
-procedure TFormControleAcesso.ButtonListTemplateClick(Sender: TObject);
-var
-  ResponseBody: TJSONValue;
-begin
-  if EditTemplateID.Text <> '' then
-  begin
-    ResponseBody := DeviceAccessControl.ListTemplates(StrToInt(EditTemplateID.Text));
-  end
-  else
-  begin
-    ResponseBody := DeviceAccessControl.ListTemplates(0);
-  end;
-
-  MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
-end;
-
-procedure TFormControleAcesso.ButtonListCardClick(Sender: TObject);
-var
-  ResponseBody: TJSONValue;
-begin
-  if EditCardID.Text <> '' then
-  begin
-    ResponseBody := DeviceAccessControl.ListCards(StrToInt(EditCardID.Text));
-  end
-  else
-  begin
-    ResponseBody := DeviceAccessControl.ListCards(0);
-  end;
-
-  MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
-end;
-
-procedure TFormControleAcesso.ButtonListGroupClick(Sender: TObject);
-var
-  ResponseBody: TJSONValue;
-begin
-  if EditGroupID.Text <> '' then
-  begin
-    ResponseBody := DeviceAccessControl.ListGroups(StrToInt(EditGroupID.Text));
-  end
-  else
-  begin
-    ResponseBody := DeviceAccessControl.ListGroups(0);
-  end;
-
-  MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
-end;
-
-procedure TFormControleAcesso.ButtonListUserClick(Sender: TObject);
-var
-  ResponseBody: TJSONValue;
-begin
-    if EditUserID.Text <> '' then
-    begin
-      ResponseBody := DeviceAccessControl.ListUsers(StrToInt(EditUserID.Text));
-    end
-    else
-    begin
-      ResponseBody := DeviceAccessControl.ListUsers(0);
-    end;
-
-    MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
-end;
-
-procedure TFormControleAcesso.ButtonListUserGroupClick(Sender: TObject);
-var
-  ResponseBody: TJSONValue;
-begin
-    ResponseBody := DeviceAccessControl.ListUserGroups;
-
-    MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
-end;
-
-procedure TFormControleAcesso.ButtonTestConnectionClick(Sender: TObject);
-var
-  ResponseBody: TJSONValue;
-begin
-  if RadioGroupProtocol.ItemIndex = -1 then
-  begin
-    ShowMessage('Selecione o protocolo');
-    exit;
-  end;
-
   if EditDevicePort.Text = '' then
   begin
     EditDevicePort.Text := '80';
@@ -420,14 +398,80 @@ begin
 
   ResponseBody := DeviceAccessControl.Login(EditDeviceLogin.Text, EditDevicePassword.Text);
 
-  if ResponseBody <> nil then
+  AddMessageInResponse(ResponseBody);
+end;
+
+procedure TFormControleAcesso.ButtonListTemplateClick(Sender: TObject);
+var
+  ResponseBody: TJSONValue;
+begin
+  if EditTemplateID.Text <> '' then
   begin
-    LabelDeviceStatusTestConnection.Caption := 'Status: Sucesso';
+    ResponseBody := DeviceAccessControl.ListTemplates(StrToInt(EditTemplateID.Text));
   end
   else
   begin
-    LabelDeviceStatusTestConnection.Caption := 'Status: Falha';
+    ResponseBody := DeviceAccessControl.ListTemplates(0);
   end;
+
+  AddMessageInResponse(ResponseBody);
+end;
+
+procedure TFormControleAcesso.ButtonListCardClick(Sender: TObject);
+var
+  ResponseBody: TJSONValue;
+begin
+  if EditCardID.Text <> '' then
+  begin
+    ResponseBody := DeviceAccessControl.ListCards(StrToInt(EditCardID.Text));
+  end
+  else
+  begin
+    ResponseBody := DeviceAccessControl.ListCards(0);
+  end;
+
+  AddMessageInResponse(ResponseBody);
+end;
+
+procedure TFormControleAcesso.ButtonListGroupClick(Sender: TObject);
+var
+  ResponseBody: TJSONValue;
+begin
+  if EditGroupID.Text <> '' then
+  begin
+    ResponseBody := DeviceAccessControl.ListGroups(StrToInt(EditGroupID.Text));
+  end
+  else
+  begin
+    ResponseBody := DeviceAccessControl.ListGroups(0);
+  end;
+
+  AddMessageInResponse(ResponseBody);
+end;
+
+procedure TFormControleAcesso.ButtonListUserClick(Sender: TObject);
+var
+  ResponseBody: TJSONValue;
+begin
+    if EditUserID.Text <> '' then
+    begin
+      ResponseBody := DeviceAccessControl.ListUsers(StrToInt(EditUserID.Text));
+    end
+    else
+    begin
+      ResponseBody := DeviceAccessControl.ListUsers(0);
+    end;
+
+    AddMessageInResponse(ResponseBody);
+end;
+
+procedure TFormControleAcesso.ButtonListUserGroupClick(Sender: TObject);
+var
+  ResponseBody: TJSONValue;
+begin
+    ResponseBody := DeviceAccessControl.ListUserGroups;
+
+    AddMessageInResponse(ResponseBody);
 end;
 
 procedure TFormControleAcesso.ButtonUpdateUserClick(Sender: TObject);
@@ -455,7 +499,7 @@ begin
       ResponseBody := DeviceAccessControl.UpdateUsers(StrToInt(EditUserID.Text), EditUsername.Text);
     end;
 
-    MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
+    AddMessageInResponse(ResponseBody);
   end;
 
 end;

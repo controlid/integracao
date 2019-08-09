@@ -24,108 +24,86 @@ object FormControleAcesso: TFormControleAcesso
     TabOrder = 0
     object TabSheetDevice: TTabSheet
       Caption = 'Teste'
-      object LabelResponse: TLabel
-        Left = 3
-        Top = 405
-        Width = 49
-        Height = 13
-        Caption = 'Resposta:'
-      end
       object GroupBoxLogin: TGroupBox
         Left = 3
         Top = 0
-        Width = 758
-        Height = 145
+        Width = 366
+        Height = 150
         Caption = 'Login'
         TabOrder = 0
         object LabelDeviceHostname: TLabel
-          Left = 16
-          Top = 24
+          Left = 96
+          Top = 18
           Width = 45
           Height = 13
           Caption = 'Endere'#231'o'
         end
         object LabelDeviceLogin: TLabel
-          Left = 217
-          Top = 24
+          Left = 96
+          Top = 71
           Width = 25
           Height = 13
           Caption = 'Login'
         end
         object LabelDevicePassword: TLabel
-          Left = 353
-          Top = 24
+          Left = 235
+          Top = 71
           Width = 46
           Height = 13
           Caption = 'Password'
         end
-        object LabelDeviceStatusTestConnection: TLabel
-          Left = 584
-          Top = 46
-          Width = 42
-          Height = 13
-          Caption = 'Status: -'
-        end
         object LabelDevicePort: TLabel
-          Left = 144
-          Top = 24
+          Left = 235
+          Top = 18
           Width = 26
           Height = 13
           Caption = 'Porta'
         end
         object EditDeviceHostname: TEdit
-          Left = 16
-          Top = 43
-          Width = 113
+          Left = 96
+          Top = 37
+          Width = 121
           Height = 21
           TabOrder = 0
         end
         object ButtonDeviceLogin: TButton
-          Left = 657
-          Top = 109
-          Width = 90
+          Left = 299
+          Top = 114
+          Width = 57
           Height = 25
-          Caption = 'Efetuar login'
-          TabOrder = 6
+          Caption = 'Logar'
+          TabOrder = 5
           OnClick = ButtonDeviceLoginClick
         end
         object EditDeviceLogin: TEdit
-          Left = 217
-          Top = 43
+          Left = 96
+          Top = 87
           Width = 121
           Height = 21
           TabOrder = 2
         end
         object EditDevicePassword: TEdit
-          Left = 353
-          Top = 43
+          Left = 235
+          Top = 87
           Width = 121
           Height = 21
           TabOrder = 3
         end
-        object ButtonTestConnection: TButton
-          Left = 480
-          Top = 41
-          Width = 98
-          Height = 25
-          Caption = 'Testar conex'#227'o'
-          TabOrder = 4
-          OnClick = ButtonTestConnectionClick
-        end
         object RadioGroupProtocol: TRadioGroup
-          Left = 16
-          Top = 70
-          Width = 178
-          Height = 59
+          Left = 8
+          Top = 15
+          Width = 74
+          Height = 93
           Caption = 'Protocolo'
+          ItemIndex = 0
           Items.Strings = (
             'HTTP'
             'HTTPS')
-          TabOrder = 5
+          TabOrder = 4
         end
         object EditDevicePort: TEdit
-          Left = 144
-          Top = 43
+          Left = 235
+          Top = 37
           Width = 57
           Height = 21
           TabOrder = 1
@@ -133,7 +111,7 @@ object FormControleAcesso: TFormControleAcesso
       end
       object GroupBoxUser: TGroupBox
         Left = 3
-        Top = 151
+        Top = 156
         Width = 409
         Height = 122
         Caption = 'Usu'#225'rio'
@@ -205,7 +183,7 @@ object FormControleAcesso: TFormControleAcesso
       end
       object GroupBoxGroup: TGroupBox
         Left = 418
-        Top = 151
+        Top = 156
         Width = 343
         Height = 122
         Caption = 'Grupo'
@@ -268,7 +246,7 @@ object FormControleAcesso: TFormControleAcesso
       end
       object GroupBoxUserGroup: TGroupBox
         Left = 3
-        Top = 279
+        Top = 284
         Width = 182
         Height = 120
         Caption = 'Adicionar usu'#225'rio ao grupo'
@@ -322,7 +300,7 @@ object FormControleAcesso: TFormControleAcesso
       end
       object GroupBoxCard: TGroupBox
         Left = 191
-        Top = 279
+        Top = 284
         Width = 286
         Height = 120
         Caption = 'Cart'#227'o de acesso'
@@ -383,21 +361,13 @@ object FormControleAcesso: TFormControleAcesso
           OnClick = ButtonDeleteCardClick
         end
       end
-      object MemoResponse: TMemo
-        Left = 3
-        Top = 424
-        Width = 758
-        Height = 244
-        ScrollBars = ssVertical
-        TabOrder = 5
-      end
       object GroupBoxBiometry: TGroupBox
         Left = 483
-        Top = 279
+        Top = 284
         Width = 278
         Height = 120
         Caption = 'Biometria'
-        TabOrder = 6
+        TabOrder = 5
         object LabelBiometryUserID: TLabel
           Left = 16
           Top = 24
@@ -460,6 +430,107 @@ object FormControleAcesso: TFormControleAcesso
           Caption = 'Apagar'
           TabOrder = 5
           OnClick = ButtonDeleteTemplateClick
+        end
+      end
+      object GroupBoxResponse: TGroupBox
+        Left = 0
+        Top = 410
+        Width = 761
+        Height = 262
+        Caption = 'Resposta'
+        TabOrder = 6
+        object MemoResponse: TMemo
+          Left = 3
+          Top = 16
+          Width = 755
+          Height = 243
+          ScrollBars = ssVertical
+          TabOrder = 0
+        end
+      end
+      object GroupBoxSyncronization: TGroupBox
+        Left = 375
+        Top = 0
+        Width = 383
+        Height = 150
+        Caption = 'Sincroniza'#231#227'o'
+        TabOrder = 7
+        object LabelSyncronizationHostname: TLabel
+          Left = 96
+          Top = 18
+          Width = 45
+          Height = 13
+          Caption = 'Endere'#231'o'
+        end
+        object LabelSyncronizationLogin: TLabel
+          Left = 96
+          Top = 71
+          Width = 25
+          Height = 13
+          Caption = 'Login'
+        end
+        object LabelSyncronizationPassword: TLabel
+          Left = 243
+          Top = 71
+          Width = 46
+          Height = 13
+          Caption = 'Password'
+        end
+        object LabelSyncronizationPort: TLabel
+          Left = 240
+          Top = 18
+          Width = 26
+          Height = 13
+          Caption = 'Porta'
+        end
+        object EditSyncronizationHostname: TEdit
+          Left = 96
+          Top = 37
+          Width = 121
+          Height = 21
+          TabOrder = 0
+        end
+        object ButtonSyncUsers: TButton
+          Left = 11
+          Top = 114
+          Width = 60
+          Height = 25
+          Caption = 'Usu'#225'rios'
+          TabOrder = 5
+          OnClick = ButtonSyncUsersClick
+        end
+        object EditSyncronizationLogin: TEdit
+          Left = 96
+          Top = 87
+          Width = 121
+          Height = 21
+          TabOrder = 2
+        end
+        object EditSyncronizationPassword: TEdit
+          Left = 243
+          Top = 87
+          Width = 126
+          Height = 21
+          TabOrder = 3
+        end
+        object RadioGroupSyncronizationProtocol: TRadioGroup
+          Left = 11
+          Top = 15
+          Width = 73
+          Height = 93
+          Caption = 'Protocolo'
+          ItemIndex = 0
+          Items.Strings = (
+            'HTTP'
+            'HTTPS')
+          TabOrder = 4
+        end
+        object EditSyncronizationPort: TEdit
+          Left = 240
+          Top = 37
+          Width = 57
+          Height = 21
+          TabOrder = 1
         end
       end
     end

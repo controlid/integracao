@@ -12,10 +12,16 @@ type
     URL: String;
     Session: String;
 
+    DeviceLogin: String;
+    DevicePassword: String;
+
     private
       procedure CreateURL;
       procedure AddContentTypeApplicationJSON(Headers: TStringList);
       procedure AddSession(Params: TStringList);
+
+      //OBJECTS
+      function CreateObjects(Objects: TJSONValue): TJSONValue;
 
     public
       constructor Create(Protocol, Hostname: String; Port: Integer); overload;
@@ -25,6 +31,7 @@ type
 
       //USER
       function CreateUser(ID: Integer; Name: String): TJSONValue;
+      function CreateUsers(Users: TJSONValue): TJSONValue;
       function ListUsers(ID: Integer): TJSONValue;
       function UpdateUsers(ID: Integer; Name: String): TJSONValue;
       function DeleteUsers(ID: Integer): TJSONValue;
@@ -112,12 +119,15 @@ var
   ResponseBody: String;
 
 begin
+  DeviceLogin := Login;
+  DevicePassword := Password;
+
   Headers := TStringList.Create;
   AddContentTypeApplicationJSON(Headers);
 
   JSON := TJSONObject.Create;
-  JSON.AddPair(TJSONPair.Create('login', Login));
-  JSON.AddPair(TJSONPair.Create('password', Password));
+  JSON.AddPair(TJSONPair.Create('login', DeviceLogin));
+  JSON.AddPair(TJSONPair.Create('password', DevicePassword));
 
   Body := TStringStream.Create(JSON.ToString, TEncoding.UTF8);
 
@@ -230,8 +240,6 @@ end;
 
 function TDeviceAccessControl.CreateUserGroup(GroupID, UserID: Integer): TJSONValue;
 var
-  Params: TStringList;
-  Headers: TStringList;
   JSON: TJSONObject;
   UserGroupJSON: TJSONObject;
   ValuesJSONArray: TJSONArray;
@@ -239,12 +247,6 @@ var
   ResponseBody: String;
 
 begin
-  Params := TStringList.Create;
-  AddSession(Params);
-
-  Headers := TStringList.Create;
-  AddContentTypeApplicationJSON(Headers);
-
   UserGroupJSON := TJSONObject.Create;
   UserGroupJSON.AddPair(TJSONPair.Create('user_id', TJSONNumber.Create(UserID)));
   UserGroupJSON.AddPair(TJSONPair.Create('group_id', TJSONNumber.Create(GroupID)));
@@ -256,7 +258,29 @@ begin
   JSON.AddPair(TJSONPair.Create('object', 'user_groups'));
   JSON.AddPair(TJSONPair.Create('values', ValuesJSONArray));
 
-  Body := TStringStream.Create(JSON.ToString, TEncoding.UTF8);
+  Result := CreateObjects(JSON);
+end;
+
+function TDeviceAccessControl.CreateUsers(Users: TJSONValue): TJSONValue;
+begin
+  Result := CreateObjects(Users);
+end;
+
+function TDeviceAccessControl.CreateObjects(Objects: TJSONValue): TJSONValue;
+var
+  Params: TStringList;
+  Headers: TStringList;
+  Body: TStringStream;
+  ResponseBody: String;
+
+begin
+  Params := TStringList.Create;
+  AddSession(Params);
+
+  Headers := TStringList.Create;
+  AddContentTypeApplicationJSON(Headers);
+
+  Body := TStringStream.Create(Objects.ToString, TEncoding.UTF8);
 
   ResponseBody := HTTP.MakeRequest(URL, '/create_objects.fcgi', Headers, Params, Body);
 
@@ -563,6 +587,7 @@ var
   UserJSON: TJSONObject;
   Body: TStringStream;
   ResponseBody: String;
+  FieldsJSON: TJSONArray;
 
 begin
   Params := TStringList.Create;
@@ -571,8 +596,20 @@ begin
   Headers := TStringList.Create;
   AddContentTypeApplicationJSON(Headers);
 
+  FieldsJSON := TJSONArray.Create;
+  FieldsJSON.Add('id');
+  FieldsJSON.Add('registration');
+  FieldsJSON.Add('name');
+  FieldsJSON.Add('password');
+  FieldsJSON.Add('salt');
+  FieldsJSON.Add('expires');
+  //FieldsJSON.Add('user_type_id');
+  FieldsJSON.Add('begin_time');
+  FieldsJSON.Add('end_time');
+
   JSON := TJSONObject.Create;
   JSON.AddPair(TJSONPair.Create('object', 'users'));
+  JSON.AddPair(TJSONPair.Create('fields', FieldsJSON));
 
   if ID > 0 then
   begin
