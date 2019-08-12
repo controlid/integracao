@@ -11,9 +11,8 @@ http.createServer((request, response) => {
   var hourString = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
 
   console.log('\n--- NEW REQUEST @ ' + hourString + ' ---');
-
-  console.log("Path -> " + urlParsed.pathname);
-  console.log('Query params -> ' + url.search);
+  console.log('Path -> ' + urlParsed.pathname);
+  console.log('Query params -> ' + urlParsed.search);
 
   push(urlParsed, request, response);
   monitor(urlParsed, request, response);
