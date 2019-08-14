@@ -1,5 +1,5 @@
 {
-  "name": "node",
+  "name": "servidor-node",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
-  "author": "Douglas Miguel",
+  "author": "Douglas Miguel <douglas.miguel@controlid.com.br>",
   "license": "ISC",
   "dependencies": {
     "url": "^0.11.0"
