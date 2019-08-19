@@ -25,13 +25,19 @@ module.exports = (url, request, response) => {
 
         //code
 
+        response.end(JSON.stringify({endpoint:'system_information'}));
+
         return;
     }
 
     if (lastPathname === 'result') {
         const callback = (chunks) => {
             var textBody = Buffer.concat(chunks).toString();
-            console.log('Response body content:\n' + JSON.stringify(JSON.parse(textBody), null, 2));
+            var requestBody = {
+                response: JSON.parse(JSON.parse(textBody).response)
+            }
+
+            console.log('Response body content:\n' + JSON.stringify(requestBody, null, 2));
 
             //code
 
