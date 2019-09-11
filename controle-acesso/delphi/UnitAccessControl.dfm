@@ -441,11 +441,20 @@ object FormControleAcesso: TFormControleAcesso
         TabOrder = 6
         object MemoResponse: TMemo
           Left = 3
-          Top = 16
+          Top = 24
           Width = 755
-          Height = 243
+          Height = 193
           ScrollBars = ssVertical
           TabOrder = 0
+        end
+        object ButtonCleanMemoResponse: TButton
+          Left = 669
+          Top = 223
+          Width = 75
+          Height = 25
+          Caption = 'Limpar'
+          TabOrder = 1
+          OnClick = ButtonCleanMemoResponseClick
         end
       end
       object GroupBoxSyncronization: TGroupBox

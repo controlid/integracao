@@ -78,6 +78,7 @@ type
     EditSyncronizationPassword: TEdit;
     RadioGroupSyncronizationProtocol: TRadioGroup;
     EditSyncronizationPort: TEdit;
+    ButtonCleanMemoResponse: TButton;
     procedure ButtonDeviceLoginClick(Sender: TObject);
     procedure ButtonCreateUserClick(Sender: TObject);
     procedure ButtonListUserClick(Sender: TObject);
@@ -96,6 +97,7 @@ type
     procedure ButtonListTemplateClick(Sender: TObject);
     procedure ButtonSyncUsersClick(Sender: TObject);
     procedure AddMessageInResponse(Text: String); overload;
+    procedure ButtonCleanMemoResponseClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -129,7 +131,7 @@ begin
     ResponseBody := DeviceAccessControl.RegisterTemplate(StrToInt(EditTemplateUserID.Text), 0);
   end;
 
-  MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
+  AddMessageInResponse(ResponseBody);
 end;
 
 procedure TFormControleAcesso.ButtonRegisterCardClick(Sender: TObject);
@@ -144,7 +146,7 @@ begin
 
   ResponseBody := DeviceAccessControl.RegisterCard(StrToInt(EditCardUserID.Text), 'Encoste o cartão');
 
-  MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
+  AddMessageInResponse(ResponseBody);
 end;
 
 procedure TFormControleAcesso.ButtonSyncUsersClick(Sender: TObject);
@@ -210,6 +212,11 @@ begin
   MemoResponse.Text := Text + #13#10 + MemoResponse.Text;
 end;
 
+procedure TFormControleAcesso.ButtonCleanMemoResponseClick(Sender: TObject);
+begin
+  MemoResponse.Clear;
+end;
+
 procedure TFormControleAcesso.ButtonCreateGroupClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
@@ -223,7 +230,7 @@ begin
     ResponseBody := DeviceAccessControl.CreateGroup(0, EditGroupName.Text);
   end;
 
-  MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
+  AddMessageInResponse(ResponseBody);
 end;
 
 procedure TFormControleAcesso.ButtonCreateUserClick(Sender: TObject);
@@ -239,7 +246,7 @@ begin
     ResponseBody := DeviceAccessControl.CreateUser(0, EditUsername.Text);
   end;
 
-  MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
+  AddMessageInResponse(ResponseBody);
 end;
 
 procedure TFormControleAcesso.ButtonCreateUserGroupClick(Sender: TObject);
@@ -254,7 +261,7 @@ begin
 
   ResponseBody := DeviceAccessControl.CreateUserGroup(StrToInt(EditUserGroupGroupID.Text), StrToInt(EditUserGroupUserID.Text));
 
-  MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
+  AddMessageInResponse(ResponseBody);
 end;
 
 procedure TFormControleAcesso.ButtonDeleteTemplateClick(Sender: TObject);
@@ -282,7 +289,7 @@ begin
       ResponseBody := DeviceAccessControl.DeleteTemplates(StrToInt(EditTemplateID.Text));
     end;
 
-    MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
+    AddMessageInResponse(ResponseBody);
   end;
 
 end;
@@ -312,7 +319,7 @@ begin
       ResponseBody := DeviceAccessControl.DeleteCards(StrToInt(EditCardID.Text));
     end;
 
-    MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
+    AddMessageInResponse(ResponseBody);
   end;
 
 end;
@@ -342,7 +349,7 @@ begin
       ResponseBody := DeviceAccessControl.DeleteGroups(StrToInt(EditGroupID.Text));
     end;
 
-    MemoResponse.Text := TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString;
+    AddMessageInResponse(ResponseBody);
   end;
 
 end;
