@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">S@T-iD Test</string>
+
+    <string name="waiting">Aguarde…</string>
+    <string name="active">Ativar Sat</string>
+    <string name="icp_certificate">Comunicar Certificado ICP Brasil</string>
+    <string name="consult">Consultar SAT</string>
+    <string name="send_sales">Enviar dados de venda</string>
+    <string name="cancel_last_sale">Cancelar última venda</string>
+    <string name="test_end_of_end">Teste Fim a Fim</string>
+    <string name="consultOperationalStatus">Consultar Status Operacional</string>
+    <string name="consult_session">Consultar número de Sessão</string>
+    <string name="associate_signature">Associar Assinatura</string>
+    <string name="network_interface">Configurar Interface de Rede</string>
+    <string name="update_software">Atualizar Software</string>
+    <string name="logs">Extrair Logs</string>
+    <string name="block_sat">Bloquear SAT</string>
+    <string name="unlock_sat">Desbloquear SAT</string>
+    <string name="change_activate_code">Trocar código de ativação</string>
+    <string name="sat_disconnected">S@T-iD desconectado</string>
+</resources>

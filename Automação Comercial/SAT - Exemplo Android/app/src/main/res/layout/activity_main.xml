@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@android:style/Theme.Holo"
+    android:background="#2b2b2b"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:src="@drawable/logo_controlid"
+            android:layout_margin="16dp"/>
+
+        <TextView
+            android:id="@+id/status_connection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="end" />
+    </LinearLayout>
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/logo">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <Button
+                android:id="@+id/btn_activate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/active"
+                android:background="@drawable/button_default"
+                style="@style/PrimaryButton"/>
+
+            <Button
+                android:id="@+id/btn_icp_certificate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/icp_certificate"
+                android:background="@drawable/button_default"
+                style="@style/PrimaryButton"/>
+
+            <Button
+                android:id="@+id/btn_consult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/consult"
+                android:background="@drawable/button_default"
+                style="@style/PrimaryButton"/>
+
+            <Button
+                android:id="@+id/btn_send_sales"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/send_sales"
+                android:background="@drawable/button_default"
+                style="@style/PrimaryButton"/>
+
+            <Button
+                android:id="@+id/btn_cancel_last_sale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel_last_sale"
+                android:background="@drawable/button_default"
+                style="@style/PrimaryButton"/>
+
+            <Button
+                android:id="@+id/btn_test_end_of_end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/test_end_of_end"
+                android:background="@drawable/button_default"
+                style="@style/PrimaryButton"/>
+
+            <Button
+                android:id="@+id/btn_consult_operational_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/consultOperationalStatus"
+                android:background="@drawable/button_default"
+                style="@style/PrimaryButton"/>
+
+            <Button
+                android:id="@+id/btn_consult_session"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/consult_session"
+                android:background="@drawable/button_default"
+                style="@style/PrimaryButton"/>
+
+            <Button
+                android:id="@+id/btn_associate_signature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/associate_signature"
+                android:background="@drawable/button_default"
+                style="@style/PrimaryButton"/>
+
+            <Button
+                android:id="@+id/btn_config_network"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/network_interface"
+                android:background="@drawable/button_default"
+                style="@style/PrimaryButton"/>
+
+            <Button
+                android:id="@+id/btn_update_software"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/update_software"
+                android:background="@drawable/button_default"
+                style="@style/PrimaryButton"/>
+
+            <Button
+                android:id="@+id/btn_logs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/logs"
+                android:background="@drawable/button_default"
+                style="@style/PrimaryButton"/>
+
+            <Button
+                android:id="@+id/btn_block"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/block_sat"
+                android:background="@drawable/button_default"
+                style="@style/PrimaryButton"/>
+
+            <Button
+                android:id="@+id/btn_unlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/unlock_sat"
+                android:background="@drawable/button_default"
+                style="@style/PrimaryButton"/>
+
+            <Button
+                android:id="@+id/btn_change_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/change_activate_code"
+                android:background="@drawable/button_default"
+                style="@style/PrimaryButton"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/helpper_small"
+                android:layout_margin="16dp"/>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
