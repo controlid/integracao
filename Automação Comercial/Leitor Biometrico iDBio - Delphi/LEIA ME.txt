@@ -1,0 +1,10 @@
+Prezado Integrador, 
+
+Por favor, alterar o caminho que chama a dll (libcidbio.dll) para onde está localizada em seu ambiente. 
+
+Exemplo:  function CIDBIO_GetDeviceInfo(out version: PAnsiChar; out serialNumber: PAnsiChar; out model: PAnsiChar): Integer StdCall; External 'libcidbio.dll';
+
+Atenciosamente, 
+
+Time Control iD. 
+
