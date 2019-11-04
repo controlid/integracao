@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2015/02/12 16:15:02.000.058,=C:\Users\fabio.souza\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>2015/02/12 16:16:28.000.398,=C:\Users\fabio.souza\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>2015/02/12 16:17:05.000.479,C:\Users\fabio.souza\Documents\Embarcadero\Studio\Projects\Project1.dproj=W:\Gerenciador_REP\RepCid\test-Delphi\Project1.dproj</Transaction>
+    <Transaction>2015/02/12 16:17:14.000.032,=W:\Gerenciador_REP\RepCid\test-Delphi\Unit2.pas</Transaction>
+    <Transaction>2015/02/12 16:20:53.000.903,C:\Users\fabio.souza\Documents\Embarcadero\Studio\Projects\Unit3.pas=</Transaction>
+    <Transaction>2015/02/12 16:21:00.000.383,W:\Gerenciador_REP\RepCid\test-Delphi\Unit1.dfm=W:\Gerenciador_REP\RepCid\test-Delphi\Unit2.dfm</Transaction>
+    <Transaction>2015/02/12 16:21:00.000.383,W:\Gerenciador_REP\RepCid\test-Delphi\Unit1.pas=W:\Gerenciador_REP\RepCid\test-Delphi\Unit2.pas</Transaction>
+    <Transaction>2015/02/12 16:22:28.000.491,=C:\Users\fabio.souza\Documents\Embarcadero\Studio\15.0\Imports\RepCid_TLB.pas</Transaction>
+    <Transaction>2015/02/12 16:23:20.000.936,=W:\Gerenciador_REP\RepCid\test-Delphi\RepCid_TLB.pas</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="Unit1.pas"/>
+    <File Path="Unit1.dfm"/>
+    <File Path="RepCid_TLB.pas"/>
+  </ProjectSortOrder>
+</BorlandProject>
