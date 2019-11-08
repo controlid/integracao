@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">iDBio Test</string>
+
+    <string name="waiting">Aguarde…</string>
+    <string name="btn_001">Template</string>
+    <string name="btn_002">Imagem original</string>
+    <string name="btn_003">Imagem ajustada</string>
+    <string name="btn_004">Salvar biometria</string>
+    <string name="btn_005">Comparar biometria</string>
+    <string name="btn_006">Código de Barras</string>
+    <string name="disconnected">iDBio Desconectado</string>
+</resources>

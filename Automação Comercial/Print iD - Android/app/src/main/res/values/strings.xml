@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Print iD Test</string>
+
+    <string name="waiting">Aguarde…</string>
+    <string name="btn_001">Imprimir Teste</string>
+    <string name="btn_002">QR Code</string>
+    <string name="btn_003">Corte Parcial</string>
+    <string name="btn_004">Corte Total</string>
+    <string name="btn_005">Texto Formatado</string>
+    <string name="btn_006">Código de Barras</string>
+    <string name="disconnected">Print-iD Desconectado</string>
+</resources>
