@@ -1,0 +1,5 @@
+Prezado Integrador, 
+
+Por favor, lembre-se de roda o RegAsm do TLB da CIDPrint.dll: https://github.com/controlid/Exemplos-dedicados-ao-REP/wiki/Registrando-DLL-e-TLB.
+
+Obrigado!

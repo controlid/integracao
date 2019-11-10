@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2019/11/09 22:21:22.394,=C:\Users\Albert\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/11/09 22:24:07.090,=C:\Users\Albert\Documents\Embarcadero\Studio\20.0\Imports\CIDPrinter_TLB.pas</Transaction>
+    <Transaction>2019/11/09 22:25:21.248,C:\Dropbox\ControliD\git\integracao\Automação Comercial\Print iD - Delphi\Unit1.pas=C:\Users\Albert\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/11/09 22:25:21.248,C:\Dropbox\ControliD\git\integracao\Automação Comercial\Print iD - Delphi\Unit1.dfm=C:\Users\Albert\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2019/11/09 22:25:25.552,C:\Dropbox\ControliD\git\integracao\Automação Comercial\Print iD - Delphi\Project1.dproj=C:\Users\Albert\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2019/11/09 22:25:35.127,C:\Dropbox\ControliD\git\integracao\Automação Comercial\Print iD - Delphi\CIDPrinter.dproj=C:\Dropbox\ControliD\git\integracao\Automação Comercial\Print iD - Delphi\Project1.dproj</Transaction>
+  </Transactions>
+</BorlandProject>
