@@ -37,8 +37,7 @@ begin
     Print := CoCIDPrintiD.Create;
   end;
 
-//  Print.Iniciar(); //Também é possível iniciar como rede:  Print.IniciarRede();
-  Print.IniciarRede('192.168.0.1',80);
+  Print.Iniciar(); //Também é possível iniciar como rede:  Print.IniciarRede();
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
