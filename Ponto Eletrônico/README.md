@@ -2,10 +2,10 @@
 
 ** Antes de prosseguir, entre em contato com a Control iD (integracao@controlid.com.br), realize seu cadastro e solicite a RepCID.dll **
 
-A Control iD com o intuito de facilitar o desenvolvimento da integração com os softwares de nossos parceiros, desenvolvemos uma documentação completa e facil de utilizar com exemplos em uma variada quantidade de linguagens de programação. 
+A Control iD com o intuito de facilitar o desenvolvimento da integração com os softwares de nossos parceiros, desenvolvemos uma documentação completa e fácil de utilizar com exemplos em uma variada quantidade de linguagens de programação. 
 
-Atualmente existem duas formas de integrar com o REP iDClass e iDClass 373, utilizando a API Rest que o equipamento possui e que está disponivel [aqui.]( https://www.controlid.com.br/suporte/api_idclass_latest.html#50_introduction)
-ou utilizando a DLL **RepCid** essa DLL implementa as principais funções que o equipamento possui e facilita o desenvolvimento da integração, entretanto está disponivel somente para C# e Delphi10.
+Atualmente existem duas formas de integrar com o REP iDClass e iDClass 373, utilizando a API Rest que o equipamento possui e que está disponível [aqui.]( https://www.controlid.com.br/suporte/api_idclass_latest.html#50_introduction)
+ou utilizando a DLL **RepCid** essa DLL implementa as principais funções que o equipamento possui e facilita o desenvolvimento da integração, entretanto está disponível somente para C# e Delphi10.
 
 Para utiliza-la o processo é bem simples,e consiste em um passo a passo de duas tarefas: 
 
@@ -37,7 +37,7 @@ Registre os tipos exportados pela biblioteca:
 
 RegAsm.exe "C:\Caminho\Da\Pasta\RepCid.dll" /tlb
 
-Registre o objeto da bilbioteca:
+Registre o objeto da biblioteca:
 
 RegAsm.exe "C:\Caminho\Da\Pasta\RepCid.dll" /codebase
 
@@ -50,6 +50,11 @@ Adicione uma referência ao objeto COM em seu ambiente de desenvolvimento.
 Microsoft© Visual Studio 2010, C++: Use o projeto de demonstração TesteRepCidCpp como exemplo. Ele mostra como utilizar a biblioteca RepCid através do Visual C++. O mais importante a ser notado é o uso das diretivas #import no arquivo TesteRepCidCpp.cpp daquele exemplo.
 
 Borland© Delphi 2005 – 2006: Com um projeto aberto, abra o Menu Project e selecione o item Import Type Library. Na tela que se abre, selecione o item RepCid. (se não encontrar esse item, clique no botão Abrir e encontre o arquivo RepCid.tlb). Pressione Create Unit e o componente deve estar pronto para utilização.
+
+No Embarcadero Delphi 10, acesse o menu "Component" e selecione a opção "Import Component".
+Na janela de importação, selecione o tipo de componente como "Import a Type Library" (biblioteca de tipo) e pressione "Next".
+Na janela de tipo de bibliotecas registradas, utilize a ferramenta de busca para encontrar a biblioteca "repcid" e dê duplo clique na mesma para selecionada.
+Em "Unit Dir Name" selecione o diretório do projeto e depois clique em "Finish".
 
 Outros: siga as instruções oferecidas no ambiente de desenvolvimento para incluir uma referência ao objeto RepCid.
 
@@ -71,7 +76,7 @@ Se os 3 templates são válidos
 Se os 3 templates representam a mesma digital
 Formas disponíveis para extrair templates
 Via SDK (DLL fornecido para control iD)
-Usando a REPCID.DLL (compatível com iDClass e iDX fornecido pela control iD) há o projeto de testes disponível em https://github.com/controlid/RepCid/tree/master/test-CS no arquivo “Templates.cs” tem apenas a extração individual do template (extract) e a junção (merge) que segue exatamente a mesma logica via API, mas desta vez as imagens estão previarmente salvas em arquivos BMP, para não ser necessário o uso do leitor
+Usando a REPCID.DLL (compatível com iDClass e iDX fornecido pela control iD) há o projeto de testes disponível em https://github.com/controlid/RepCid/tree/master/test-CS no arquivo “Templates.cs” tem apenas a extração individual do template (extract) e a junção (merge) que segue exatamente a mesma logica via API, mas desta vez as imagens estão previamente salvas em arquivos BMP, para não ser necessário o uso do leitor
 
 public void Template_ExtractJoin()
 {
