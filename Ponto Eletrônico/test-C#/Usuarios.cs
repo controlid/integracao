@@ -221,7 +221,7 @@ namespace RepTestAPI
             int codigo1, codigo2;
             string senha1, senha2;
             string barras1, barras2;
-            int rfid1, rfid2;
+            long rfid1, rfid2;
             int privilegios1, privilegios2;
             string[] template = null;
             // Inclusão
