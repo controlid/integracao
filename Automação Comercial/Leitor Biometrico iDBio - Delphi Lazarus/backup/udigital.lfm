@@ -1,0 +1,120 @@
+object Captura: TCaptura
+  Left = 340
+  Height = 447
+  Top = 102
+  Width = 743
+  Caption = 'Captura de Digitais'
+  ClientHeight = 447
+  ClientWidth = 743
+  OnClose = FormClose
+  OnShow = FormShow
+  LCLVersion = '1.8.2.0'
+  object Label1: TLabel
+    Left = 88
+    Height = 29
+    Top = 8
+    Width = 616
+    Caption = 'Exemplo de integração com leitor biométrico iDBio'
+    Font.CharSet = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -24
+    Font.Name = 'Segoe UI'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    ParentColor = False
+    ParentFont = False
+  end
+  object mmoDedo: TMemo
+    Left = 32
+    Height = 186
+    Top = 104
+    Width = 520
+    Lines.Strings = (
+      'mmoDedo'
+    )
+    TabOrder = 0
+  end
+  object lbl1: TLabel
+    Left = 32
+    Height = 17
+    Top = 88
+    Width = 98
+    Caption = 'Iniciar Captura'
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 32
+    Height = 17
+    Top = 304
+    Width = 108
+    Caption = 'Dados do Leitor'
+    ParentColor = False
+  end
+  object Memo1: TMemo
+    Left = 32
+    Height = 82
+    Top = 320
+    Width = 216
+    Lines.Strings = (
+      'Memo1'
+    )
+    TabOrder = 1
+  end
+  object btn3: TButton
+    Left = 576
+    Height = 32
+    Top = 104
+    Width = 152
+    Caption = 'Capturar Template'
+    OnClick = btn3Click
+    TabOrder = 2
+  end
+  object btn6: TButton
+    Left = 576
+    Height = 33
+    Top = 152
+    Width = 155
+    Caption = 'Validar Digital'
+    OnClick = btn6Click
+    TabOrder = 3
+  end
+  object btn1: TButton
+    Left = 256
+    Height = 25
+    Top = 320
+    Width = 147
+    Caption = 'Informações do Leitor'
+    OnClick = btn1Click
+    TabOrder = 4
+  end
+  object Label3: TLabel
+    Left = 167
+    Height = 23
+    Top = 40
+    Width = 436
+    Caption = 'Versão FreePascal / Lazarus - Multiplataforma'
+    Font.CharSet = ANSI_CHARSET
+    Font.Color = clRed
+    Font.Height = -19
+    Font.Name = 'Segoe UI'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    ParentColor = False
+    ParentFont = False
+  end
+  object Label4: TLabel
+    Left = 456
+    Height = 23
+    Top = 400
+    Width = 246
+    Caption = 'Cortesia : Sinais Sistemas'
+    Font.CharSet = ANSI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -19
+    Font.Name = 'Segoe UI'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    ParentColor = False
+    ParentFont = False
+  end
+end

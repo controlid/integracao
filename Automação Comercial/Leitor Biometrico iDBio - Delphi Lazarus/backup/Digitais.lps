@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="11"/>
+    <BuildModes Active="Default"/>
+    <Units Count="7">
+      <Unit0>
+        <Filename Value="Digitais.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="3"/>
+        <CursorPos X="5" Y="6"/>
+        <UsageCount Value="32"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="udigital.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Captura"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uDigital"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="44"/>
+        <CursorPos X="2" Y="44"/>
+        <UsageCount Value="32"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="ControliD.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="8" Y="4"/>
+        <UsageCount Value="32"/>
+        <Loaded Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="capdigitais.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CapDigitais"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="120"/>
+        <CursorPos X="46" Y="8"/>
+        <UsageCount Value="32"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="D:\Delphi\Acesso\ClassePista.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3953"/>
+        <CursorPos Y="3987"/>
+        <UsageCount Value="10"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="C:\lazarus\fpc\3.0.4\source\rtl\inc\dynlibs.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="118"/>
+        <CursorPos X="53" Y="81"/>
+        <UsageCount Value="11"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="C:\lazarus\fpc\3.0.4\source\rtl\inc\systemh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="423"/>
+        <CursorPos X="3" Y="436"/>
+        <UsageCount Value="10"/>
+      </Unit6>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="61" Column="77" TopLine="40"/>
+      </Position1>
+      <Position2>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="62" Column="94" TopLine="41"/>
+      </Position2>
+      <Position3>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="63" Column="67" TopLine="42"/>
+      </Position3>
+      <Position4>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="64" Column="68" TopLine="43"/>
+      </Position4>
+      <Position5>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="65" Column="66" TopLine="44"/>
+      </Position5>
+      <Position6>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="190" TopLine="176"/>
+      </Position6>
+      <Position7>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="4" Column="14"/>
+      </Position7>
+      <Position8>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="185" Column="54"/>
+      </Position8>
+      <Position9>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="194" Column="3" TopLine="181"/>
+      </Position9>
+      <Position10>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="7" Column="68"/>
+      </Position10>
+      <Position11>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="188" Column="9" TopLine="5"/>
+      </Position11>
+      <Position12>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="88" Column="21" TopLine="70"/>
+      </Position12>
+      <Position13>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="165" Column="36"/>
+      </Position13>
+      <Position14>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="7" Column="51"/>
+      </Position14>
+      <Position15>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="4" Column="75"/>
+      </Position15>
+      <Position16>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="167" Column="20" TopLine="154"/>
+      </Position16>
+      <Position17>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="90" Column="19" TopLine="68"/>
+      </Position17>
+      <Position18>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="91" Column="21" TopLine="78"/>
+      </Position18>
+      <Position19>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="165" Column="8" TopLine="159"/>
+      </Position19>
+      <Position20>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="168" Column="24" TopLine="152"/>
+      </Position20>
+      <Position21>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="8" Column="17"/>
+      </Position21>
+      <Position22>
+        <Filename Value="ControliD.pas"/>
+        <Caret Line="168" Column="41" TopLine="155"/>
+      </Position22>
+      <Position23>
+        <Filename Value="udigital.pas"/>
+        <Caret Line="3" Column="23"/>
+      </Position23>
+      <Position24>
+        <Filename Value="udigital.pas"/>
+        <Caret Line="83" Column="3" TopLine="69"/>
+      </Position24>
+      <Position25>
+        <Filename Value="udigital.pas"/>
+        <Caret Line="78" Column="3" TopLine="57"/>
+      </Position25>
+      <Position26>
+        <Filename Value="udigital.pas"/>
+        <Caret Line="84" Column="33" TopLine="75"/>
+      </Position26>
+      <Position27>
+        <Filename Value="capdigitais.pas"/>
+        <Caret Line="8" Column="46" TopLine="120"/>
+      </Position27>
+      <Position28>
+        <Filename Value="udigital.pas"/>
+        <Caret Line="80" Column="52" TopLine="71"/>
+      </Position28>
+      <Position29>
+        <Filename Value="udigital.pas"/>
+        <Caret Line="83" Column="52" TopLine="75"/>
+      </Position29>
+      <Position30>
+        <Filename Value="udigital.pas"/>
+        <Caret Line="43" Column="2" TopLine="76"/>
+      </Position30>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0" ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>
