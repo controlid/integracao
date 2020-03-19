@@ -18,8 +18,8 @@ var access_answer = {
   result:{
     event: 7,
     user_name: 'Paiva',
-    user_id: 0,
-    user_image: false,
+    user_id: 10,
+    user_image: true,
     portal_id: 0,
     actions: [
       {
@@ -105,6 +105,18 @@ app.post('/new_biometric_image.fcgi', function (req, res) {
 
    res.json(access_answer);
 })
+
+
+app.get('/user_get_image.fcgi', function(req, res) {
+   console.log('Device requested user image at /user_get_image.fcgi');
+   console.log('Query: ');
+   console.log(req.query);
+   console.log('');
+
+   res.contentType('image/jpeg');
+   res.sendFile(__dirname + '/images/idtouch.jpeg');
+});
+
 
 app.post('/template_create.fcgi', function (req, res) {
    console.log('Query: ');
