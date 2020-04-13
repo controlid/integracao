@@ -1,6 +1,6 @@
 # Exemplo Servidor Enterprise em Node.Js
 
-## Instale o Node.Js no sio sistema
+## Instale o Node.Js no seu sistema
 Siga as orientações de instalação do seu sistema operacional.
 
 ## Instale o **express** framework:
