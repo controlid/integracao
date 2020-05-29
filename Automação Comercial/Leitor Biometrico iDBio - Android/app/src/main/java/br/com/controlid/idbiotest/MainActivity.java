@@ -20,10 +20,13 @@ import android.widget.TextView;
 
 import br.com.controlid.idbio.IDBio;
 import br.com.controlid.idbio.communication.IDDeviceListeners;
+import br.com.controlid.idbio.enums.EnumCIDBIO;
+import br.com.controlid.idbio.enums.EnumParam;
 import br.com.controlid.idbio.enums.EnumStatus;
 import br.com.controlid.idbio.objects.BaseReturn;
 import br.com.controlid.idbio.objects.ImageData;
 import br.com.controlid.idbio.objects.ImageTemplateData;
+import br.com.controlid.idbio.objects.MatchData;
 
 
 /**
@@ -41,8 +44,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Dialog dialog;
     private View btn001;
-    private View btn002;
-    private View btn003;
     private View btn004;
     private View btn005;
     private View btn006;
@@ -64,12 +65,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btn001 = findViewById(R.id.btn_001);
         btn001.setOnClickListener(this);
-
-        btn002 = findViewById(R.id.btn_002);
-        btn002.setOnClickListener(this);
-
-        btn003 = findViewById(R.id.btn_003);
-        btn003.setOnClickListener(this);
 
         btn004 = findViewById(R.id.btn_004);
         btn004.setOnClickListener(this);
@@ -130,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(final View view) {
         AsyncRequest asyncRequest = new AsyncRequest();
 
-        if(view.equals(btn001) || view.equals(btn002) || view.equals(btn003) || view.equals(btn005)) {
+        if(view.equals(btn001) || view.equals(btn005)) {
             asyncRequest.loadMessage = "Coloque seu dedo no leitor";
         }
 
@@ -242,12 +237,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(target.equals(btn001)) {
                     return new BioResponse(target, IDBio.getInstance().CIDBIO_CaptureImageAndTemplate());
                 }
-                else if(target.equals(btn002)) {
-                    return new BioResponse(target, IDBio.getInstance().CIDBIO_CaptureRawImage());
-                }
-                else if(target.equals(btn003)) {
-                    return new BioResponse(target, IDBio.getInstance().CIDBIO_CaptureAdjustedImage());
-                }
                 else if(target.equals(btn004)) {
                     return new BioResponse(target, IDBio.getInstance().CIDBIO_SaveTemplate(1, template_finger));
                 }
@@ -268,12 +257,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     template_finger = ((ImageTemplateData) data.data).getTemplate();
                 }
 
-                if(data.target.equals(btn001) || data.target.equals(btn002) || data.target.equals(btn003)) {
+                if(data.target.equals(btn001)) {
                     openImageAlert((ImageData) data.data);
-                }
-                else if(data.target.equals(btn004)) {
+                } else if(data.target.equals(btn004)) {
                     btn005.setVisibility(View.VISIBLE);
                     showAlert("Template salvo!");
+                } else if(data.target.equals(btn005)) {
+                    MatchData matchResult = ((MatchData) data.data);
+                    if(matchResult.getCodRet() == EnumCIDBIO.SUCCESS)
+                        showAlert("Comparação realizada com sucesso. Nota: " + String.valueOf(matchResult.getScore()));
+                    else {
+                        showAlert("Comparação falhou: " + matchResult.getCodRet().getMessage());
+                    }
                 }
             }
             else {

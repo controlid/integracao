@@ -179,11 +179,11 @@ CIDBIO_CaptureAdjustedImage
  * **Returns:** ImageData
  * **Since:** 1.0.0
 
-##### `public BaseReturn CIDBIO_CaptureAndEnroll(int id)`
+##### `public BaseReturn CIDBIO_CaptureAndEnroll(long id)`
 
 CIDBIO_CaptureAndEnroll
 
- * **Parameters:** `id` — int
+ * **Parameters:** `id` — long
  * **Returns:** BaseReturn
  * **Since:** 1.0.0
 
@@ -194,19 +194,19 @@ CIDBIO_CaptureImageAndTemplate
  * **Returns:** ImageTemplateData
  * **Since:** 1.0.0
 
-##### `public MathData CIDBIO_CaptureAndMatch(int id)`
+##### `public MathData CIDBIO_CaptureAndMatch(long id)`
 
 CIDBIO_CaptureAndMatch
 
- * **Parameters:** `id` — int
+ * **Parameters:** `id` — long 
  * **Returns:** MathData
  * **Since:** 1.0.0
 
-##### `public TemplateData CIDBIO_GetTemplate(int id)`
+##### `public TemplateData CIDBIO_GetTemplate(long id)`
 
 CIDBIO_GetTemplate
 
- * **Parameters:** `id` — int
+ * **Parameters:** `id` — long 
  * **Returns:** TemplateData
  * **Since:** 1.0.0
 
@@ -217,11 +217,11 @@ CIDBIO_GetTemplateIDs
  * **Returns:** BaseReturn
  * **Since:** 1.0.0
 
-##### `public BaseReturn CIDBIO_DeleteTemplate(int id)`
+##### `public BaseReturn CIDBIO_DeleteTemplate(long id)`
 
 CIDBIO_DeleteTemplate
 
- * **Parameters:** `id` — int
+ * **Parameters:** `id` — long 
  * **Returns:** BaseReturn
  * **Since:** 1.0.0
 
@@ -253,12 +253,12 @@ CIDBIO_MatchTemplates
  * **Returns:** ScoreData
  * **Since:** 1.0.0
 
-##### `public ScoreData CIDBIO_MatchTemplateByID(int id, String template)`
+##### `public ScoreData CIDBIO_MatchTemplateByID(long id, String template)`
 
 CIDBIO_MatchTemplateByID
 
  * **Parameters:**
-   * `id` — int
+   * `id` — long 
    * `template` — String
  * **Returns:** ScoreData
  * **Since:** 1.0.0
@@ -281,28 +281,12 @@ CIDBIO_ExtractTemplateFromImage
  * **Returns:** TemplateQualityData
  * **Since:** 1.0.0
 
-##### `public BaseReturn CIDBIO_SetParameter(int config)`
-
-CIDBIO_SetParameter
-
- * **Parameters:** `config` — id
- * **Returns:** BaseReturn
- * **Since:** 1.0.0
-
-##### `public BaseReturn CIDBIO_UpdateFirmware(String file_base64)`
-
-CIDBIO_UpdateFirmware
-
- * **Parameters:** `file_base64` — String
- * **Returns:** BaseReturn
- * **Since:** 1.0.0
-
-##### `public BaseReturn CIDBIO_SaveTemplate(int id, String template)`
+##### `public BaseReturn CIDBIO_SaveTemplate(long id, String template)`
 
 CIDBIO_SaveTemplate
 
  * **Parameters:**
-   * `id` — int
+   * `id` — long 
    * `template` — String
  * **Returns:** BaseReturn
  * **Since:** 1.0.0
@@ -312,65 +296,4 @@ CIDBIO_SaveTemplate
 CIDBIO_GetDeviceInfo
 
  * **Returns:** DeviceIdentificationData
- * **Since:** 1.0.0
-
-##### `public BaseReturn CIDBIO_WriteSerial(String serialNumber, String date)`
-
-CIDBIO_WriteSerial
-
- * **Parameters:**
-   * `serialNumber` — String
-   * `date` — String
- * **Returns:** BaseReturn
- * **Since:** 1.0.0
-
-##### `public BaseReturn CIDBIO_CalibrateSensor(int initial_x, int initial_y, int final_width, int final_height)`
-
-CIDBIO_CalibrateSensor
-
- * **Parameters:**
-   * `initial_x` — int
-   * `initial_y` — int
-   * `final_width` — int
-   * `final_height` — int
- * **Returns:** BaseReturn
- * **Since:** 1.0.0
-
-##### `public BaseReturn CIDBIO_FinalizeManufacturing()`
-
-CIDBIO_FinalizeManufacturing
-
- * **Returns:** BaseReturn
- * **Since:** 1.0.0
-
-##### `public BaseReturn CIDBIO_EraseBoot(String key)`
-
-CIDBIO_EraseBoot
-
- * **Parameters:** `key` — String
- * **Returns:** BaseReturn
- * **Since:** 1.0.0
-
-##### `private String getResponse(String command)`
-
-getResponse
-
- * **Returns:** String
- * **Since:** 1.0.0
-
-##### `private void sendCommand(EnumMessages command, String data)`
-
-Send command to serial port
-
- * **Parameters:**
-   * `command` — EnumMessages
-   * `data` — String - Params command
- * **Since:** 1.0.0
-
-##### `private byte[] dataWithParams(String data)`
-
-Convert array param to byte array
-
- * **Parameters:** `data` — String - data command
- * **Returns:** Object[] - byte array compatible with serial port
  * **Since:** 1.0.0
