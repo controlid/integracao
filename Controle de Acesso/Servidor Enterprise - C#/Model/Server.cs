@@ -49,9 +49,9 @@ namespace idAccess_Rest
             NameValueCollection prms = HttpUtility.ParseQueryString(msg);
             // event=8&device_id=468770&identifier_id=1651076864&portal_id=1&user_id=1&user_name=AAA&user_has_image=0
             int event_id = Convert.ToInt32((prms["event"]));
-            int device_id = Convert.ToInt32(prms["device_id"]);
+            long device_id = Convert.ToInt64(prms["device_id"]);
             long identifier_id = Convert.ToInt32(prms["identifier_id"]);
-            long user_id = Convert.ToInt32(prms["user_id"]);
+            long user_id = Convert.ToInt64(prms["user_id"]);
             long card_value = Convert.ToInt64(prms["card_value"]);
             string name = Convert.ToString(prms["user_name"]);
                 
