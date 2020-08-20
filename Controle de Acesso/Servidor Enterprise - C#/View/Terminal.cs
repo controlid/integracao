@@ -37,7 +37,7 @@ namespace idAccess_Rest.View
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    ip_server = ip.ToString();
+                    ip_server = ip.ToString() + ":8000";
                     return;
                 }
             }
