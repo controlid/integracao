@@ -1,0 +1,7 @@
+Prezado Integrador, 
+
+Por favor, copie libcidbio.dll (32 bits, use stdcall) do SDK mais recente disponível no site, alterar o caminho que chama a dll (libcidbio.dll) no código para onde está localizada em seu ambiente. 
+
+Atenciosamente, 
+
+Time Control iD
