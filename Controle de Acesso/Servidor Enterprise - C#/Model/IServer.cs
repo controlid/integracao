@@ -21,6 +21,12 @@ namespace idAccess_Rest
         [OperationContract]
         [WebInvoke(UriTemplate = "new_user_identified.fcgi?session={session}", Method = "POST", ResponseFormat = WebMessageFormat.Json)]
         BiometricImageResult UserIdentified(string session, Stream stream);
+        /// <summary>
+        /// Um template não identificado foi extraido
+        /// </summary>
+        [OperationContract]
+        [WebInvoke(UriTemplate = "new_biometric_template.fcgi?session={session}&device_id={device_id}&identifier_id={identifier_id}", Method = "POST", ResponseFormat = WebMessageFormat.Json)]
+        BiometricImageResult UserTemplate(string session, string device_id, string identifier_id, Stream stream);
 
         [OperationContract]
         [WebInvoke(UriTemplate = "new_user_id_and_password.fcgi?session={session}", Method = "POST", ResponseFormat = WebMessageFormat.Json)]

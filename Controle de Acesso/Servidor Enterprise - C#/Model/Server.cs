@@ -22,7 +22,20 @@ namespace idAccess_Rest
         public BiometricImageResult new_card(string session, Stream stream)
         {
             var result = get.ResultIdentification(session, stream);
-            Form1.Log(new string[1] { "identificação por cartão detectada" });
+
+
+            NameValueCollection prms = HttpUtility.ParseQueryString(result);
+            long card_value = Convert.ToInt64(prms["card_value"]);
+            // if ASK
+            long area = card_value / (long)Math.Pow(2, 32);
+            long code = card_value % (long)Math.Pow(2, 32);
+
+            Form1.Log(new string[3] {
+                "identificação por cartão detectada (new_card)", 
+                "CARD: " + card_value, 
+                "CARD in AREA/CODE format: " + area + "," + code 
+            });
+
             return get.sendMessage();
         }
 
@@ -36,10 +49,15 @@ namespace idAccess_Rest
         public BiometricImageResult getImage(string session, string device_id, string identifier_id, string width, string height, Stream stream)
         {
             var result = get.ResultIdentification(session, device_id, identifier_id, width, height, stream);
-            Form1.Log(new string[1] { "identificação por biometria detectada" });
+            Form1.Log(new string[1] { "identificação por biometria detectada (getImage) : " + width + " x " + height  });
             return get.sendMessage();
         }
-    
+        public BiometricImageResult UserTemplate(string session, string device_id, string identifier_id, Stream stream)
+        {
+            var result = get.ResultIdentification(stream);
+            Form1.Log(new string[1] { "identificação por biometria detectada (UserTemplate): " + Convert.ToBase64String(Encoding.UTF8.GetBytes(result)).Substring(0,50) + "..." });
+            return get.sendMessage();
+        }
         public BiometricImageResult UserIdentified(string session, Stream stream)
         {
             var request = OperationContext.Current.IncomingMessageProperties[HttpRequestMessageProperty.Name] as HttpRequestMessageProperty;
@@ -65,19 +83,26 @@ namespace idAccess_Rest
             //Se a user_id for diferente de zero quer dizer que não foi encontrado usuário.
             if (user_id > 0)
             {
-                Form1.Log(new string[1] { "DEVICE ID: " + device_id });
-                Form1.Log(new string[1] { "USER: " + user_id });
-                Form1.Log(new string[1] { "IDENTIFIER ID: " + identifier_id });
-                Form1.Log(new string[1] { "IDENTIFIER NAME: " + identifierName });
-                //MessageBox.Show("Identificado - Device: " + device_id + "  User: " + user_id + "Identificacao" + identifier_id + "Identificação name" + identifierName);
-                Form1.Log(new string[1] { "NAME: " + name });
+                Form1.Log(new string[5] { "DEVICE ID: " + device_id, 
+                    "USER: " + user_id,
+                    "IDENTIFIER ID: " + identifier_id,
+                    "IDENTIFIER NAME: " + identifierName,
+                    "NAME: " + name });
+            }
+            else if (card_value>0)
+            {
+                // if ASK
+                long area = card_value / (long)Math.Pow(2,32);
+                long code = card_value % (long)Math.Pow(2, 32);
+
+                Form1.Log(new string[3] { "USER: " + user_id,
+                                          "CARD: " + card_value, 
+                                          "CARD in AREA/CODE format: " + area + "," + code });
             }
             else
+            {
                 Form1.Log(new string[1] { "Não identificado ID do usuário: " + device_id });
-              
-            //// TODO: transferir para SDK
-            //byte[] identifierBytes = BitConverter.GetBytes(identifier_id).Reverse().ToArray();
-            //string identifierName = Encoding.UTF8.GetString(identifierBytes);
+            }
             return get.sendMessage();
         }
 

@@ -38,10 +38,8 @@ namespace idAccess_Rest
                 if (ListObjects("{" +
                         "\"object\" : \"devices\"," +
                         "\"where\" : [{" +
-                                "\"id\" : -1," +
-                                "\"object\" : \"devices\"," +
-                                "\"field\" : \"ip\"," +
-                                "\"value\" : \"" + ServerIp + "\"" +
+                                "\"field\" : \"id\"," +
+                                "\"value\" : -1" +
 
                             "}]" +
                         "}").Length == 0)
@@ -69,7 +67,24 @@ namespace idAccess_Rest
                 }
                 else
                 {
-                    response.Add("Equipamento Servidor já cadastrado no Cliente\r\n");
+                    try
+                    {
+                        string jsonToSend = "";
+                        jsonToSend += "{";
+                        jsonToSend += "\"object\":\"devices\",";
+                        jsonToSend += "\"values\":{\"name\":\"Servidor\",\"ip\":\"" + ServerIp + "\",\"public_key\":\"anA=\"},";
+                        jsonToSend += "\"where\":{\"devices\":{\"id\":-1}}";
+                        jsonToSend += "}";
+
+                        sendJson("modify_objects", jsonToSend);
+                        response.Add("Equipamento Servidor alterado com sucesso no Cliente.\r\n");
+                    }
+                    catch (Exception ex)
+                    {
+                        response.Add("Erro ao cadastrar Servidor, Device.cs, L65:");
+                        response.Add("  - " + ex.Message + "\r\n");
+
+                    }
                 }
                 ChangeType(true);
                 success = true;
@@ -86,11 +101,17 @@ namespace idAccess_Rest
             try
             {
                 // basic wcf web http service
+                var binding = new WebHttpBinding();
+                binding.MaxReceivedMessageSize = 2147483647;
+                binding.MaxBufferSize = 2147483647;
+                binding.MaxBufferPoolSize = 2147483647;
+
                 WebServiceHost host = new WebServiceHost(typeof(Server), new Uri("http://localhost:8000/"));
-                ServiceEndpoint ep = host.AddServiceEndpoint(typeof(IServer), new WebHttpBinding(), "");
+                ServiceEndpoint ep = host.AddServiceEndpoint(typeof(IServer), binding, "");
                 ServiceDebugBehavior sdb = host.Description.Behaviors.Find<ServiceDebugBehavior>();
                 sdb.HttpHelpPageEnabled = false;
                 host.Open();
+                response.Add("Servidor iniciado no IP "+ ServerIp + ", verifique se o firewall está liberado na porta 8000");
             }
             catch (Exception ex)
             {
@@ -113,15 +134,18 @@ namespace idAccess_Rest
                     "{" +
                         "\"online_client\" : {" +
                                 "\"server_id\" : \"-1\"," +
-                                "\"extract_template\" : \"0\"" +
+                                "\"extract_template\" : \"1\"" + /* se estiver com zero vai enviar a imagem ao invés do template biométrico para o servidor */
 
                             "}," +
                          "\"general\" : {" +
-                         "\"online\" : \"" + (isOnline ? 1 : 0) + "\"" +
+                            "\"online\" : \"" + (isOnline ? 1 : 0) + "\"," +
+
+                            "\"local_identification\" : \"1\"" + /* se estiver com zero chama as funções "new_card" e " UserTemplate" */
+                                                                 /* se estiver com valor 1 chama a função "UserIdentified", na qual já vem o id do usuário no caso de biometria */
 
                             "}" +
                         "}"
-                );
+                ); 
                 response.Add("Modo de operação alteredo\r\n");
             }
             catch (Exception ex)

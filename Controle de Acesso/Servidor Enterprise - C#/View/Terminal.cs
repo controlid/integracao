@@ -29,6 +29,7 @@ namespace idAccess_Rest.View
             device = new Device(ip_terminal,ip_server);
             bool success = true;
             Form1.Log(device.CadastrarNoSevidor(out success));
+            this.Close();
         }
 
         private void Terminal_Load(object sender, EventArgs e)
@@ -41,7 +42,6 @@ namespace idAccess_Rest.View
                     return;
                 }
             }
-           
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)

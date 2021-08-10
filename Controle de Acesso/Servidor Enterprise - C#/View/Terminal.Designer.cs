@@ -51,7 +51,7 @@
             this.txtTerminal.Location = new System.Drawing.Point(142, 43);
             this.txtTerminal.Name = "txtTerminal";
             this.txtTerminal.Size = new System.Drawing.Size(195, 20);
-            this.txtTerminal.TabIndex = 1;
+            this.txtTerminal.TabIndex = 0;
             // 
             // groupBox1
             // 
@@ -71,7 +71,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(30, 43);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(50, 13);
+            this.label1.Size = new System.Drawing.Size(77, 13);
             this.label1.TabIndex = 3;
             this.label1.Text = "IP do Servidor:";
             // 
