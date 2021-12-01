@@ -1,0 +1,17 @@
+{
+  "name": "node-api",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.0.2",
+    "express": "^4.0.0",
+    "sleep": "^6.3.0",
+    "yarn": "^1.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "license": "ISC"
+}
