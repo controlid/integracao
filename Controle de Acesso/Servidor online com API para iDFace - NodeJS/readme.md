@@ -7,7 +7,7 @@ npm run
 node app
 ```
 
-Os testes implementados podem ser diefinidos através da variável `teste`. Os exemplos são:
+Os testes implementados podem ser definidos através da variável `teste`. Os exemplos são:
 
 1. Cadastramento remoto;
 2. Criação de múltiplos usuários
@@ -15,3 +15,7 @@ Os testes implementados podem ser diefinidos através da variável `teste`. Os e
 4. Destruir fotos de usuários
 5. Carregar usuários
 6. Destruir todos os usários
+7. Carregar usuários
+8. Teste de QR Code
+
+O teste com QR code cadastra um código pré-determinado a um usuário com ID 1000 cadastrado anteriormente.

@@ -85,7 +85,7 @@ var not_identified_answer = {
         portal_id: 0,
         actions: [
         ],
-        message: "NAOIDENT"
+        message: "NOTIDENT"
     }
 };
 
@@ -135,7 +135,7 @@ app.post('/new_user_identified.fcgi', async function (req, res) {
     console.log(req.body);
     console.log("Will sleep");
     await sleepms(500);
-    console.log("Fim do sleep");
+    console.log("End of sleep");
     if (req.body.event == 3)
         res.json(not_identified_answer);
     else {
@@ -357,7 +357,6 @@ var push_answer = {
     queryString: ""
 };
 
-var r = 0;
 
 app.get('/push', function (req, res) {
     console.log("endpoint: PUSH");
@@ -401,7 +400,6 @@ var ip = '192.168.0.129';
 
 // Run online mode
 async function runOnline () {
-    //Import device
     let Device = require('./device');
     let device = new Device(ip);
     await device.login();
@@ -418,6 +416,14 @@ async function runOnline () {
     });
 }
 
+// Disable online mode
+async function disableOnlineMode () {
+    let Device = require('./device');
+    let device = new Device(ip);
+    await device.login();
+    await device.disableOnline();
+}
+
 // Create user on device
 async function run () {
     //Import device
@@ -431,7 +437,6 @@ async function run () {
     for (var i=0;i<10000;i=i+step) {
         let ids = [];
         for (var j=0;j<step;j++) {
-            // await device.createUser(idStart+i+j, "Teste" + (idStart+i+j)); //
             ids.push(idStart+i+j);
         }
         await device.createUsers(ids);
@@ -456,7 +461,7 @@ async function destroyAll() {
 }
 
 // Load user
-async function run2 () {
+async function loadUserTest () {
     let Device = require('./device');
     let device = new Device(ip);
     await device.login();
@@ -469,7 +474,7 @@ async function runRemoteEnroll() {
     let Device = require('./device');
     let device = new Device(ip);
 
-    var server = app.listen(8080, function () { //
+    var server = app.listen(8080, function () { 
         var host = server.address().address
         var port = server.address().port
         console.log("Example app listening at http://%s:%s", host, port);
@@ -478,7 +483,8 @@ async function runRemoteEnroll() {
     await device.login();
     await device.destroyUser(1000);
     await device.createUser(1000, "Remote");
-    await device.remoteEnroll("face", true, false);   
+    await device.remoteEnroll("face", true, false);
+    await device.createUserAccessRules(1000, 1); 
 }
 
 // Starts and cancel face registration remotely
@@ -499,16 +505,30 @@ async function cancelRemoteEnroll() {
     await device.cancelRemoteEnroll();
 }
 
+// QR Code test
+async function qrCodeTest() {
+    let Device = require('./device');
+    let device = new Device(ip);
+    await device.login();
+    const qrCodeId = 10;
+    const qrCodeValue = "Test";
+    const userId = 1000;
+    await device.configureQRCode("0")
+    await device.createQRCode(qrCodeId, qrCodeValue, userId);
+}
+
 // Test definition
 /* 
     1 - Remote enroll test
-    2 - Crete multiple users
+    2 - Create multiple users
     3 - Set online mode
-    4 - Destroy users photos
-    5 - Load user
+    4 - Disable online mode
+    5 - Destroy users photos
     6 - Destroy all users
+    7 - Load user
+    8 - QR Code test
 */
-var test = 1;
+var test = 8;
 
 if (test == 1) {
     runRemoteEnroll();
@@ -517,11 +537,15 @@ if (test == 1) {
 } else if (test == 3) {
     runOnline();
 } else if (test == 4) {
-    destroy();
+    disableOnlineMode();
 } else if (test == 5) {
-    run2();
+    destroy();
+} else if (test == 6) {
+    destroyAll()
+} else if (test == 7){
+    loadUserTest();
 } else {
-    destroyAll();
+    qrCodeTest();
 }
 
 
