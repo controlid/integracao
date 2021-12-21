@@ -16,6 +16,7 @@ Os testes implementados podem ser definidos através da variável `teste`. Os ex
 5. Carregar usuários
 6. Destruir todos os usários
 7. Carregar usuários
-8. Teste de QR Code
+8. Teste de QR Code no modo alfanumérico
+9. Teste de QR Code no modo somente numérico
 
 O teste com QR code cadastra um código pré-determinado a um usuário com ID 1000 cadastrado anteriormente.

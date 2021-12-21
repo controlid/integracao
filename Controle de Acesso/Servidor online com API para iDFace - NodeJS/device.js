@@ -259,7 +259,7 @@ class Device
                 },
                 "online_client": {
                     "extract_template": "0",
-                    "max_request_attempts": "3",
+                    "max_request_attempts": "5",
                 }
             });
             console.log("enableOnlinePRO success: ", response.data);
@@ -363,92 +363,122 @@ class Device
         value (string): Content represented in the QR code
         user_id (number): Identifier of the user to which the identification QR Code belongs
     */
-        async createQRCode(id, value, user_id) {
-            try {
-                const response = await axios.post('http://'+this.ip+'/create_objects.fcgi?session='+this.session,{
-                    "object": "qrcodes",
-                    "values": [
-                        {
-                            "id": id,
-                            "value": value,
-                            "user_id": user_id
-                        }
-                    ]
-                });
-                console.log("createQRCode success: ", response.data);
-            } catch (error) {
-                console.log("Error performing createQRCode: ", error.data);
-            }
+    async createQRCode(id, value, user_id) {
+        try {
+            const response = await axios.post('http://'+this.ip+'/create_objects.fcgi?session='+this.session,{
+                "object": "qrcodes",
+                "values": [
+                    {
+                        "id": id,
+                        "value": value,
+                        "user_id": user_id
+                    }
+                ]
+            });
+            console.log("createQRCode success: ", response.data);
+        } catch (error) {
+            console.log("Error performing createQRCode: ", error.data);
         }
+    }
 
-        // Create a new access rule
-        /*
-            id (number): Access rule identifier
-            name (string): Descriptive name of the access rule
-            type (number): Type of access rule: if it is 0, it is a blocking rule, and if it is 1, it is an allow rule
-        */
-        async createAccessRules(id, name, type) {
-            try {
-                const response = await axios.post('http://'+this.ip+'/create_objects.fcgi?session='+this.session,{
-                    "object": "access_rules",
-                    "values": [
-                        {
-                            "id": id,
-                            "name": name,
-                            "type": type,
-                            "priority": 0
-                        }
-                    ]
-                });
-                console.log("createAccessRules success: ", response.data);
-            } catch (error) {
-                console.log("Error performing createAccessRules: ", error.data);
-            }
-        }
+    // Create a new card
+    /*
+        id (number): Unique identifier of an identification card
 
-        // Create a new user access rule
-        /*
-            user_id (number): User's unique identifier
-            access_rule_id (number): Unique identifier of the access rule
-        */
-        async createUserAccessRules(user_id, access_rule_id) {
-            try {
-                const response = await axios.post('http://'+this.ip+'/create_objects.fcgi?session='+this.session,{
-                    "object": "user_access_rules",
-                    "values": [
-                        {
-                            "user_id": user_id,
-                            "access_rule_id": access_rule_id
-                        }
-                    ]
-                });
-                console.log("createUserAccessRules success: ", response.data);
-            } catch (error) {
-                console.log("Error performing createUserAccessRules: ", error.data);
-            }
+        value (number): This field indicates the card numbering, for proximity cards (ASK, FSK, PSK), 
+        also called Wiegand, the value to be sent by the API is [part before comma] * 2^32 + 
+        [part after comma]
+        
+        user_id (number): Unique identifier of the user to which the identification card belongs
+    */
+    async createCard(id, value, user_id) {
+        try {
+            const response = await axios.post('http://'+this.ip+'/create_objects.fcgi?session='+this.session,{
+                "object": "cards",
+                "values": [
+                    {
+                        "id": id,
+                        "value": value,
+                        "user_id": user_id
+                    }
+                ]
+            });
+            console.log("createCard success: ", response.data);
+        } catch (error) {
+            console.log("Error performing createCard: ", error.data);
         }
+    }
 
-        // Create a new portal access rule
-        /*
-            portal_id (number): Portal's unique identifier
-            access_rule_id (number): Unique identifier of the access rule
-        */
-        async createPortalAccessRules(portal_id, access_rule_id) {
-            try {
-                const response = await axios.post('http://'+this.ip+'/create_objects.fcgi?session='+this.session,{
-                    "object": "portal_access_rules",
-                    "values": [
-                        {
-                            "portal_id": portal_id,
-                            "access_rule_id": access_rule_id
-                        }
-                    ]
-                });
-                console.log("reatePortalAccessRules success: ", response.data);
-            } catch (error) {
-                console.log("Error performing createPortalAccessRules: ", error.data);
-            }
+
+
+    // Create a new access rule
+    /*
+        id (number): Access rule identifier
+        name (string): Descriptive name of the access rule
+        type (number): Type of access rule: if it is 0, it is a blocking rule, and if it is 1, it is an allow rule
+    */
+    async createAccessRules(id, name, type) {
+        try {
+            const response = await axios.post('http://'+this.ip+'/create_objects.fcgi?session='+this.session,{
+                "object": "access_rules",
+                "values": [
+                    {
+                        "id": id,
+                        "name": name,
+                        "type": type,
+                        "priority": 0
+                    }
+                ]
+            });
+            console.log("createAccessRules success: ", response.data);
+        } catch (error) {
+            console.log("Error performing createAccessRules: ", error.data);
         }
+    }
+
+    // Create a new user access rule
+    /*
+        user_id (number): User's unique identifier
+        access_rule_id (number): Unique identifier of the access rule
+    */
+    async createUserAccessRules(user_id, access_rule_id) {
+        try {
+            const response = await axios.post('http://'+this.ip+'/create_objects.fcgi?session='+this.session,{
+                "object": "user_access_rules",
+                "values": [
+                    {
+                        "user_id": user_id,
+                        "access_rule_id": access_rule_id
+                    }
+                ]
+            });
+            console.log("createUserAccessRules success: ", response.data);
+        } catch (error) {
+            console.log("Error performing createUserAccessRules: ", error.data);
+        }
+    }
+
+    // Create a new portal access rule
+    /*
+        portal_id (number): Portal's unique identifier
+        access_rule_id (number): Unique identifier of the access rule
+    */
+    async createPortalAccessRules(portal_id, access_rule_id) {
+        try {
+            const response = await axios.post('http://'+this.ip+'/create_objects.fcgi?session='+this.session,{
+                "object": "portal_access_rules",
+                "values": [
+                    {
+                        "portal_id": portal_id,
+                        "access_rule_id": access_rule_id
+                    }
+                ]
+            });
+            console.log("reatePortalAccessRules success: ", response.data);
+        } catch (error) {
+            console.log("Error performing createPortalAccessRules: ", error.data);
+        }
+    }
 
 }
 

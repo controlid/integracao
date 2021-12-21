@@ -8,9 +8,11 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 var dateFormat = require('dateformat');
+const { fstat } = require('fs');
 const fs = require('fs');
 const { exit } = require('process');
 require('console-stamp')(console, '[HH:MM:ss.l]');
+var ip = require("ip");
 
 // Configurations
 var options = {
@@ -47,7 +49,7 @@ var access_answer = {
                 parameters: 'id=65793=1, reason=1' 
             }
         ],
-        message:"Custom message"
+        message:"Online access"
     }
 };
 
@@ -105,9 +107,26 @@ var access_pending_answer = {
 app.use(bodyParser.raw(options));
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.text());
+
+// Endpoint telemetry
+app.post('/api/notifications/telemetry', function (req, res) {
+    console.log("endpoint: TELEMETRY");
+    console.log("Data: ");
+    console.log("Length: " + req.body.length);
+    console.log("Serial (query string): " + req.query.serial);
+    console.log("Version (query string): " + req.query.version);
+    console.log(req.body);
+    res.json(access_answer);
+  })
+
+app.post('/telemetry', function (req, res) {
+console.log("endpoint: TELEMETRY");
+console.log(req.body);
+})
 
 
-// Answer to new card detected
+// Endpoint new card detected
 app.post('/new_card.fcgi', function (req, res) {
     console.log("endpoint: NEW CARD");
     console.log("Data: ");
@@ -122,45 +141,50 @@ app.post('/new_card.fcgi', function (req, res) {
     }
 })
 
-// Answer to new ID and password
+// Endpoint to new ID and password
 app.post('/new_user_id_and_password.fcgi', function (req, res) {
     console.log("endpoint: NEW USER ID AND PASSWORD");
+    console.log("Data: ");
+    console.log("Length: " + req.body.length);
     console.log(req.body);
     res.json(access_answer);
 })
 
-// Aswer to new user
-app.post('/new_user_identified.fcgi', async function (req, res) {
-    console.log("endpoint: NEW USER IDENTIFIED");
-    console.log(req.body);
-    console.log("Will sleep");
-    await sleepms(500);
-    console.log("End of sleep");
-    if (req.body.event == 3)
-        res.json(not_identified_answer);
-    else {
-        access_answer.result.user_name = req.body.user_id.toString();
-        res.json(access_answer);
-    }
-})
+// Endpoint new user
 
-// Aswer to new biometric template
+app.post('/new_user_identified.fcgi', function (req, res) {
+    console.log("endpoint: NEW USER IDENTIFIED");
+    console.log("Data: ");
+    console.log("Length: " + req.body.length);
+    console.log(req.body);
+    res.json(access_answer);
+  })
+
+
+
+// Endpoint new biometric template
 app.post('/new_biometric_template.fcgi', function (req, res) {
     console.log("endpoint: NEW BIOMETRIC TEMPLATE");
+    console.log('Query: ');
     console.log(req.query);
+    console.log("Data: ");
+    console.log("Length: " + req.body.length);
     console.log(req.body);
     res.json(access_answer);
 })
 
-// Aswer to new biometric image
+// Endpoint new biometric image
 app.post('/new_biometric_image.fcgi', function (req, res) {
     console.log("endpoint: NEW BIOMETRIC IMAGE");
+    console.log('Query: ');
     console.log(req.query);
+    console.log("Data: ");
+    console.log("Length: " + req.body.length);
     console.log(req.body);
     res.json(access_answer)
 })
 
-// Aswer to new template
+// Endpoint new template
 app.post('/template_create.fcgi', function (req, res) {
     console.log("endpoint: TEMPLATE CREATE");
     console.log('Query: ');
@@ -171,7 +195,7 @@ app.post('/template_create.fcgi', function (req, res) {
     res.send();
 })
 
-// Aswer to new face
+// Endpoint new face
 app.post('/face_create.fcgi', function (req, res) {
     console.log("endpoint: FACE CREATE");
     console.log('Query: ');
@@ -348,7 +372,7 @@ app.post('/result', function (req, res) {
     res.sendStatus(200);
 })
 
-// Aswer push mode
+// Push mode
 var push_answer = {
     verb: "POST",
     endpoint: "load_objects",
@@ -390,7 +414,7 @@ app.get('/user_get_image.fcgi', function (req, res) {
 })
 
 // Device IP address
-var ip = '192.168.0.129';
+var deviceIp = '192.168.0.129';
 
 /*
 ***************************
@@ -401,11 +425,11 @@ var ip = '192.168.0.129';
 // Run online mode
 async function runOnline () {
     let Device = require('./device');
-    let device = new Device(ip);
+    let device = new Device(deviceIp);
     await device.login();
     await device.disableOnline();
     await device.destroyOnlineObject(5);
-    await device.createOnlineObject(5,ip,8000);
+    await device.createOnlineObject(5,ip.address(),8000);
     await device.setOnline(5);
     await device.enableOnlinePRO();
 
@@ -419,7 +443,7 @@ async function runOnline () {
 // Disable online mode
 async function disableOnlineMode () {
     let Device = require('./device');
-    let device = new Device(ip);
+    let device = new Device(deviceIp);
     await device.login();
     await device.disableOnline();
 }
@@ -428,7 +452,7 @@ async function disableOnlineMode () {
 async function run () {
     //Import device
     let Device = require('./device');
-    let device = new Device(ip);
+    let device = new Device(deviceIp);
     await device.login();
     const fs = require('fs').promises;
     const photo = await fs.readFile('picture.jpg', {encoding: 'base64'});
@@ -447,7 +471,7 @@ async function run () {
 // Destroy images from all users
 async function destroy() {
     let Device = require('./device');
-    let device = new Device(ip);
+    let device = new Device(deviceIp);
     await device.login();
     await device.user_destroy_image();
 }
@@ -455,7 +479,7 @@ async function destroy() {
 // Destroy all users
 async function destroyAll() {
     let Device = require('./device');
-    let device = new Device(ip);
+    let device = new Device(deviceIp);
     await device.login();
     await device.destroyAllUsers();
 }
@@ -463,7 +487,7 @@ async function destroyAll() {
 // Load user
 async function loadUserTest () {
     let Device = require('./device');
-    let device = new Device(ip);
+    let device = new Device(deviceIp);
     await device.login();
     await device.loadUser(1000);
 }
@@ -472,9 +496,9 @@ async function loadUserTest () {
 // Performs face registration remotely
 async function runRemoteEnroll() {
     let Device = require('./device');
-    let device = new Device(ip);
+    let device = new Device(deviceIp);
 
-    var server = app.listen(8080, function () { 
+    var server = app.listen(8000, function () { 
         var host = server.address().address
         var port = server.address().port
         console.log("Example app listening at http://%s:%s", host, port);
@@ -484,15 +508,14 @@ async function runRemoteEnroll() {
     await device.destroyUser(1000);
     await device.createUser(1000, "Remote");
     await device.remoteEnroll("face", true, false);
-    await device.createUserAccessRules(1000, 1); 
 }
 
 // Starts and cancel face registration remotely
 async function cancelRemoteEnroll() {
     let Device = require('./device');
-    let device = new Device(ip);
+    let device = new Device(deviceIp);
 
-    var server = app.listen(8080, function () { //
+    var server = app.listen(8000, function () { 
         var host = server.address().address
         var port = server.address().port
         console.log("Example app listening at http://%s:%s", host, port);
@@ -505,16 +528,29 @@ async function cancelRemoteEnroll() {
     await device.cancelRemoteEnroll();
 }
 
-// QR Code test
-async function qrCodeTest() {
+// QR Code Alphanumeric test
+async function qrCodeTestAlphanumeric() {
     let Device = require('./device');
-    let device = new Device(ip);
+    let device = new Device(deviceIp);
     await device.login();
     const qrCodeId = 10;
     const qrCodeValue = "Test";
     const userId = 1000;
     await device.configureQRCode("0")
     await device.createQRCode(qrCodeId, qrCodeValue, userId);
+}
+
+
+// QR Code Numeric test
+async function qrCodeTestNumeric() {
+    let Device = require('./device');
+    let device = new Device(deviceIp);
+    await device.login();
+    const cardId = 10;
+    const cardValue = 123456;
+    const userId = 1000;
+    await device.configureQRCode("1")
+    await device.createCard(cardId, cardValue, userId);
 }
 
 // Test definition
@@ -526,9 +562,10 @@ async function qrCodeTest() {
     5 - Destroy users photos
     6 - Destroy all users
     7 - Load user
-    8 - QR Code test
+    8 - QR Code Alphanumeric test
+    9 - QR Code Numeric test
 */
-var test = 8;
+var test = 1;
 
 if (test == 1) {
     runRemoteEnroll();
@@ -544,9 +581,8 @@ if (test == 1) {
     destroyAll()
 } else if (test == 7){
     loadUserTest();
+} else if (test == 8) {
+    qrCodeTestAlphanumeric();
 } else {
-    qrCodeTest();
+    qrCodeTestNumeric();
 }
-
-
-
