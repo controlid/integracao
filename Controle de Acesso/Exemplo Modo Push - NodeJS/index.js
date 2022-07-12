@@ -8,6 +8,8 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var sleep = require('sleep');
+var ip = require("ip");
+const axios = require('axios');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -57,6 +59,13 @@ router.get('/push', function(req, res) {
   }
 });
 
+var deviceIp = '192.168.0.129';
+async function init() {
+  let Device = require('./device');
+  let device = new Device(deviceIp);
+  await device.login();
+  await device.setPush();
+}
 
 // Post the response
 router.post('/result', function(req, res) {
@@ -64,8 +73,11 @@ router.post('/result', function(req, res) {
   res.json();
 }); 
 
+
+
 app.use(router);
 
+init();
 // Listen to port
 app.listen(port, () => {
   console.log('Listening to port: ', + port);
