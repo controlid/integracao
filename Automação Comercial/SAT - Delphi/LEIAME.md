@@ -10,3 +10,7 @@ Para verificar o exemplo de enviar dados de uma venda, insira o nome do arquivo 
 
 O retorno de cada função é exibido em uma mensagem.
 
+Uma imagem de aplicação é visível abaixo.
+
+![Aplicação](App.PNG)
+
