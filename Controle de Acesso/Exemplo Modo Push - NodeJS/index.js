@@ -1,7 +1,7 @@
 /*
-This example express the basic functionalities of the push mode
-the equipment must be correctly connected 
-and configured prior to executing this code
+  This example express the basic functionalities of the push mode.
+  The equipment must be correctly connected and configured to your
+  network prior to executing this code.
 */
 
 var express = require('express');
@@ -19,7 +19,7 @@ var port = 8080;
 
 var router = express.Router();
 
-//Counter for message toggling
+// Counter for message toggling
 var counter = 0;
 
 // Get the push and define the response
@@ -59,6 +59,7 @@ router.get('/push', function(req, res) {
   }
 });
 
+// login and push configuration of remote device
 var deviceIp = '192.168.0.129';
 async function init() {
   let Device = require('./device');
@@ -72,8 +73,6 @@ router.post('/result', function(req, res) {
   console.log(req.body);
   res.json();
 }); 
-
-
 
 app.use(router);
 
