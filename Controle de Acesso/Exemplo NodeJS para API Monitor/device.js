@@ -23,7 +23,7 @@ class Device
         }
     };
     
-    // Configure monitor
+    // Configure monitor on remote device
     /*
         hostname (string): The address where a request will be sent, for example the IP of the server.
         port (string): The port where the request will be sent.
@@ -43,7 +43,6 @@ class Device
             console.log("Error performing configureMonitor: ", error);
         }        
     }
-
 }
 
 module.exports = Device;

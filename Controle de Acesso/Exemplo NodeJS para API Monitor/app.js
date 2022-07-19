@@ -1,6 +1,6 @@
 /*
-This code is an example of how to use and 
-operate Monitor
+  This code is a simple example on how to use the Control iD API
+  for the Monitor resource for Access Control devices.
 */
 
 // Main modules
@@ -84,7 +84,6 @@ app.post('/api/notifications/face_template', function (req, res) {
   res.send();
 })
 
-
 // Notification card
 app.post('/api/notifications/card', function (req, res) {
   console.log("endpoint: API/NOTIFICATIONS/CARD");
@@ -123,6 +122,7 @@ async function configureMonitorTest(serverIp, serverPort) {
     await device.configureMonitor(serverIp, serverPort);
 }
 
+// Initializing server listening at port 8000
 var server = app.listen(8000, function () {
     console.log("The monitor ip and port will be %s and 8000", ip.address());
     configureMonitorTest(ip.address(), "8000");
