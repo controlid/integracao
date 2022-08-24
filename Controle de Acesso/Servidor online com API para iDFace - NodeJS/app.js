@@ -53,30 +53,6 @@ var access_answer = {
     }
 };
 
-
-// Authorization with iDBlock turnstile gate
-var access_answer2 = {
-    result: {
-        event: 7,
-        user_name: 'BB',
-        user_id: 1000,
-        user_image: false,
-        portal_id: 1,
-        actions: [
-            {
-                action: 'catra', 
-                parameters: 'allow=clockwise, reason=1' 
-            },                                          
-            {
-                action: 'door',
-                parameters: 'door=1' 
-            }
-        ],
-        message: ""
-    }
-};
-
-
 // Not identified example
 var not_identified_answer = {
     result: {
@@ -161,40 +137,6 @@ app.post('/new_user_identified.fcgi', function (req, res) {
   })
 
 
-
-// Endpoint new biometric template
-app.post('/new_biometric_template.fcgi', function (req, res) {
-    console.log("endpoint: NEW BIOMETRIC TEMPLATE");
-    console.log('Query: ');
-    console.log(req.query);
-    console.log("Data: ");
-    console.log("Length: " + req.body.length);
-    console.log(req.body);
-    res.json(access_answer);
-})
-
-// Endpoint new biometric image
-app.post('/new_biometric_image.fcgi', function (req, res) {
-    console.log("endpoint: NEW BIOMETRIC IMAGE");
-    console.log('Query: ');
-    console.log(req.query);
-    console.log("Data: ");
-    console.log("Length: " + req.body.length);
-    console.log(req.body);
-    res.json(access_answer)
-})
-
-// Endpoint new template
-app.post('/template_create.fcgi', function (req, res) {
-    console.log("endpoint: TEMPLATE CREATE");
-    console.log('Query: ');
-    console.log(req.query);
-    console.log("Data: ");
-    console.log("Length: " + req.body.length);
-    console.log(req.body.toString());
-    res.send();
-})
-
 // Endpoint new face
 app.post('/face_create.fcgi', function (req, res) {
     console.log("endpoint: FACE CREATE");
@@ -227,16 +169,6 @@ app.post('/api/notifications/dao', function (req, res) {
     res.send();
 })
 
-// Notification catra event
-app.post('/api/notifications/catra_event', function (req, res) {
-    console.log("endpoint: API/NOTIFICATIONS/CATRA EVENT");
-    var date = new Date((req.body.event.time + 3 * 60 * 60) * 1000);
-    console.log("Time: " + dateFormat(date, '[HH:MM:ss.l]'));
-
-    console.log(req.body);
-    res.send();
-})
-
 // Notification door
 app.post('/api/notifications/door', function (req, res) {
     console.log("endpoint: API/NOTIFICATIONS/DOOR");
@@ -252,15 +184,6 @@ app.post('/api/notifications/operation_mode', function (req, res) {
     console.log("Length: " + req.body.length);
     console.log(req.body);
     console.log("NOT SENDING ANSWER");
-    res.send();
-})
-
-//Notification template
-app.post('/api/notifications/template', function (req, res) {
-    console.log("endpoint: API/NOTIFICATIONS/TEMPLATE");
-    console.log("Data: ");
-    console.log("Length: " + req.body.length);
-    console.log(req.body);
     res.send();
 })
 
@@ -319,36 +242,6 @@ app.post('card_create.fcgi', function (req, res) {
     console.log(req.headers);
     console.log(req.query);
     res.status(200).send();
-})
-
-// Fingerprint create
-//This is for online only!
-app.post('fingerprint_create.fcgi', function (req, res) {
-    var charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-
-    var global_ret = true;
-    for (var i = req.body.fingerprints.length - 1; i >= 0; i--) {
-        var ret = true;
-        console.log("Checking fingerprint " + (i + 1) + "...");
-        var fp = req.body.fingerprints[i].image;
-        for (var j = fp.length - 1; j >= 0; j--) {
-            if (charset.indexOf(fp.charAt(j)) == -1) {
-                console.log("Invalid Character: " + fp.charCodeAt(j));
-                ret = false;
-                break;
-            }
-        }
-        if (ret)
-            console.log("Fingerprint " + (i + 1) + " OK");
-        else
-            global_ret = false;
-    }
-
-    if (global_ret) {
-        res.send();
-    } else {
-        res.status(200).send();
-    }
 })
 
 // Is alive
