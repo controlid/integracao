@@ -318,7 +318,6 @@ Init();
 GetDeviceInfo();
 DeleteAllTemplates();
 CaptureAndEnroll(1);
-CaptureAndEnroll(2);
 CaptureAndIdentify();
 GetTemplateIDs();
 GetTemplate(1);
