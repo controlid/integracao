@@ -19,6 +19,12 @@ As dependências do módulo [node-gyp](https://github.com/nodejs/node-gyp#instal
 npm install -g node-gyp
 ```
 
+Para Windows, é necessário ter instalado [Visual Studio Build Tools](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools) e executar no cmd:
+
+```
+npm config set msvs_version 2017
+```
+
 O projeto tem como dependências os módulos [ref-napi](https://github.com/node-ffi-napi/ref-napi) e [ffi-napi](https://github.com/node-ffi-napi/node-ffi-napi), os quais devem ser instalados. Recomenda-se fazê-lo em um diretório cujo caminho não possua espaços ou acentos.
 
 ```
