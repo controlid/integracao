@@ -1,14 +1,29 @@
 # Descrição
 
-Este exemplo apresenta as funcionalidades básicas do iDBio através de um exemplo simples em NodeJS. É implementado um *wrapper* da bibloteca dinâmica do iDBio em NodeJS e seu uso básico é demonstrado. O dispositivo deve estar conectado para o funcionamento do exemplo.
+Este exemplo apresenta as funcionalidades básicas do iDBio com o uso de NodeJS. É implementado um *wrapper* da bibloteca dinâmica do iDBio em NodeJS e seu uso básico é demonstrado. O dispositivo deve estar conectado para o funcionamento do exemplo.
 
 # Notas
 
-Para a execução do exemplo, é necessário ter instalado na máquina servidor uma versão recente do NPM e NodeJS. Em uma distribuição Ubuntu/Debian, basta executar:
+Para a execução do exemplo, é necessário ter instalado na máquina uma versão recente do NPM e NodeJS. Em uma distribuição Ubuntu/Debian, basta executar:
 
 ```
 sudo apt install nodejs
 sudo apt install npm
+```
+
+Numa distribuição Windows, recomenda-se utilizar o [instalador](https://nodejs.org/en/download/) apropriado.
+
+As dependências do módulo [node-gyp](https://github.com/nodejs/node-gyp#installation) devem ser observadas, a depender do sistema operacional.
+
+```
+npm install -g node-gyp
+```
+
+O projeto tem como dependências os módulos [ref-napi](https://github.com/node-ffi-napi/ref-napi) e [ffi-napi](https://github.com/node-ffi-napi/node-ffi-napi), os quais devem ser instalados. Recomenda-se fazê-lo em um diretório cujo caminho não possua espaços ou acentos.
+
+```
+npm install ref-napi
+npm install ffi-napi
 ```
 
 Uma vez instalados, execute o comando no diretório que contém os arquivos index.js e package.json:
