@@ -11,7 +11,7 @@
   "author": "Douglas Miguel <douglas.miguel@controlid.com.br>",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.1",
     "express": "^4.17.3",
     "moment": "^2.29.4"
   }
