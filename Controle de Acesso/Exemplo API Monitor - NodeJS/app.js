@@ -113,6 +113,14 @@ app.post('/api/notifications/user_image', function (req, res) {
   res.status(200).send();
 })
 
+// Notification usb drive
+app.post('/api/notifications/usb_drive', function (req, res) {
+  console.log("endpoint: API/NOTIFICATIONS/USB_DRIVE");
+  console.log(req.body);
+  console.log("\n");
+  res.status(200).send();
+})
+
 // Device and server IP address
 var deviceIp = '192.168.0.129';
 async function configureMonitorTest(serverIp, serverPort) {
