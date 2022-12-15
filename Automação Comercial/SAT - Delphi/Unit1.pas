@@ -1,4 +1,4 @@
-unit Unit1;
+﻿unit Unit1;
 
 interface
 
@@ -32,14 +32,14 @@ type
 
 var
   Form1: TForm1;
-  arquivoVenda : String;
+  arquivoVenda : UTF8String;
 implementation
 
 {$R *.dfm}
 
 procedure TForm1.Button1Click(Sender: TObject);
 var
-   returnMsg: String;
+   returnMsg: UTF8String;
    numeroSessao: Int32;
 begin
    randomize();
@@ -50,7 +50,7 @@ end;
 
 procedure TForm1.Button2Click(Sender: TObject);
 var
-   returnMsg: String;
+   returnMsg: UTF8String;
    numeroSessao: Int32;
 begin
    randomize();
@@ -61,7 +61,7 @@ end;
 
 procedure TForm1.Button3Click(Sender: TObject);
 var
-   returnMsg: String;
+   returnMsg: UTF8String;
    numeroSessao: Int32;
 begin
    randomize();
@@ -86,12 +86,12 @@ end;
 
 procedure TForm1.Button5Click(Sender: TObject);
 var
-   returnMsg: String;
+   returnMsg: UTF8String;
    numeroSessao: Int32;
-   cnpjSoftwareHouse : String;
-   assinaturaAC : String;
-   cnpjContribuinte : String;
-   dadosVenda : String;
+   cnpjSoftwareHouse : UTF8String;
+   assinaturaAC : UTF8String;
+   cnpjContribuinte : UTF8String;
+   dadosVenda : UTF8String;
 begin
   cnpjSoftwareHouse := '16716114000172';
   assinaturaAC := 'SGR-SAT SISTEMA DE GESTAO E RETAGUARDA DO SAT';
@@ -127,7 +127,7 @@ begin
     ReWrite(myFile);
     WriteLn(myFile, text);
     CloseFile(myFile);
-    ShowMessage('Logs Dispon�veis em Logs.txt');
+    ShowMessage('Logs Disponíveis em Logs.txt');
 end;
 
 end.
