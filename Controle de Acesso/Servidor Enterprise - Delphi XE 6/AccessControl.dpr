@@ -1,5 +1,4 @@
 program AccessControl;
-
 uses
   Vcl.Forms,
   UnitAccessControl in 'UnitAccessControl.pas' {FormControleAcesso},
@@ -7,7 +6,6 @@ uses
   UnitDevice in 'UnitDevice.pas';
 
 {$R *.res}
-
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
