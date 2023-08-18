@@ -40,6 +40,8 @@ type
     procedure AddMessageInResponse(Text: String); overload;
     procedure ButtonOnlineClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    function ExtractValueByName(const str: string; const name: string): string;
+    function ProcessElements(strings: TStrings; const elementName: string): string;
 
   private
     { Private declarations }
@@ -109,10 +111,46 @@ begin
   AddMessageInResponse('Modo online ativado.');
 end;
 
+function TFormControleAcesso.ExtractValueByName(const str: string; const name: string): string;
+var
+  startPos, endPos: Integer;
+begin
+  startPos := Pos(name + '=', str);
+  if startPos > 0 then
+  begin
+    Result := Copy(str, startPos + Length(name) + 1, Length(str));
+  end
+  else
+    Result := '';
+end;
+
+function TFormControleAcesso.ProcessElements(strings: TStrings; const elementName: string): string;
+var
+  i: Integer;
+begin
+  for i := 0 to strings.Count - 1 do
+  begin
+    if Pos(elementName + '=', strings[i]) = 1 then
+    begin
+       Result := ExtractValueByName(strings[i], elementName);
+    end;
+  end;
+
+end;
 procedure TFormControleAcesso.IdHTTPServer1CommandGet(AContext: TIdContext; ARequestInfo: TIdHTTPRequestInfo;
   AResponseInfo: TIdHTTPResponseInfo);
+var
+  i: Integer;
+  device_id: string;
 begin
   AddMessageInResponse('Request recebido para pagina: ' + ARequestInfo.Document);
+  AddMessageInResponse('Parametros');
+  for i := 0 to ARequestInfo.Params.Count - 1 do
+  begin
+    AddMessageInResponse(ARequestInfo.Params[i]);
+  end;
+  device_id := ProcessElements(ARequestInfo.Params, 'device_id');
+  AddMessageINResponse('Got device_id ' +  device_id);
   AResponseInfo.ContentText := '{"result":{"event":7,"user_id":6,"user_name":"Neal Caffrey","user_image":false, "portal_id":1,"actions":[{"action":"door","parameters":"door=1"},{"action":"door","parameters":"door=2"}]}}';
 end;
 
