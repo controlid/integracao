@@ -1,4 +1,5 @@
-const axios = require('axios')
+const axios = require('axios');
+const { response } = require('express');
 
 class Device 
 {
@@ -409,7 +410,117 @@ class Device
         }
     }
 
+    // Create a new PIN
+    /*
+        id (number): Unique identifier of an identification PIN
 
+        value (string): This field indicates the value of the PIN
+        
+        user_id (number): Unique identifier of the user to which the identification PIN belongs
+    */
+    async createPin(id, value, user_id) {
+        try {
+            const response = await axios.post('http://'+this.ip+'/create_objects.fcgi?session='+this.session,{
+                "object": "pins",
+                "values": [
+                    {
+                        "id": id,
+                        "value": value,
+                        "user_id": user_id
+                    }
+                ]
+            });
+            console.log("createPin success: ", response.data);
+        } catch (error) {
+            console.log("Error performing createPin: ", error.data);
+        }
+    }
+
+    // Create a new biometric
+    /*
+        id (number): Unique identifier of a biometric template
+
+        finger_position (number): Reserved field
+
+        finger_type (number): Biometrics type common finger value 0 or panic finger value 1
+
+        template (string): String in base 64 representing a biometric template
+        
+        user_id (number): Unique identifier of the user to whom this biometrics belongs
+    */
+    async createBiometric(id, finger_position, finger_type, template, user_id) {
+        try {
+            const response = await axios.post('http://'+this.ip+'/create_objects.fcgi?session='+this.session,{
+                "object": "templates",
+                "values": [
+                    {
+                        "id": id,
+                        "finger_position": finger_position,
+                        "finger_type": finger_type,
+                        "template": template,
+                        "user_id": user_id
+                    }
+                ]
+            });
+            console.log("createBiometric success: ", response.data);
+        } catch (error) {
+            console.log("Error performing createBiometric: ", error.data);
+        }
+    }
+
+    // Hash password
+    /*
+        password (string): String to be hashed
+    */
+    async hashPassword(password) {
+        try {
+            const data = {
+                "password": password,
+            };
+            const response = await axios.post(`http://${this.ip}/user_hash_password.fcgi?session=${this.session}`, data);
+        
+            return {
+                password: response.data.password,
+                salt: response.data.salt,
+            };
+        } catch (error) {
+            console.error("Error performing hashPassword :", error.data);
+
+        }
+    }
+    
+
+    // Create a new ID + password access
+    /*
+        id (number): Unique identifier of a user
+        name (string): Text containing the name of a user
+        password (string): String that represents the user's password
+     */
+    async createIdPassword(id, name, password) {
+        try {
+            const passwordData = await this.hashPassword(password);
+    
+            const passwordHashed = passwordData.password;
+            const salt = passwordData.salt;
+            const response = await axios.post(`http://${this.ip}/create_objects.fcgi?session=${this.session}`, {
+                "object": "users",
+                "values": [
+                    {
+                        "id": id,
+                        "name": name,
+                        "password": passwordHashed,
+                        "salt": salt,
+                        "registration": ""
+                    }
+                ]
+            });
+    
+            console.log("createIdPassword success: ", response.data);
+        } catch (error) {
+            console.error("Error performing createIdPassword: ", error.response ? error.response.data : error.message);
+        }
+    }
+        
 
     // Create a new access rule
     /*

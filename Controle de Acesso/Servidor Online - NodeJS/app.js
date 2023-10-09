@@ -446,6 +446,54 @@ async function qrCodeTestNumeric() {
     await device.createCard(cardId, cardValue, userId);
 }
 
+// Card registration test
+async function cardTest() {
+    let Device = require('./device');
+    let device = new Device(deviceIp);
+    await device.login();
+    const cardId = 20;
+    const cardValue = 1234;
+    const userId = 1000;
+    await device.createCard(cardId, cardValue, userId);
+}
+
+// PIN registration test
+async function pinTest() {
+    let Device = require('./device');
+    let device = new Device(deviceIp);
+    await device.login();
+    const pinId = 1001;
+    const pinValue = "1234";
+    const userId = 1000;
+    await device.createPin(pinId, pinValue, userId);
+}
+
+// Biometric registration test
+async function biometricTest() {
+    let Device = require('./device');
+    let device = new Device(deviceIp);
+    await device.login();
+    const bioId = 100;
+    const finger_position = 3;
+    const finger_type = 0;
+    const template = 'SGVsbG8gV29ybGQh';
+    const userId = 1000;
+    await device.createBiometric(bioId, finger_position, finger_type, template, userId);
+}
+
+
+// Id + password registration test
+async function idPasswordTest() {
+    let Device = require('./device');
+    let device = new Device(deviceIp);
+    await device.login();
+    const userId = 1000;
+    const userName = "Remote";
+    const password = "1234";
+    await device.createIdPassword(userId, userName, password);
+}
+
+
 // Test definition
 /* 
     1 - Remote enroll test
@@ -457,8 +505,12 @@ async function qrCodeTestNumeric() {
     7 - Load user
     8 - QR Code Alphanumeric test
     9 - QR Code Numeric test
+    10 - Card registration test
+    11 - PIN registration test
+    12 - Biometric registration test
+    13 - ID + password registration test
 */
-var test = 1;
+var test = 14;
 
 if (test == 1) {
     runRemoteEnroll();
@@ -472,10 +524,19 @@ if (test == 1) {
     destroy();
 } else if (test == 6) {
     destroyAll()
-} else if (test == 7){
+} else if (test == 7) {
     loadUserTest();
 } else if (test == 8) {
     qrCodeTestAlphanumeric();
-} else {
+} else if (test == 9) {
     qrCodeTestNumeric();
+} else if (test == 10) {
+    cardTest();
+} else if (test == 11) {
+    pinTest();
+} else if (test == 12) {
+    biometricTest();
+} else if (test == 13) {
+    idPasswordTest();
 }
+
