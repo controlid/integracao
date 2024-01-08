@@ -324,10 +324,10 @@ function startServer() {
 }
 
 // Returns the card value from the card number without commas, to be convert to [part before comma] * 2^32 + [part after comma]
-function getCardValue(card_number) {
-    const number_before_comma = parseInt(card_number.toString().slice(0,3));
-    const number_after_comma = parseInt(card_number.toString().slice(3,8));
-    return (number_before_comma * Math.pow(2, 32) + number_after_comma);
+function getCardValue(cardNumber) {
+    const numberBeforeComma = parseInt(cardNumber.toString().slice(0,3));
+    const numberAfterComma = parseInt(cardNumber.toString().slice(3,8));
+    return (numberBeforeComma * Math.pow(2, 32) + numberAfterComma);
 }
 
 /*
@@ -378,7 +378,7 @@ async function createUsers () {
 async function destroyImages() {
     await device.login();
 
-    await device.user_destroy_image();
+    await device.userDestroyImage();
 }
 
 // Destroy all users
@@ -454,10 +454,10 @@ async function pinTest(pinId, pinValue, userId) {
 async function biometricTest(bioId, userId) {
     await device.login();
 
-    const finger_position = 3;
-    const finger_type = 0;
+    const fingerPosition = 3;
+    const fingerType = 0;
     const template = 'SGVsbG8gV29ybGQh';
-    await device.createBiometric(bioId, finger_position, finger_type, template, userId);
+    await device.createBiometric(bioId, fingerPosition, fingerType, template, userId);
 }
 
 
