@@ -300,12 +300,12 @@ class Device
        When the required registration is asynchronous, the equipment will send the result in the form of a new POST
        request, which makes it necessary to configure an endpoint on your server to receive it.
     */
-    async remoteEnroll(type,save,sync) {
+    async remoteEnroll(type,save,id,sync) {
         try {
             const response = await axios.post('http://'+this.ip+'/remote_enroll.fcgi?session='+this.session,{
                 "type":type,
                 "save":save,
-                "user_id":1000,
+                "user_id":id,
                 "sync":sync
             });
             console.log("remoteEnroll success: ", response.data);

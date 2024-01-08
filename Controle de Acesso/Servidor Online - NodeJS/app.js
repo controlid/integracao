@@ -13,6 +13,7 @@ const fs = require('fs');
 const { exit } = require('process');
 require('console-stamp')(console, '[HH:MM:ss.l]');
 var ip = require("ip");
+const args = require('./argsParser');
 
 // Configurations
 var options = {
@@ -307,7 +308,27 @@ app.get('/user_get_image.fcgi', function (req, res) {
 })
 
 // Device IP address
-var deviceIp = '192.168.0.129';
+var deviceIp = args.ip;
+
+// Init Device
+let Device = require('./device');
+let device = new Device(deviceIp);
+
+// Start server
+function startServer() {
+    const server = app.listen(8000, function () {
+        const host = server.address().address;
+        const port = server.address().port;
+        console.log(`Example app listening at http://${host}:${port}`);
+    });
+}
+
+// Returns the card value from the card number without commas, to be convert to [part before comma] * 2^32 + [part after comma]
+function getCardValue(card_number) {
+    const number_before_comma = parseInt(card_number.toString().slice(0,3));
+    const number_after_comma = parseInt(card_number.toString().slice(3,8));
+    return (number_before_comma * Math.pow(2, 32) + number_after_comma);
+}
 
 /*
 ***************************
@@ -317,36 +338,28 @@ var deviceIp = '192.168.0.129';
 
 // Run online mode
 async function runOnline () {
-    let Device = require('./device');
-    let device = new Device(deviceIp);
     await device.login();
+
     await device.disableOnline();
     await device.destroyOnlineObject(5);
-    await device.createOnlineObject(5,ip.address(),8000);
+    await device.createOnlineObject(5, ip.address(), 8000);
     await device.setOnline(5);
     await device.enableOnlinePRO();
 
-    var server = app.listen(8000, function () {
-        var host = server.address().address
-        var port = server.address().port
-        console.log("Example app listening at http://%s:%s", host, port);
-    });
+    startServer();
 }
 
 // Disable online mode
 async function disableOnlineMode () {
-    let Device = require('./device');
-    let device = new Device(deviceIp);
     await device.login();
+
     await device.disableOnline();
 }
 
 // Create user on device
-async function run () {
-    //Import device
-    let Device = require('./device');
-    let device = new Device(deviceIp);
+async function createUsers () {
     await device.login();
+
     const fs = require('fs').promises;
     const photo = await fs.readFile('picture.jpg', {encoding: 'base64'});
     const idStart = 400000;
@@ -362,134 +375,96 @@ async function run () {
 }
 
 // Destroy images from all users
-async function destroy() {
-    let Device = require('./device');
-    let device = new Device(deviceIp);
+async function destroyImages() {
     await device.login();
+
     await device.user_destroy_image();
 }
 
 // Destroy all users
 async function destroyAll() {
-    let Device = require('./device');
-    let device = new Device(deviceIp);
     await device.login();
+
     await device.destroyAllUsers();
 }
 
 // Load user
-async function loadUserTest () {
-    let Device = require('./device');
-    let device = new Device(deviceIp);
+async function loadUserTest (userId) {
     await device.login();
-    await device.loadUser(1000);
+
+    await device.loadUser(userId);
 }
 
 
 // Performs face registration remotely
-async function runRemoteEnroll() {
-    let Device = require('./device');
-    let device = new Device(deviceIp);
-
-    var server = app.listen(8000, function () { 
-        var host = server.address().address
-        var port = server.address().port
-        console.log("Example app listening at http://%s:%s", host, port);
-    });
-
+async function runRemoteEnroll(userId, userName) {
     await device.login();
-    await device.destroyUser(1000);
-    await device.createUser(1000, "Remote");
-    await device.remoteEnroll("face", true, false);
+
+    startServer();
+
+    await device.destroyUser(userId);
+    await device.createUser(userId, userName);
+    await device.remoteEnroll("face", true, userId, false);
 }
 
 // Starts and cancel face registration remotely
-async function cancelRemoteEnroll() {
-    let Device = require('./device');
-    let device = new Device(deviceIp);
-
-    var server = app.listen(8000, function () { 
-        var host = server.address().address
-        var port = server.address().port
-        console.log("Example app listening at http://%s:%s", host, port);
-    });
-
+async function cancelRemoteEnroll(userId, userName) {
     await device.login();
-    await device.destroyUser(1000);
-    await device.createUser(1000, "Remote");
+
+    startServer();
+
+    await device.destroyUser(userId);
+    await device.createUser(userId, userName);
     await device.remoteEnroll("face", true, false);   
     await device.cancelRemoteEnroll();
 }
 
 // QR Code Alphanumeric test
-async function qrCodeTestAlphanumeric() {
-    let Device = require('./device');
-    let device = new Device(deviceIp);
+async function qrCodeTestAlphanumeric(qrCodeId, qrCodeValueAlphaNumeric, userId) {
     await device.login();
-    const qrCodeId = 10;
-    const qrCodeValue = "Test";
-    const userId = 1000;
+
     await device.configureQRCode("0")
-    await device.createQRCode(qrCodeId, qrCodeValue, userId);
+    await device.createQRCode(qrCodeId, qrCodeValueAlphaNumeric, userId);
 }
 
 
-// QR Code Numeric test
-async function qrCodeTestNumeric() {
-    let Device = require('./device');
-    let device = new Device(deviceIp);
+async function qrCodeTestNumeric(qrCodeId, qrCodeValueNumeric, userId) {
     await device.login();
-    const cardId = 10;
-    const cardValue = 123456;
-    const userId = 1000;
+
     await device.configureQRCode("1")
-    await device.createCard(cardId, cardValue, userId);
+    await device.createCard(qrCodeId, qrCodeValueNumeric, userId);
 }
 
 // Card registration test
-async function cardTest() {
-    let Device = require('./device');
-    let device = new Device(deviceIp);
+async function cardTest(cardId, userId, cardNumber) {
     await device.login();
-    const cardId = 20;
-    const cardValue = 1234;
-    const userId = 1000;
-    await device.createCard(cardId, cardValue, userId);
+
+    const value = getCardValue(cardNumber);
+    await device.createCard(cardId, value, userId);
 }
 
 // PIN registration test
-async function pinTest() {
-    let Device = require('./device');
-    let device = new Device(deviceIp);
+async function pinTest(pinId, pinValue, userId) {
     await device.login();
-    const pinId = 1001;
-    const pinValue = "1234";
-    const userId = 1000;
+
     await device.createPin(pinId, pinValue, userId);
 }
 
 // Biometric registration test
-async function biometricTest() {
-    let Device = require('./device');
-    let device = new Device(deviceIp);
+async function biometricTest(bioId, userId) {
     await device.login();
-    const bioId = 100;
+
     const finger_position = 3;
     const finger_type = 0;
     const template = 'SGVsbG8gV29ybGQh';
-    const userId = 1000;
     await device.createBiometric(bioId, finger_position, finger_type, template, userId);
 }
 
 
 // Id + password registration test
-async function idPasswordTest() {
-    let Device = require('./device');
-    let device = new Device(deviceIp);
+async function idPasswordTest(userId, userName, password) {
     await device.login();
-    const userId = 1000;
-    const userName = "Remote";
-    const password = "1234";
+    
     await device.createIdPassword(userId, userName, password);
 }
 
@@ -510,33 +485,33 @@ async function idPasswordTest() {
     12 - Biometric registration test
     13 - ID + password registration test
 */
-var test = 14;
+var test = args.test;
 
 if (test == 1) {
-    runRemoteEnroll();
+    runRemoteEnroll(args.userId, args.userName);
 } else if (test == 2) {
-    run();
+    createUsers();
 } else if (test == 3) {
     runOnline();
 } else if (test == 4) {
     disableOnlineMode();
 } else if (test == 5) {
-    destroy();
+    destroyImages();
 } else if (test == 6) {
     destroyAll()
 } else if (test == 7) {
-    loadUserTest();
+    loadUserTest(args.userId);
 } else if (test == 8) {
-    qrCodeTestAlphanumeric();
+    qrCodeTestAlphanumeric(args.qrCodeId, args.qrCodeValueAlphaNumeric, args.userId);
 } else if (test == 9) {
-    qrCodeTestNumeric();
+    qrCodeTestNumeric(args.qrCodeId, args.qrCodeValueNumeric, args.userId);
 } else if (test == 10) {
-    cardTest();
+    cardTest(args.cardId, args.userId, args.cardNumber);
 } else if (test == 11) {
-    pinTest();
+    pinTest(args.pinId, args.pinValue, args.userId);
 } else if (test == 12) {
-    biometricTest();
+    biometricTest(args.bioId, args.userId);
 } else if (test == 13) {
-    idPasswordTest();
+    idPasswordTest(args.userId, args.userName, args.password);
 }
 
