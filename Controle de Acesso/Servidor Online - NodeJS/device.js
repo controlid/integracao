@@ -76,7 +76,7 @@ class Device
     }
 
     // Destroy images from all users
-    async user_destroy_image() {
+    async userDestroyImage() {
         try {
             const response = await axios.post('http://'+this.ip+'/user_destroy_image.fcgi?session='+this.session,{
                 "all":true
