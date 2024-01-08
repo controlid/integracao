@@ -23,7 +23,9 @@ node app
 
 ## Testes
 
-Os testes implementados podem ser definidos através da variável `teste`. Os exemplos são:
+Para realizar os testes, alguns argumentos podem ser passados via terminal, usando `--nomeDoArgumento`. Caso deseje, não passe estes parâmetros para que seja usado valores padrões.
+Para selecionar o IP do dispositivo e o teste a ser executado, utilize as tags `--ip` e `--test`, tais como `--ip=192.168.0.129` e `--test=1`.
+Os exemplos de teste são:
 
 1. Cadastramento remoto
 2. Criação de múltiplos usuários
@@ -41,15 +43,15 @@ Os testes implementados podem ser definidos através da variável `teste`. Os ex
 
 ### Descrição dos testes de cadastramento das formas de acesso
 
-1.`Cadastramento remoto`: Cadastra um usuário com ID 1000 e faz o cadastro facial de forma remota do usuário. 
+1.`Cadastramento remoto`: Cadastra um usuário com ID 1000 e faz o cadastro facial de forma remota do usuário. Argumentos: `--userId` : número, `--userName` : texto.
 
-8 e 9.`Testes de QR Code`: Cadastra um código pré-determinado a um usuário com ID 1000 cadastrado anteriormente.
+8 e 9.`Testes de QR Code`: Cadastra um código pré-determinado a um usuário com ID 1000 cadastrado anteriormente. Argumentos: `--userId` : número, `--qrCodeValueAlphaNumeric` : texto ou número, `--qrCodeValueNumeric` : número.
 
-10.`Teste de cadastramento de cartão`: Cadastra um cartão pré-determinado a um usuário com ID 1000 cadastrado anteriormente.
+10.`Teste de cadastramento de cartão`: Cadastra um cartão pré-determinado a um usuário com ID 1000 cadastrado anteriormente. Argumentos: `--userId` : número, `--cardNumber` : número.
 
-11.`Teste de cadastramento de PIN`: Cadastra um PIN pré-determinado a um usuário com ID 1000 cadastrado anteriormente.
+11.`Teste de cadastramento de PIN`: Cadastra um PIN pré-determinado a um usuário com ID 1000 cadastrado anteriormente. Argumentos: `--userId` : número, `--pinId` : número, `--pinValue` : número.
 
-12.`Teste de cadastramento biométrico remoto`: Cadastro biométrico remoto de um usuário com ID 1000 cadastrado anteriormente.
+12.`Teste de cadastramento biométrico remoto`: Cadastro biométrico remoto de um usuário com ID 1000 cadastrado anteriormente. Argumentos: `--userId` : número, `--bioId` : número.
 
-13.`Teste de cadastramento de acesso ID + senha`: Cadastra um usuário com ID 1000 e senha de acesso pré-determinada.
+13.`Teste de cadastramento de acesso ID + senha`: Cadastra um usuário com ID 1000 e senha de acesso pré-determinada. Argumentos: `--userId` : número, `--password` : número.
 
