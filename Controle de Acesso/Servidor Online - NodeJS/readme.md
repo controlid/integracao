@@ -51,7 +51,7 @@ Os exemplos de teste são:
 
 11.`Teste de cadastramento de PIN`: Cadastra um PIN pré-determinado a um usuário com ID 1000 cadastrado anteriormente. Argumentos: `--userId` : número, `--pinId` : número, `--pinValue` : número.
 
-12.`Teste de cadastramento biométrico remoto`: Cadastro biométrico remoto de um usuário com ID 1000 cadastrado anteriormente. Argumentos: `--userId` : número, `--bioId` : número.
+12.`Teste de cadastramento biométrico remoto`: Cadastro biométrico remoto de um usuário com ID 1000 cadastrado anteriormente. Argumentos: `--userId` : número, `--userName` : texo.
 
 13.`Teste de cadastramento de acesso ID + senha`: Cadastra um usuário com ID 1000 e senha de acesso pré-determinada. Argumentos: `--userId` : número, `--password` : número.
 
