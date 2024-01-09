@@ -451,13 +451,13 @@ async function pinTest(pinId, pinValue, userId) {
 }
 
 // Biometric registration test
-async function biometricTest(bioId, userId) {
+async function biometricTest(userId, userName) {
     await device.login();
 
-    const fingerPosition = 3;
-    const fingerType = 0;
-    const template = 'SGVsbG8gV29ybGQh';
-    await device.createBiometric(bioId, fingerPosition, fingerType, template, userId);
+    await device.destroyUser(userId);
+    await device.createUser(userId, userName);
+    await device.remoteEnroll("biometry", true, userId, false);   
+    await device.cancelRemoteEnroll();
 }
 
 
@@ -510,7 +510,7 @@ if (test == 1) {
 } else if (test == 11) {
     pinTest(args.pinId, args.pinValue, args.userId);
 } else if (test == 12) {
-    biometricTest(args.bioId, args.userId);
+    biometricTest(args.userId, args.userName);
 } else if (test == 13) {
     idPasswordTest(args.userId, args.userName, args.password);
 }
