@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import br.com.controlid.idbio.IDBio;
 import br.com.controlid.idbio.communication.IDDeviceListeners;
-import br.com.controlid.idbio.enums.EnumCIDBIO;
+import br.com.controlid.idbio.enums.EnumRetCodes;
 import br.com.controlid.idbio.enums.EnumParam;
 import br.com.controlid.idbio.enums.EnumStatus;
 import br.com.controlid.idbio.objects.BaseReturn;
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_main);
 
-        IDBio.config(getApplicationContext());
+        IDBio.config();
 
         btn001 = findViewById(R.id.btn_001);
         btn001.setOnClickListener(this);
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         image_bio = findViewById(R.id.image_bio);
 
-        IDBio.getInstance().startConnection();
+        IDBio.getInstance().startConnection(getApplicationContext());
         onNewIntent(getIntent());
 
         final View iconConnect = findViewById(R.id.icon_connect);
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onNewIntent(intent);
 
         if(intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_ATTACHED))
-            IDBio.getInstance().startConnection();
+            IDBio.getInstance().startConnection(getApplicationContext());
     }
 
     @Override
@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     showAlert("Template salvo!");
                 } else if(data.target.equals(btn005)) {
                     MatchData matchResult = ((MatchData) data.data);
-                    if(matchResult.getCodRet() == EnumCIDBIO.SUCCESS)
+                    if(matchResult.getCodRet() == EnumRetCodes.SUCCESS)
                         showAlert("Comparação realizada com sucesso. Nota: " + String.valueOf(matchResult.getScore()));
                     else {
                         showAlert("Comparação falhou: " + matchResult.getCodRet().getMessage());
