@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Controlid;
 using Controlid.iDClass;
 using System.Data;
+using System.Security.Cryptography;
 
 namespace RepTestAPI
 {
@@ -21,6 +22,25 @@ namespace RepTestAPI
         [TestMethod, TestCategory("RepCid")]
         public void Usuario_List()
         {
+            string created_nome;
+            long created_matricula;
+            int created_codigo;
+            string created_senha;
+            string created_barras;
+            uint created_rfid;
+            int created_privilegios;
+            bool created_gravou;
+            string template_iDX = "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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==";
+            string template_iDClass = RepCid.TemplateToiDClass(Convert.FromBase64String(template_iDX));
+            string[] created_template = new string[] { template_iDClass };
+
+            long created_pis = Config.pisTEST + 413;
+            if (!(rep.iDClass_GravarUsuario(created_pis, created_nome = "Auto-Test: Incluido", created_matricula = 4421, created_codigo = 456789, created_senha = "423456", created_barras = "456789", created_rfid = 457845, created_privilegios = 1, created_template, out created_gravou) && created_gravou))
+            {
+                Console.WriteLine(rep.LastLog());
+                Assert.Fail("Erro ao Incluir");
+            }
+
             int qtd;
             if (!rep.CarregarUsuarios(true, out qtd))
                 Assert.Fail("Erro ao carregar usuários");
@@ -32,7 +52,7 @@ namespace RepTestAPI
             int codigo;
             string senha;
             string barras;
-            int rfid;
+            uint rfid;
             int privilegios;
             int ndig;
             int nCount = 0;
@@ -47,15 +67,116 @@ namespace RepTestAPI
                     barras == "" ? "" : (" CB:" + barras),
                     rfid == 0 ? "" : (" RF:" + rfid),
                     ndig == 0 ? "" : (" BIO:" + ndig)));
-                if (PisTemplate == 0 && ndig > 0)
+
+                if(pis == created_pis)
+                {
+                    if(nome != created_nome || codigo != created_codigo || senha != created_senha || barras != created_barras || rfid != created_rfid || privilegios != created_privilegios || ndig != 1)
+                    {
+                        Console.WriteLine(string.Format("{0:D4}: {1} {2:D12}-{3} \t {4} \t {5}{6}{7}",
+                            nCount, created_privilegios == 1 ? "A" : "U", pis, nome,
+                            created_codigo == 0 && created_senha == "" ? "" : (created_codigo + "/" + created_senha),
+                            barras == "" ? "" : (" CB:" + created_barras),
+                            created_rfid == 0 ? "" : (" RF:" + created_rfid),
+                            1 == 0 ? "" : (" BIO:" + 1)));
+                        Assert.Fail("Leitura do usuário criado feita incorretamente");
+                    }
+                } else if (PisTemplate == 0 && ndig > 0)
+                {
                     PisTemplate = pis;
+                }
 
                 //bool r;
                 //if(rep.RemoverUsuario(pis, out r) && r)
                 //    nDelete++;
             }
 
+            bool removeu;
+            if(!rep.RemoverUsuario(created_pis, out removeu) && removeu)
+            {
+                Assert.Fail("Falha ao deletar o usuário criado");
+            }
+
             if(nDelete>0)
+                Console.WriteLine("\r\nUsuários Removidos: " + nDelete);
+
+            if (PisTemplate > 0)
+                Console.WriteLine("\r\nPisTemplate para teste: " + PisTemplate);
+        }
+
+        [TestMethod, TestCategory("RepCid")]
+        public void Usuario_List_671()
+        {
+            string created_nome;
+            long created_matricula;
+            int created_codigo;
+            string created_senha;
+            string created_barras;
+            uint created_rfid;
+            int created_privilegios;
+            bool created_gravou;
+            string template_iDX = "SUNSUzIxAAAJwgMBAAAAAMUAxQDvADoBAAAAg0gUtgAWAJQPrwAhAJEPlABSAIwP0wBWABwPlQBcABcP4QB0AJ0PggCUAHsP5ACWABkOtgClACkPkgDDAJMPggDMAGcOQgDrAGAPqgD6AKYPeAD+AO0OogAIAZ8PbAAQAfcOmgATAYgPnwAfAYUMNAAnAekPugAoAYwORAdDCx97yP9HBht3MHfL/vtzloDjB+uTJI+7n2f/koAihUN3O+kTVkcWJn3f8B//v5hPEOeyWS3TbKMZBdVjfdvuP2ovdmt7MQgyICYi7fqqZp5TPRi5+CkeYQ6PcJd1KAfR6NLkrP/B6gn7i/dji4P/gQuOBpru19wMIDgBAk8eKgMAswYXwQYAbw2DwVwDAIgVDP4DAM4iGsAJAB4i8P/+U/3/CQCMIA9YQ8EFALMkEDgFACIq+l0NAFwgAC9LVmwTABo78MA+Nv1KRlQSAA9N6cD9wTVBRP9UDACQTYzAkHfAgwwAkFOJwMGQfowJAJhTEEDAWQ0AkFuMwcLAlMLAwnEIAJhbEP7AN8EUAA1c4jU4/sD+N/9EZAkAl2AXVFX/DAB+kYanwcB7wP4MAIaWFjFTwmsNAH6XgMPEwH7AwEMHALinKcDAaxgAB6nQwCrB/cL+/f///v3AwP//wMDAwP8IAI/AnMTGxcFcGQADwtBF/UD/wfz///3+wP/+wf/B/sL/CwB+yHfGwsD//1P+GQAJys9GQP/AKv7+///+W8DARwUAhs0W/UIGAH7Pa8TBOwQAhtYaKxoAB9facP7/Pv7+/v/9/v//wMD+wf/BRAsAftdiw/////3D/08IAH/fWk9TGQAS4NxzwP87/v78/v/+/sBYfv8IAIriJHHAXQkAguNT///+/8A9BACI4zTEwRsABevWwMDAwEY1/S79wP7+wGt0BQA97WDASwUAQ+9c/0oDAIP9CfwFAK39HsJZFxARA+DAwMHAZP7//P76/i/AwMJkCRBuC+f6+1rAwAQQpgsXZBcQEAziZX7A//79/Pv8/8DAwMDCdgQQcBDwGwYQaBJpwT4VENsUk0A/lsfGwcH/U0IGEJsfiZbABBBbJ23/wQgQYB/tLEcHEJMkg5DBwgMQliUA/QgQYTT0Pf5SBBB5NP09ABAAgyAT2AApABYPlgAsAIgPmQA4ABUPhABtAHcPvgB+ACgPigCXABkOmwCeAJYOmgClAJQOiQCuAGcOiwDPAD0ORwDVAFsPsADgAKYPggDnAAYPpwDxAJsPVQD3ANwPcwD3AO0PoQD4AIcPpwAGAYQPxQAPAYsP4wPrk7vzMHf7d0cTII+/omMDRmM74ttmu5S7lccTeYWFham2MAZ9fU0ysAJZLYl9BdXdUv3SkTsC2FaaVoFDcjNXLQ0xIyYm2RpJy5KBRBa59SUZpvBWgZvYceoWEJdo2O4pBNHjrfy96Qr4ggiW844Hd5UEIDUBAjMeeAUAuQAMQAcAigMPV0oGAGcHfYHCBgCrBQz+WAsAewgJ/8D//0xKDQCSKJDDfHdpwgwAki6GbMHBaXUJAJouDDVKwBMADTTkOP/AMv7//ldTCACdNhNM/8DADgCVN4nAwpB+wXgJAJw8F8BE/8H+FAAMQuD/Nv/+QcD9aETCDQB/boCed8DAQBMAu3qgwMGJxcDCwm97cwYAwoAiQsAHAL2CKcDAXBgA7I+ne2rCbpLCwMHAwv/EXgcAhZaAx8HCXA8AnJmew8WnwVvA/1UYAOmWosDAZITAw8PAwsT/wMGAcwkAn6InWMGEGQDsqal7c3zCwpJ3wItbDACFqnfGw0TAwEMKAI2vFv0+xHQLAIaxbcXBRFfACQCGwlrC/v9EwQkAiMlQL/5TGgAYzNpwQcD///v//P/+//3BwP/AwcFbHAAL19drU/84/Sr+Mf7Bwf/AwVYFAEPXXFQFAEjZVv5TCwCt3afAwcTKxcE2GgAS5+LBc23///39wfn9//7A/8DAwcJlBQCG6An+TgMAtv0WwRkA6e2X/sD/PsJuxcTDw8DD/1v/WQQAnfePqxYA6PqTQT6Ww8fEw///wF7BBgBr/mTBNgYQpAaJwsKUCBDfBJZTwP7+CQCOyiuHg/8JEMELkHGbwgcQwRGJwcCCBhBtFnDCVQQQXRVrXAgQ0x2PwmqMBRBzHHBzDBDYJon/hHVdBhCzK4OA/woQzyyG/sHDwMJpBRDJM4PCUQAAIACDLBS5AB4AkQ83ACIA9w+zACoAjg/YAFkAFA+PAJ4AeA8lAKYAVg/CAKoAJg+nAMIAkg6jAM0AkQ6TANkAYw6QAOUAHQ4mAPgA2g9WAPoAXQ+9AAEBpA+0ABQBnA+pABoBhA5jABsB2w99ABwB7A2wACYBgQ7PAC0BiQ9EBx9/b5+Pa4tr06PE/xt/QxsTixuHu/My6zvpE1Vrf1f7K+O+lbuU57E8A04w0m28A1UxTnRoSwXV/tAsv0KMPo+rfL8DZ4dWhaeEQ3ExCTogKiZQGy0dufno6ykE2uCp81aBp1sVE5ZrM5Gp/MnlCviCCJbtjgcXOAogMgECMx8hBABHAnd3BwBvAgP//sBGBQC2AxPBVwYAqwwMUf8MACkY7f48wEZUCgA6HvAzR0EEAL0gD0YKADsl/W39wP9MBQC3LAzAPxAALDbtMsEowT5aEgAYTuvAPjg3/kyEDwCcYIyIwMPAasHBwcAHAKBiE1RZFAAJZuJAVEE+RP9aEwARaedEOMD+//5U/1gUAA564EDAN/3/wPxdQv8VAO6LmmLAe4jCwMLB/8F4DACLmoOjeFf/FQDpnJzAZ8B6jMLB/8FwwQsAk58T/v7/VcNxDQCLoXrDw8CDQVkEACKpWnYGAMSsJ2v/FgDur6LBwMDBwMHBgsHBxFHCTRcA6bSewMBii8PCwcPBwMHAwsHAew8ApcCaw8XEw8DD/0ZGFwDlu6DAZISNkMHBaWQYAOvPosBiwMHCwMObwcF8a8D+CgCN2WfF/8D/wS8JAJbmHv//xP/CcxkA6+qg/1VuiMTBw8HCdMFKwAQAkPEtlxcAJvPXWUE8If7//cDBWsIRAFn22sI7/Pz7/j/BwnwHAI73UzVUBgBS+1z/wEMQALz9p8CIycVtVDsGAFf+V/7/RgsQuQKiwP/FysXA/8D+BBDBBRp2FxDrBpb//zZyxMWfeP8+/gcQmQwQ/sLBZRUQ7RWTwMD8RcPBw8fEwsD/wf/+PQMQpBiJxQQQeSBkTxEQ4SSQwDj+wMXPwP7////B/wYQrCaDwsHD/QgQzSiJWZsHEMsuhniPBhCRNfr/QkRCAQEAAAAWAAAAAAIFAAAAAAAARUIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==";
+            string template_iDClass = RepCid.TemplateToiDClass(Convert.FromBase64String(template_iDX));
+            string[] created_template = new string[] { template_iDClass };
+
+            long created_cpf = Config.pisTEST + 413;
+            if (!(rep.iDClass_GravarUsuario671(created_cpf, created_nome = "Auto-Test: Incluido", created_matricula = 4421, created_codigo = 456789, created_senha = "423456", created_barras = "456789", created_rfid = 457845, created_privilegios = 1, created_template, out created_gravou) && created_gravou))
+            {
+                Console.WriteLine(rep.LastLog());
+                Assert.Fail("Erro ao Incluir");
+            }
+
+            int qtd;
+            if (!rep.CarregarUsuarios671(true, out qtd))
+                Assert.Fail("Erro ao carregar usuários");
+
+            Console.WriteLine("Usuários: " + qtd);
+
+            Int64 cpf;
+            string nome;
+            int codigo;
+            string senha;
+            string barras;
+            uint rfid;
+            int privilegios;
+            int ndig;
+            int nCount = 0;
+            int nDelete = 0;
+            PisTemplate = 0;
+            while (rep.LerUsuario671(out cpf, out nome, out codigo, out senha, out barras, out rfid, out privilegios, out ndig))
+            {
+                nCount++;
+                Console.WriteLine(string.Format("{0:D4}: {1} {2:D12}-{3} \t {4} \t {5}{6}{7}",
+                    nCount, privilegios == 1 ? "A" : "U", cpf, nome,
+                    codigo == 0 && senha == "" ? "" : (codigo + "/" + senha),
+                    barras == "" ? "" : (" CB:" + barras),
+                    rfid == 0 ? "" : (" RF:" + rfid),
+                    ndig == 0 ? "" : (" BIO:" + ndig)));
+                if (cpf == created_cpf)
+                {
+                    if (nome != created_nome || codigo != created_codigo || senha != created_senha || barras != created_barras || rfid != created_rfid || privilegios != created_privilegios || ndig != 1)
+                    {
+                        Console.WriteLine(string.Format("{0:D4}: {1} {2:D12}-{3} \t {4} \t {5}{6}{7}",
+                            nCount, created_privilegios == 1 ? "A" : "U", cpf, nome,
+                            created_codigo == 0 && created_senha == "" ? "" : (created_codigo + "/" + created_senha),
+                            barras == "" ? "" : (" CB:" + created_barras),
+                            created_rfid == 0 ? "" : (" RF:" + created_rfid),
+                            1 == 0 ? "" : (" BIO:" + 1)));
+                        Assert.Fail("Leitura do usuário criado feita incorretamente");
+                    }
+                }
+
+                //bool r;
+                //if(rep.RemoverUsuario(pis, out r) && r)
+                //    nDelete++;
+            }
+
+            bool removeu;
+            if (!rep.RemoverUsuario(created_cpf, out removeu) && removeu)
+            {
+                Assert.Fail("Falha ao deletar o usuário criado");
+            }
+
+            if (nDelete > 0)
                 Console.WriteLine("\r\nUsuários Removidos: " + nDelete);
 
             if (PisTemplate > 0)
@@ -142,7 +263,7 @@ namespace RepTestAPI
             int codigo1, codigo2;
             string senha1, senha2;
             string barras1, barras2;
-            int rfid1, rfid2;
+            uint rfid1, rfid2;
             int privilegios1, privilegios2;
 
             // Inclusão
@@ -214,14 +335,14 @@ namespace RepTestAPI
         {
             bool gravou;
 
-            Int64 pis = Config.pisTEST / 29;
+            Int64 pis = Config.pisTEST + 15;
 
             string nome1, nome2;
             long matricula1, matricula2;
             int codigo1, codigo2;
             string senha1, senha2;
             string barras1, barras2;
-            long rfid1, rfid2;
+            uint rfid1, rfid2;
             int privilegios1, privilegios2;
             string[] template = null;
             // Inclusão
@@ -318,7 +439,7 @@ namespace RepTestAPI
             int codigo;
             string senha;
             string barras;
-            int rfid;
+            uint rfid;
             int privilegios;
             int ndig;
             int nCount = 0;
