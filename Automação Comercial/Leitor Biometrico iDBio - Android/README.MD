@@ -7,9 +7,8 @@ algumas dependência ao projeto.
 
 
 #### 1. Biblioteca Bio
-O primeiro passo é fazer download do arquivo `idbio-release-xxx.aar`
-ao finalizar o download mova o arquivo para dentro do seu projeto Android, na maioria dos
-casos basta adicionar o arquivo na pasta `pasta_projeto/app/libs/`.
+O primeiro passo é fazer download do arquivo `idbio-release-xxx.aar`. Para isso, baixe nossa SDK disponível no [link](https://www.controlid.com.br/idbio/IDBIO_SDK.zip). Recomenda-se usar a versão mais recente, o `idbio-release.aar`. Ao finalizar o download mova o arquivo para dentro do seu projeto Android. Na maioria dos
+casos basta criar a pasta `pasta_projeto/app/libs/` e adicionar o arquivo neste diretório.
 
 
 #### 2. Dependências
