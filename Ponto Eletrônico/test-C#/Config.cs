@@ -102,7 +102,7 @@ namespace RepTestAPI
         public void Config_SetHorarioVerao()
         {
             bool gravou;
-            if (rep.GravarConfigHVerao(2017, 6, 5, 2018, 7, 6, out gravou) && gravou)
+            if (rep.GravarConfigHVerao(2030, 6, 5, 2030, 7, 6, out gravou) && gravou)
                 Console.WriteLine("Horário de Verão gravado");
             else
             {
@@ -144,18 +144,48 @@ namespace RepTestAPI
         [TestMethod, TestCategory("RepCid")]
         public void Trocar_Senha()
         {
-            if (rep.iDClass_WebSenha("password") == true)
-                Console.WriteLine("Alterado");
-            else
-                Console.WriteLine("N Alterado");
+            ConectarREP();
+            string new_password = "password";
+            if (!(rep.iDClass_WebSenha(new_password) == true))
+                Assert.Fail("Erro ao alterar senha");
+
+            rep.iDClassLogin = Config.repLogin;
+            rep.iDClassPassword = new_password;
+
+            var status = rep.Conectar(Config.repIP, Config.repPort);
+            if(status != RepCid.ErrosRep.OK)
+            {
+                Assert.Fail("Senha não foi alterada");
+            }
+
+            if (!(rep.iDClass_WebSenha(Config.repSenha) == true))
+                Assert.Fail("Erro ao retornar para senha padrão");
+
+            ConectarREP();
         }
 
 
         [TestMethod, TestCategory("RepCid")]
         public void Trocar_Usuario()
         {
-            if (rep.iDClass_WebUsuario("user"))
-                Console.WriteLine("Alterado");
+            ConectarREP();
+
+            string new_user = "user";
+            if (!(rep.iDClass_WebUsuario(new_user) == true))
+                Assert.Fail("Erro ao alterar usuário");
+
+            rep.iDClassLogin = new_user;
+            rep.iDClassPassword = Config.repSenha;
+
+            var status = rep.Conectar(Config.repIP, Config.repPort);
+            if (status != RepCid.ErrosRep.OK)
+            {
+                Assert.Fail("Usuário não foi alterada");
+            }
+
+            if (!(rep.iDClass_WebUsuario(Config.repLogin) == true))
+                Assert.Fail("Erro ao retornar para usuário padrão");
+
         }
 
         [TestMethod, TestCategory("RepCid")]

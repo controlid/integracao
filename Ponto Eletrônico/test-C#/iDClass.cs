@@ -34,15 +34,30 @@ namespace RepTestAPI
         [TestMethod, TestCategory("Rep iDClass")]
         public void Usuario_ChangePIS()
         {
-            UserUpdateRequest uur = new UserUpdateRequest();
+            UserAddRequest user_add_req = new UserAddRequest();
 
-            uur.Usuario[0].PIS = 108;
-            uur.Usuario[0].PIS2 = 223344;
-            uur.Usuario[0].Nome = "Teste Change PIS (com template)";
+            user_add_req.Usuario[0].PIS = 108;
+            user_add_req.Usuario[0].Nome = "Teste update PIS";
+            StatusResult user_add_status = RestJSON.SendJson<StatusResult>(Config.repIP, user_add_req, session);
+            if (!user_add_status.isOK)
+                Assert.Inconclusive(user_add_status.Status);
 
-            StatusResult st = RestJSON.SendJson<StatusResult>(Config.repIP, uur, session);
-            if (!st.isOK)
-                Assert.Inconclusive(st.Status);
+            UserUpdateRequest update_user_req = new UserUpdateRequest();
+
+            update_user_req.Usuario[0].PIS = 108;
+            update_user_req.Usuario[0].PIS2 = 223344;
+
+            StatusResult user_update_status = RestJSON.SendJson<StatusResult>(Config.repIP, update_user_req, session);
+            if (!user_update_status.isOK)
+                Assert.Inconclusive(user_update_status.Status);
+
+            UserDeleteRequest user_delete_req = new UserDeleteRequest(223344);
+
+            StatusResult user_delete_status = RestJSON.SendJson<StatusResult>(Config.repIP, user_delete_req, session);
+            if (!user_delete_status.isOK)
+                Assert.Inconclusive(user_delete_status.Status);
+
+
 
         }
 

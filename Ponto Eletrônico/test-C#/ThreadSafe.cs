@@ -54,7 +54,7 @@ namespace RepTestAPI
             int codigo;
             string senha;
             string barras;
-            int rfid;
+            uint rfid;
             int privilegios;
             int ndig;
             while (rep.LerUsuario(out pis, out nome, out codigo, out senha, out barras, out rfid, out privilegios, out ndig))
