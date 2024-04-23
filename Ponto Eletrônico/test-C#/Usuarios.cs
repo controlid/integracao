@@ -22,6 +22,10 @@ namespace RepTestAPI
         [TestMethod, TestCategory("RepCid")]
         public void Usuario_List()
         {
+            if (rep.IsFacial.HasValue && rep.IsFacial.Value)
+            {
+                Assert.Inconclusive("Teste apenas para REP iDClass Biométrico");
+            }
             string created_nome;
             long created_matricula;
             int created_codigo;
@@ -106,6 +110,10 @@ namespace RepTestAPI
         [TestMethod, TestCategory("RepCid")]
         public void Usuario_List_671()
         {
+            if (rep.IsFacial.HasValue && rep.IsFacial.Value)
+            {
+                Assert.Inconclusive("Teste apenas para REP iDClass Biométrico");
+            }
             string created_nome;
             long created_matricula;
             int created_codigo;

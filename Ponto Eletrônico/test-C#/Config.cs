@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Controlid;
+using System.Threading;
 
 namespace RepTestAPI
 {
@@ -10,7 +11,7 @@ namespace RepTestAPI
         static RepCid rep;
 
         //public static readonly string repIP = "192.168.2.186"; // iDX
-        public static readonly string repIP = "192.168.0.19"; // iDClass
+        public static readonly string repIP = "192.168.0.145"; // iDClass
         //public static readonly int repPort = 1818; // iDX
         public static readonly int repPort = 443; // iDClass
         public static readonly string repLogin = "admin"; // user
@@ -139,6 +140,66 @@ namespace RepTestAPI
             }
             else
                 Assert.Fail("Erro ao ler configurações de rede");
+        }
+
+        [TestMethod, TestCategory("RepCid")]
+        public void Config_NetworkV2()
+        {
+            string fw_version;
+            if(!rep.LerInfo_v2(out _, out _, out _, out _, out _, out _, out _, out _, out fw_version, out _))
+            {
+                Assert.Fail("Erro ao tentar ler informações do REP");
+            }
+
+            if (fw_version != "102")
+            {
+                Console.Write(String.Format("versão de firmware é {0}", fw_version));
+                Assert.Inconclusive("Versão de firmware não implementa ConfigRedeV2");
+                return;
+            }
+
+            string ip, netmask, gateway;
+            int porta;
+            bool? usar_dhcp;
+
+            if(!rep.LerConfigRedeV2(out ip, out netmask, out gateway, out porta, out usar_dhcp))
+            {
+                Assert.Fail("Falha ao ler configurações de rede");
+            }
+
+            if(usar_dhcp == null)
+            {
+                Assert.Fail("");
+            }
+
+            string new_netmask = "255.255.128.000";
+            if (!rep.GravarConfigRedeV2(ip, new_netmask, gateway, porta, usar_dhcp ?? false))
+            {
+                Assert.Fail("Falha ao gravar configurações de rede");
+            }
+
+            Thread.Sleep(1000);
+            rep.Conectar(repIP, repPort, repiDXSenha);
+
+            string netmask_after_change;
+            if(!rep.LerConfigRedeV2(out _, out netmask_after_change, out _, out _, out _))
+            {
+                Assert.Fail("Falha ao ler configurações após alterar");
+            }
+
+            if (netmask_after_change.Split('.')[2] != new_netmask.Split('.')[2])
+            {
+                Console.WriteLine(String.Format("New netmask {0} and netmask now {1}", new_netmask, netmask_after_change));
+                Assert.Fail("Gravar config rede V2 não conseguiu alterar as configurações");
+            }
+
+            if(!rep.GravarConfigRedeV2(ip, netmask, gateway, porta, usar_dhcp ?? false))
+            {
+                Assert.Fail("Falha ao retornar as configurações de rede ao modo anterior");
+            }
+
+            Thread.Sleep(1000);
+            rep.Conectar(repIP, repPort, repiDXSenha);
         }
 
         [TestMethod, TestCategory("RepCid")]
