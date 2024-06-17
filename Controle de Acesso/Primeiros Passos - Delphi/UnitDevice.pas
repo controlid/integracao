@@ -49,6 +49,9 @@ type
       function ListCards(ID: Integer): TJSONValue;
       function DeleteCards(ID: Integer): TJSONValue;
 
+      //FACE
+      function SendPhoto(ID: Integer; base64: String): TJSONValue;
+
       //TEMPLATE
       function ListTemplates(ID: Integer): TJSONValue;
       function DeleteTemplates(ID: Integer): TJSONValue;
@@ -163,6 +166,47 @@ begin
   Body := TStringStream.Create(JSON.ToString, TEncoding.UTF8);
 
   ResponseBody := HTTP.MakeRequest(URL, '/remote_enroll.fcgi', Headers, Params, Body);
+
+  Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(ResponseBody), 0, true);
+end;
+
+function TDeviceAccessControl.SendPhoto(ID: Integer; base64: String): TJSONValue;
+var
+  Params: TStringList;
+  Headers: TStringList;
+  JSON: TJSONObject;
+  UserJSON: TJSONObject;
+  ValuesJSONArray: TJSONArray;
+  Body: TStringStream;
+  ResponseBody: String;
+
+begin
+  Params := TStringList.Create;
+  AddSession(Params);
+
+  Headers := TStringList.Create;
+  AddContentTypeApplicationJSON(Headers);
+
+  UserJSON := TJSONObject.Create;
+  UserJSON.AddPair(TJSONPair.Create('timestamp', 1691588470));
+  UserJSON.AddPair(TJSONPair.Create('image', base64));
+
+
+  if ID > 0 then
+  begin
+    UserJSON.AddPair(TJSONPair.Create('user_id', TJSONNumber.Create(ID)));
+  end;
+
+  ValuesJSONArray := TJSONArray.Create;
+  ValuesJSONArray.AddElement(UserJSON);
+
+  JSON := TJSONObject.Create;
+  JSON.AddPair(TJSONPair.Create('match', true));
+  JSON.AddPair(TJSONPair.Create('user_images', ValuesJSONArray));
+
+  Body := TStringStream.Create(JSON.ToString, TEncoding.UTF8);
+
+  ResponseBody := HTTP.MakeRequest(URL, '/user_set_image_list.fcgi', Headers, Params, Body);
 
   Result := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(ResponseBody), 0, true);
 end;
