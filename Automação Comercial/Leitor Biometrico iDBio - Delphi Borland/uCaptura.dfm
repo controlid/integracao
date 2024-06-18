@@ -12,7 +12,6 @@ object Form1: TForm1
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   Position = poScreenCenter
   PixelsPerInch = 96
   TextHeight = 13
@@ -67,6 +66,15 @@ object Form1: TForm1
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
+  end
+  object Image1: TImage
+    Left = 466
+    Top = 208
+    Width = 135
+    Height = 132
+    Center = True
+    Proportional = True
+    Stretch = True
   end
   object mmoDedo: TMemo
     Left = 8
@@ -142,5 +150,14 @@ object Form1: TForm1
     Caption = 'Coletar informa'#231#245'es do Leitor'
     TabOrder = 6
     OnClick = btn1Click
+  end
+  object btn_CaptureImage: TButton
+    Left = 466
+    Top = 177
+    Width = 128
+    Height = 25
+    Caption = 'Capturar Imagem'
+    TabOrder = 7
+    OnClick = btn_CaptureImageClick
   end
 end
