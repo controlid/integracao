@@ -21,10 +21,13 @@ type
     pnl1: TPanel;
     lblLeitor: TLabel;
     btn1: TButton;
+    btn_CaptureImage: TButton;
+    Image1: TImage;
     procedure btn3Click(Sender: TObject);
     procedure btn4Click(Sender: TObject);
     procedure btn5Click(Sender: TObject);
     procedure btn1Click(Sender: TObject);
+    procedure btn_CaptureImageClick(Sender: TObject);
   private
     { Private declarations }
     sDedo: String;
@@ -76,6 +79,29 @@ begin
 
   btn3.Enabled := True;
   btn1.Enabled := True;
+
+end;
+
+procedure TForm1.btn_CaptureImageClick(Sender: TObject);
+var
+  Bitmap: TBitmap;
+  imageBytes: ByteArray;
+  width, height: Integer;
+  success: Boolean;
+begin
+// Button "Capturar Imagem"
+  mmoDedo.Lines.Clear;
+
+  lbl1.Caption := 'Coloque o dedo no leitor';
+  lbl1.Refresh;
+
+  success := RetornarImagem(imageBytes, width, height);
+  //ShowMessage(Format('Width: %d, Height: %d', [width, height]));
+
+  if success then
+    Bitmap := ImageBufferToBitmap(imageBytes, width, height);
+    Image1.Picture.Bitmap.Assign(Bitmap);
+    mmoDedo.Lines.Add('');
 
 end;
 
