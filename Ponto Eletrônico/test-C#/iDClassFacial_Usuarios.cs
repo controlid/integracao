@@ -323,5 +323,53 @@ namespace RepTestAPI
                 Assert.Fail("Falha ao deletar o usuário pós teste");
             }
         }
+
+        [TestMethod, TestCategory("Rep iDClass Facial")]
+        public void Camera_LerFaceUsuario()
+        {
+            if (rep.IsFacial == null || rep.IsFacial == false)
+            {
+                Assert.Inconclusive("Rep não facial");
+            }
+
+            long cpf = 72381738;
+            string nome = "Teste cadastrar com imagem";
+            int codigo = 123213;
+            string senha = "123";
+            long matricula = 32134;
+            uint rfid = 4123213;
+            int privilegios = 0;
+            string image_b64 = correct_image_b64;
+            UInt32 image_timestamp = (UInt32)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            string face_error;
+            bool gravou_usuario, gravou_face;
+
+            bool success = rep.iDClassFacial_GravarUsuario(cpf, nome, codigo, senha, matricula, rfid, privilegios, image_b64, image_timestamp, out face_error, out gravou_usuario, out gravou_face);
+
+            if (!success || !gravou_face || !gravou_usuario)
+            {
+                Assert.Fail("Falha ao cadastrar usuário com imagem");
+            }
+
+            string read_image_b64;
+            bool? possui_face;
+            if (!rep.iDClassFacial_ResgatarImagemB64(cpf, out read_image_b64, out possui_face))
+            {
+                Assert.Fail("Falha ao carregar usuários após cadastrar com imagem");
+            }
+
+            Assert.IsNotNull(possui_face);
+            Assert.IsTrue(possui_face.Value);
+            if(!String.Equals(read_image_b64.Substring(100, 100), image_b64.Substring(100, 100)))
+            {
+                Assert.Fail("Falha ao recuperar imagem de usuário");
+            }
+
+            bool removeu;
+            if (!rep.RemoverUsuario671(cpf, out removeu) && removeu)
+            {
+                Assert.Fail("Falha ao deletar o usuário pós teste");
+            }
+        }
     }
 }
