@@ -54,6 +54,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Connect.cs" />
+    <Compile Include="iDClass Facial.cs" />
     <Compile Include="iDClass_Copy.cs" />
     <Compile Include="iDClass.cs" />
     <Compile Include="ThreadSafe.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Futronic.cs" />
     <Compile Include="Templates.cs" />
     <Compile Include="Empregador.cs" />
+    <Compile Include="iDClassFacial_Usuarios.cs" />
     <Compile Include="Usuarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
