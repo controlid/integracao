@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Random;
+
 import br.com.controlid.satid.SATiD;
 import br.com.controlid.satid.communication.ISATiDListeners;
 import br.com.controlid.satid.enums.EnumOptionCode;
@@ -146,51 +148,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             handler.post(new Runnable() {
                 @Override
                 public void run() {
+                    int session = new Random().nextInt(1001);
 
                     if (view.equals(btnActivate))
-                        showAlert(SATiD.getInstance().AtivarSAT(1, EnumSubCommand.CERT_AC_SAT, activateCode, cnpjCont, EnumStateCode.SAO_PAULO));
+                        showAlert(SATiD.getInstance().AtivarSAT(session, EnumSubCommand.CERT_AC_SAT, activateCode, cnpjCont, EnumStateCode.SAO_PAULO));
 
                     else if (view.equals(btnIcpCertificate))
-                        showAlert(SATiD.getInstance().ComunicarCertificadoICPBRASIL(2, activateCode, "ASDASD"));
+                        showAlert(SATiD.getInstance().ComunicarCertificadoICPBRASIL(session, activateCode, "ASDASD"));
 
                     else if (view.equals(btnConsultSat))
-                        showAlert(SATiD.getInstance().ConsultarSAT(3));
+                        showAlert(SATiD.getInstance().ConsultarSAT(session));
 
                     else if (view.equals(btnSendSalesData))
                         showAlert(SATiD.getInstance().EnviarDadosVenda(4, activateCode, ""));
 
                     else if (view.equals(btnCancelLastSale))
-                        showAlert(SATiD.getInstance().CancelarUltimaVenda(5, activateCode, "", ""));
+                        showAlert(SATiD.getInstance().CancelarUltimaVenda(session, activateCode, "", ""));
 
                     else if (view.equals(btnTestEndOfEnd))
-                        showAlert(SATiD.getInstance().TesteFimAFim(6, activateCode, ""));
+                        showAlert(SATiD.getInstance().TesteFimAFim(session, activateCode, ""));
 
                     else if (view.equals(btnConsultOperationalStatus))
-                        showAlert(SATiD.getInstance().ConsultarStatusOperacional(7, activateCode));
+                        showAlert(SATiD.getInstance().ConsultarStatusOperacional(session, activateCode));
 
                     else if (view.equals(btnConsultSessionId))
-                        showAlert(SATiD.getInstance().ConsultarNumeroSessao(8, activateCode, 3));
+                        showAlert(SATiD.getInstance().ConsultarNumeroSessao(session, activateCode, 3));
 
                     else if (view.equals(btnAssociateSignature))
-                        showAlert(SATiD.getInstance().AssociarAssinatura(9, activateCode, cnpjSH + cnpjCont, signatureAC));
+                        showAlert(SATiD.getInstance().AssociarAssinatura(session, activateCode, cnpjSH + cnpjCont, signatureAC));
 
                     else if (view.equals(btnNetworkInterface))
-                        showAlert(SATiD.getInstance().ConfigurarInterfaceDeRede(10, activateCode, ""));
+                        showAlert(SATiD.getInstance().ConfigurarInterfaceDeRede(session, activateCode, ""));
 
                     else if (view.equals(btnUpdateSoftware))
-                        showAlert(SATiD.getInstance().AtualizarSoftwareSAT(11, activateCode));
+                        showAlert(SATiD.getInstance().AtualizarSoftwareSAT(session, activateCode));
 
                     else if (view.equals(btnLogs))
-                        showAlert(SATiD.getInstance().ExtrairLogs(12, activateCode));
+                        showAlert(SATiD.getInstance().ExtrairLogs(session, activateCode));
 
                     else if (view.equals(btnBlock))
-                        showAlert(SATiD.getInstance().BloquearSAT(13, activateCode));
+                        showAlert(SATiD.getInstance().BloquearSAT(session, activateCode));
 
                     else if (view.equals(btnUnlock))
-                        showAlert(SATiD.getInstance().DesbloquearSAT(14, activateCode));
+                        showAlert(SATiD.getInstance().DesbloquearSAT(session, activateCode));
 
                     else if (view.equals(btnChangeActivateCode))
-                        showAlert(SATiD.getInstance().TrocarCodigoDeAtivacao(15, activateCode, EnumOptionCode.ACTIVATION_CODE, "senha123", "senha123"));
+                        showAlert(SATiD.getInstance().TrocarCodigoDeAtivacao(session, activateCode, EnumOptionCode.ACTIVATION_CODE, "senha123", "senha123"));
                 }
             });
         }
