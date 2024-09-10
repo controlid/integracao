@@ -1,13 +1,11 @@
 unit UnitAccessControl;
-
 interface
-
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Mask,
   Vcl.DBCtrls, System.Actions, Vcl.ActnList, Vcl.ToolWin, Vcl.ComCtrls,
-  Vcl.Menus, Vcl.ActnMan, Vcl.ActnCtrls, Vcl.CheckLst, Vcl.Grids, UnitDevice, System.JSON;
-
+  Vcl.Menus, Vcl.ActnMan, Vcl.ActnCtrls, Vcl.CheckLst, Vcl.Grids, UnitDevice, System.JSON,
+  Vcl.ExtDlgs, jpeg, System.NetEncoding;
 type
   TFormControleAcesso = class(TForm)
     PageControlControleAcesso: TPageControl;
@@ -79,6 +77,14 @@ type
     RadioGroupSyncronizationProtocol: TRadioGroup;
     EditSyncronizationPort: TEdit;
     ButtonCleanMemoResponse: TButton;
+    ButtonSendPhoto: TButton;
+    GroupBoxPhoto: TGroupBox;
+    lbl_idUserPhoto: TLabel;
+    idPhoto: TEdit;
+    ButtonSelectPhoto: TButton;
+    OpenPictureDialog1: TOpenPictureDialog;
+    Image1: TImage;
+    Aviso: TLabel;
     procedure ButtonDeviceLoginClick(Sender: TObject);
     procedure ButtonCreateUserClick(Sender: TObject);
     procedure ButtonListUserClick(Sender: TObject);
@@ -98,20 +104,18 @@ type
     procedure ButtonSyncUsersClick(Sender: TObject);
     procedure AddMessageInResponse(Text: String); overload;
     procedure ButtonCleanMemoResponseClick(Sender: TObject);
+    procedure ButtonSendPhotoClick(Sender: TObject);
+    procedure ButtonSelectPhotoClick(Sender: TObject);
   private
     { Private declarations }
   public
     procedure AddMessageInResponse(ResponseBody: TJSONValue); overload;
   end;
-
 var
   FormControleAcesso: TFormControleAcesso;
   DeviceAccessControl: TDeviceAccessControl;
-
 implementation
-
 {$R *.dfm}
-
 procedure TFormControleAcesso.ButtonTemplateRegisterClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
@@ -121,7 +125,6 @@ begin
     ShowMessage('Preencha o campo Usuário ID');
     exit;
   end;
-
   if CheckBoxPanicFinger.Checked then
   begin
     ResponseBody := DeviceAccessControl.RegisterTemplate(StrToInt(EditTemplateUserID.Text), 1);
@@ -130,10 +133,8 @@ begin
   begin
     ResponseBody := DeviceAccessControl.RegisterTemplate(StrToInt(EditTemplateUserID.Text), 0);
   end;
-
   AddMessageInResponse(ResponseBody);
 end;
-
 procedure TFormControleAcesso.ButtonRegisterCardClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
@@ -143,12 +144,9 @@ begin
     ShowMessage('Preencha o campo Usuário ID');
     exit;
   end;
-
   ResponseBody := DeviceAccessControl.RegisterCard(StrToInt(EditCardUserID.Text), 'Encoste o cartão');
-
   AddMessageInResponse(ResponseBody);
 end;
-
 procedure TFormControleAcesso.ButtonSyncUsersClick(Sender: TObject);
 var
   DeviceSyncronization: TDeviceAccessControl;
@@ -161,46 +159,33 @@ begin
     ShowMessage('Primeiro faça login em um dispositivo');
     exit;
   end;
-
   if EditSyncronizationPort.Text = '' then
   begin
     EditSyncronizationPort.Text := '80';
   end;
-
   if RadioGroupSyncronizationProtocol.ItemIndex = 0 then
   begin
     DeviceSyncronization := TDeviceAccessControl.Create('http', EditSyncronizationHostname.Text, StrToInt(EditSyncronizationPort.Text));
   end;
-
   if RadioGroupSyncronizationProtocol.ItemIndex = 1 then
   begin
     DeviceSyncronization := TDeviceAccessControl.Create('https', EditSyncronizationHostname.Text, StrToInt(EditSyncronizationPort.Text));
   end;
-
   ResponseBody := DeviceSyncronization.Login(EditSyncronizationLogin.Text, EditSyncronizationPassword.Text);
-
   AddMessageInResponse(ResponseBody);
-
   ResponseBody := DeviceAccessControl.ListUsers(0);
-
   AddMessageInResponse(ResponseBody);
-
   ValuesJSON := ResponseBody.GetValue<TJSONArray>('users');
-
   JSON := TJSONObject.Create;
   JSON.AddPair(TJSONPair.Create('object', 'users'));
   JSON.AddPair(TJSONPair.Create('values', ValuesJSON));
-
   ResponseBody := DeviceSyncronization.CreateUsers(JSON);
-
   AddMessageInResponse(ResponseBody);
 end;
-
 procedure TFormControleAcesso.AddMessageInResponse(ResponseBody: TJSONValue);
 begin
   AddMessageInResponse(TStringStream.Create(ResponseBody.ToString, TEncoding.UTF8, true).DataString);
 end;
-
 procedure TFormControleAcesso.AddMessageInResponse(Text: String);
 begin
   if Text.Length > 140 then
@@ -208,15 +193,12 @@ begin
     delete(Text, 130, Text.Length);
     Text := Text + '...';
   end;
-
   MemoResponse.Text := Text + #13#10 + MemoResponse.Text;
 end;
-
 procedure TFormControleAcesso.ButtonCleanMemoResponseClick(Sender: TObject);
 begin
   MemoResponse.Clear;
 end;
-
 procedure TFormControleAcesso.ButtonCreateGroupClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
@@ -229,10 +211,8 @@ begin
   begin
     ResponseBody := DeviceAccessControl.CreateGroup(0, EditGroupName.Text);
   end;
-
   AddMessageInResponse(ResponseBody);
 end;
-
 procedure TFormControleAcesso.ButtonCreateUserClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
@@ -245,10 +225,8 @@ begin
   begin
     ResponseBody := DeviceAccessControl.CreateUser(0, EditUsername.Text);
   end;
-
   AddMessageInResponse(ResponseBody);
 end;
-
 procedure TFormControleAcesso.ButtonCreateUserGroupClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
@@ -258,12 +236,9 @@ begin
     ShowMessage('Preencha os campos Grupo ID e Usuário ID');
     exit
   end;
-
   ResponseBody := DeviceAccessControl.CreateUserGroup(StrToInt(EditUserGroupGroupID.Text), StrToInt(EditUserGroupUserID.Text));
-
   AddMessageInResponse(ResponseBody);
 end;
-
 procedure TFormControleAcesso.ButtonDeleteTemplateClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
@@ -277,7 +252,6 @@ begin
   begin
     ButtonSelected := MessageDlg('Essa ação irá apagar a biometria com ID: ' + IntToStr(StrToInt(EditTemplateID.Text)) + #13#10#13#10'Deseja continuar?', mtWarning, mbOKCancel, 0);
   end;
-
   if ButtonSelected = mrOk then
   begin
     if EditTemplateID.Text = '' then
@@ -288,12 +262,9 @@ begin
     begin
       ResponseBody := DeviceAccessControl.DeleteTemplates(StrToInt(EditTemplateID.Text));
     end;
-
     AddMessageInResponse(ResponseBody);
   end;
-
 end;
-
 procedure TFormControleAcesso.ButtonDeleteCardClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
@@ -307,7 +278,6 @@ begin
   begin
     ButtonSelected := MessageDlg('Essa ação irá apagar o cartão com ID: ' + IntToStr(StrToInt(EditCardID.Text)) + #13#10#13#10'Deseja continuar?', mtWarning, mbOKCancel, 0);
   end;
-
   if ButtonSelected = mrOk then
   begin
     if EditCardID.Text = '' then
@@ -318,12 +288,9 @@ begin
     begin
       ResponseBody := DeviceAccessControl.DeleteCards(StrToInt(EditCardID.Text));
     end;
-
     AddMessageInResponse(ResponseBody);
   end;
-
 end;
-
 procedure TFormControleAcesso.ButtonDeleteGroupClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
@@ -337,7 +304,6 @@ begin
   begin
     ButtonSelected := MessageDlg('Essa ação irá apagar o grupo com ID: ' + IntToStr(StrToInt(EditGroupID.Text)) + #13#10#13#10'Deseja continuar?', mtWarning, mbOKCancel, 0);
   end;
-
   if ButtonSelected = mrOk then
   begin
     if EditGroupID.Text = '' then
@@ -348,12 +314,9 @@ begin
     begin
       ResponseBody := DeviceAccessControl.DeleteGroups(StrToInt(EditGroupID.Text));
     end;
-
     AddMessageInResponse(ResponseBody);
   end;
-
 end;
-
 procedure TFormControleAcesso.ButtonDeleteUserClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
@@ -367,7 +330,6 @@ begin
   begin
     ButtonSelected := MessageDlg('Essa ação irá apagar o usuário com ID: ' + IntToStr(StrToInt(EditUserID.Text)) + #13#10#13#10'Deseja continuar?', mtWarning, mbOKCancel, 0);
   end;
-
   if ButtonSelected = mrOk then
   begin
     if EditUserID.Text = '' then
@@ -378,12 +340,9 @@ begin
     begin
       ResponseBody := DeviceAccessControl.DeleteUsers(StrToInt(EditUserID.Text));
     end;
-
     AddMessageInResponse(ResponseBody);
   end;
-
 end;
-
 procedure TFormControleAcesso.ButtonDeviceLoginClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
@@ -392,20 +351,60 @@ begin
   begin
     EditDevicePort.Text := '80';
   end;
-
   if RadioGroupProtocol.ItemIndex = 0 then
   begin
     DeviceAccessControl := TDeviceAccessControl.Create('http', EditDeviceHostname.Text, StrToInt(EditDevicePort.Text));
   end;
-
   if RadioGroupProtocol.ItemIndex = 1 then
   begin
     DeviceAccessControl := TDeviceAccessControl.Create('https', EditDeviceHostname.Text, StrToInt(EditDevicePort.Text));
   end;
-
   ResponseBody := DeviceAccessControl.Login(EditDeviceLogin.Text, EditDevicePassword.Text);
-
   AddMessageInResponse(ResponseBody);
+end;
+
+procedure TFormControleAcesso.ButtonSelectPhotoClick(Sender: TObject);
+begin
+   OpenPictureDialog1.Filter := 'Imagens (*.jpg;*.jpeg;*.png)|*.jpg;*.jpeg;*.png|Todos os arquivos (*.*)|*.*';
+  if OpenPictureDialog1.Execute then
+  begin
+    Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName);
+  end;
+end;
+procedure TFormControleAcesso.ButtonSendPhotoClick(Sender: TObject);
+var
+  ResponseBody: TJSONValue;
+  Input, Output : TStringStream;
+  Base64: String;
+begin
+  Input := TStringStream.Create;
+  Output := TStringStream.Create;
+  try
+    Image1.Picture.SaveToStream(Input);
+    Input.Position :=0;
+    TNetEncoding.Base64String.Encode(Input,Output);
+    Output.Position :=0;
+    Base64 := Output.DataString;
+  finally
+    Input.Free;
+    Output.Free;
+  end;
+  if idPhoto.Text <> '' then
+  begin
+    if Base64 <> '' then
+      begin
+        ResponseBody := DeviceAccessControl.SendPhoto(StrToInt(idPhoto.Text),Base64);
+        AddMessageInResponse(ResponseBody);
+      end
+      else
+      begin
+        ShowMessage('Adicione uma foto para prosseguir');
+      end;
+  end
+  else
+  begin
+    ShowMessage('Informe o id do usuário a receber a foto');
+  end ;
 end;
 
 procedure TFormControleAcesso.ButtonListTemplateClick(Sender: TObject);
@@ -420,10 +419,8 @@ begin
   begin
     ResponseBody := DeviceAccessControl.ListTemplates(0);
   end;
-
   AddMessageInResponse(ResponseBody);
 end;
-
 procedure TFormControleAcesso.ButtonListCardClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
@@ -436,10 +433,8 @@ begin
   begin
     ResponseBody := DeviceAccessControl.ListCards(0);
   end;
-
   AddMessageInResponse(ResponseBody);
 end;
-
 procedure TFormControleAcesso.ButtonListGroupClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
@@ -452,10 +447,8 @@ begin
   begin
     ResponseBody := DeviceAccessControl.ListGroups(0);
   end;
-
   AddMessageInResponse(ResponseBody);
 end;
-
 procedure TFormControleAcesso.ButtonListUserClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
@@ -468,19 +461,15 @@ begin
     begin
       ResponseBody := DeviceAccessControl.ListUsers(0);
     end;
-
     AddMessageInResponse(ResponseBody);
 end;
-
 procedure TFormControleAcesso.ButtonListUserGroupClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
 begin
     ResponseBody := DeviceAccessControl.ListUserGroups;
-
     AddMessageInResponse(ResponseBody);
 end;
-
 procedure TFormControleAcesso.ButtonUpdateUserClick(Sender: TObject);
 var
   ResponseBody: TJSONValue;
@@ -494,7 +483,6 @@ begin
   begin
     ButtonSelected := MessageDlg('Essa ação irá alterar o usuário com ID: ' + IntToStr(StrToInt(EditUserID.Text)) + #13#10#13#10'Deseja continuar?', mtWarning, mbOKCancel, 0);
   end;
-
   if ButtonSelected = mrOk then
   begin
     if EditUserID.Text = '' then
@@ -505,10 +493,7 @@ begin
     begin
       ResponseBody := DeviceAccessControl.UpdateUsers(StrToInt(EditUserID.Text), EditUsername.Text);
     end;
-
     AddMessageInResponse(ResponseBody);
   end;
-
 end;
-
 end.

@@ -1,9 +1,9 @@
 object FormControleAcesso: TFormControleAcesso
-  Left = 0
-  Top = 0
+  Left = 279
+  Top = 80
   BorderStyle = bsDialog
   Caption = 'Controle Acesso'
-  ClientHeight = 721
+  ClientHeight = 865
   ClientWidth = 770
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -11,15 +11,14 @@ object FormControleAcesso: TFormControleAcesso
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
-  Position = poScreenCenter
+  Position = poDesigned
   PixelsPerInch = 96
   TextHeight = 13
   object PageControlControleAcesso: TPageControl
     Left = 0
     Top = 0
     Width = 777
-    Height = 705
+    Height = 886
     ActivePage = TabSheetDevice
     TabOrder = 0
     object TabSheetDevice: TTabSheet
@@ -433,8 +432,8 @@ object FormControleAcesso: TFormControleAcesso
         end
       end
       object GroupBoxResponse: TGroupBox
-        Left = 0
-        Top = 410
+        Left = 3
+        Top = 567
         Width = 761
         Height = 262
         Caption = 'Resposta'
@@ -542,13 +541,73 @@ object FormControleAcesso: TFormControleAcesso
           TabOrder = 1
         end
       end
+      object GroupBoxPhoto: TGroupBox
+        Left = 3
+        Top = 410
+        Width = 334
+        Height = 151
+        Caption = 'Enviar Foto'
+        TabOrder = 8
+        object lbl_idUserPhoto: TLabel
+          Left = 16
+          Top = 40
+          Width = 50
+          Height = 13
+          Caption = 'ID Usu'#225'rio'
+        end
+        object Image1: TImage
+          Left = 200
+          Top = 12
+          Width = 125
+          Height = 132
+          Center = True
+          Proportional = True
+          Stretch = True
+        end
+        object Aviso: TLabel
+          Left = 16
+          Top = 135
+          Width = 104
+          Height = 13
+          Caption = 'Exclusivo para iDFace'
+        end
+        object idPhoto: TEdit
+          Left = 16
+          Top = 59
+          Width = 50
+          Height = 21
+          TabOrder = 0
+        end
+        object ButtonSendPhoto: TButton
+          Left = 108
+          Top = 94
+          Width = 74
+          Height = 26
+          Caption = 'Enviar Foto'
+          TabOrder = 1
+          OnClick = ButtonSendPhotoClick
+        end
+        object ButtonSelectPhoto: TButton
+          Left = 16
+          Top = 94
+          Width = 91
+          Height = 25
+          Caption = 'Selecionar Foto'
+          TabOrder = 2
+          OnClick = ButtonSelectPhotoClick
+        end
+      end
     end
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 702
+    Top = 863
     Width = 770
-    Height = 19
+    Height = 2
     Panels = <>
+  end
+  object OpenPictureDialog1: TOpenPictureDialog
+    Left = 143
+    Top = 450
   end
 end
