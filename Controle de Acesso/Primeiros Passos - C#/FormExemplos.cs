@@ -1,9 +1,16 @@
 ﻿using ExemploAPI.Properties;
 using System;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.Serialization.Json;
+using System.Security.Policy;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ExemploAPI
@@ -368,8 +375,29 @@ namespace ExemploAPI
                 // (Note que é sempre retornada um lista de acordo com a 'Where', que neste caso por ser um ID, só deve vir 1 se achou)
                 if (usrList.users.Length == 1)
                 {
+                    string url = $"{urlDevice}user_get_image.fcgi?user_id={id}&session={session}";
+                    var request = (HttpWebRequest)WebRequest.Create(url);
+                    request.ContentType = "image/jpeg";
+                    request.Method = "GET";
+                    using (var response = (HttpWebResponse)request.GetResponse())
+                    {
+                        // Lê os dados da imagem como um stream de bytes
+                        using (var responseStream = response.GetResponseStream())
+                        {
+                            if (responseStream != null)
+                            {
+                                // Converte o stream de bytes em um objeto Image
+                                using (var ms = new MemoryStream())
+                                {
+                                    responseStream.CopyTo(ms); // Copia o stream para o MemoryStream
+                                    pictureBox.Image = Image.FromStream(ms); // Converte para Image e atribui ao PictureBox
+                                }
+                            }
+                        }
+                    }
                     txtUserName.Text = usrList.users[0].name;
                     txtUserRegistration.Text = usrList.users[0].registration;
+
                     AddLog(string.Format(Resource.Load1, id));
                 }
                 else
@@ -381,7 +409,7 @@ namespace ExemploAPI
             }
         }
 
-        private void btnUserModify_Click(object sender, EventArgs e)
+        private async void btnUserModify_Click(object sender, EventArgs e)
         {
             try
             {
@@ -394,7 +422,88 @@ namespace ExemploAPI
                             "\"registration\" : \"" + txtUserRegistration.Text + "\"" +
                         "}" +
                     "}";
+
                 AddLog(WebJson.Send(urlDevice + "modify_objects", cmd, session));
+
+                if (!string.IsNullOrEmpty(txtImage.Text))
+                {
+                    string filePath = txtImage.Text;
+
+                    byte[] imageBytes = await Task.Run(() => File.ReadAllBytes(filePath));
+
+                    long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
+
+                    var client = new HttpClient();
+                    string url = $"{urlDevice}user_set_image.fcgi?user_id={id}&session={session}&timestamp={timestamp}";
+
+                    var content = new ByteArrayContent(imageBytes);
+                    content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                    var response = await client.PostAsync(url, content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        AddLog(await response.Content.ReadAsStringAsync());
+                        AddLog("Foto cadastrada com sucesso!");
+                    }
+                    else
+                    {
+                        AddLog(await response.Content.ReadAsStringAsync());
+                        AddLog("Erro ao cadastrar foto.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLog(ex);
+            }
+        }
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
+            openFileDialog.Title = "Selecione uma imagem";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                txtImage.Text = openFileDialog.FileName;
+
+                string filePath = txtImage.Text;
+                byte[] imageBytes = await Task.Run(() => File.ReadAllBytes(filePath));
+                using (MemoryStream ms = new MemoryStream(imageBytes))
+                {
+                    pictureBox.Image = Image.FromStream(ms);
+                }
+            }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                long id = long.Parse(txtUserID.Text);
+                string cmd = "{" +
+                            "\"type\" :\"face\"," +
+                            "\"user_id\" :" + id + "," +
+                            "\"save\" :true," +
+                            "\"sync\" :true," +
+                            "\"auto\" :true," +
+                            "\"countdown\" : 3" +
+                    "}";
+
+                AddLog(WebJson.Send(urlDevice + "remote_enroll", cmd, session));
+                AddLog("Foto cadastrada com sucesso!");
+            }
+            catch (Exception ex)
+            {
+                AddLog(ex);
+                AddLog("Erro ao cadastrar foto.");
+            }
+        }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                AddLog(WebJson.Send(urlDevice + "user_list_images", "", session));
             }
             catch (Exception ex)
             {

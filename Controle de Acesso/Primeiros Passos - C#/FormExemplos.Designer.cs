@@ -61,6 +61,13 @@
             this.btnUserBioList = new System.Windows.Forms.Button();
             this.btnUserCardList = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.txtImage = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.btnUserList = new System.Windows.Forms.Button();
+            this.btnSelect = new System.Windows.Forms.Button();
             this.btnUserModify = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -71,7 +78,6 @@
             this.txtUserID = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.txtUserName = new System.Windows.Forms.TextBox();
-            this.btnUserList = new System.Windows.Forms.Button();
             this.tbLogs = new System.Windows.Forms.TabPage();
             this.btnLogs2 = new System.Windows.Forms.Button();
             this.btnLogs = new System.Windows.Forms.Button();
@@ -87,6 +93,7 @@
             this.tbConfig.SuspendLayout();
             this.tbUsers.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.tbLogs.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -104,7 +111,6 @@
             // 
             // tbDevice
             // 
-            resources.ApplyResources(this.tbDevice, "tbDevice");
             this.tbDevice.Controls.Add(this.txtPassword);
             this.tbDevice.Controls.Add(this.txtUser);
             this.tbDevice.Controls.Add(this.label4);
@@ -115,6 +121,7 @@
             this.tbDevice.Controls.Add(this.nmPort);
             this.tbDevice.Controls.Add(this.txtIP);
             this.tbDevice.Controls.Add(this.btnLogin);
+            resources.ApplyResources(this.tbDevice, "tbDevice");
             this.tbDevice.Name = "tbDevice";
             this.tbDevice.UseVisualStyleBackColor = true;
             // 
@@ -188,7 +195,6 @@
             // 
             // tbAcoes
             // 
-            resources.ApplyResources(this.tbAcoes, "tbAcoes");
             this.tbAcoes.Controls.Add(this.label6);
             this.tbAcoes.Controls.Add(this.label7);
             this.tbAcoes.Controls.Add(this.btnReboot);
@@ -199,6 +205,7 @@
             this.tbAcoes.Controls.Add(this.btnRele3);
             this.tbAcoes.Controls.Add(this.btnRele1);
             this.tbAcoes.Controls.Add(this.btnRele4);
+            resources.ApplyResources(this.tbAcoes, "tbAcoes");
             this.tbAcoes.Name = "tbAcoes";
             this.tbAcoes.UseVisualStyleBackColor = true;
             // 
@@ -221,13 +228,13 @@
             // 
             // cmbGiro
             // 
-            resources.ApplyResources(this.cmbGiro, "cmbGiro");
             this.cmbGiro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbGiro.FormattingEnabled = true;
             this.cmbGiro.Items.AddRange(new object[] {
             resources.GetString("cmbGiro.Items"),
             resources.GetString("cmbGiro.Items1"),
             resources.GetString("cmbGiro.Items2")});
+            resources.ApplyResources(this.cmbGiro, "cmbGiro");
             this.cmbGiro.Name = "cmbGiro";
             // 
             // btnInfo
@@ -274,10 +281,10 @@
             // 
             // tbConfig
             // 
-            resources.ApplyResources(this.tbConfig, "tbConfig");
             this.tbConfig.Controls.Add(this.btnAgora);
             this.tbConfig.Controls.Add(this.dateTimePicker1);
             this.tbConfig.Controls.Add(this.btnDataHora);
+            resources.ApplyResources(this.tbConfig, "tbConfig");
             this.tbConfig.Name = "tbConfig";
             this.tbConfig.UseVisualStyleBackColor = true;
             // 
@@ -304,12 +311,11 @@
             // 
             // tbUsers
             // 
-            resources.ApplyResources(this.tbUsers, "tbUsers");
             this.tbUsers.Controls.Add(this.btnUserListParse);
             this.tbUsers.Controls.Add(this.btnUserBioList);
             this.tbUsers.Controls.Add(this.btnUserCardList);
             this.tbUsers.Controls.Add(this.groupBox2);
-            this.tbUsers.Controls.Add(this.btnUserList);
+            resources.ApplyResources(this.tbUsers, "tbUsers");
             this.tbUsers.Name = "tbUsers";
             this.tbUsers.UseVisualStyleBackColor = true;
             // 
@@ -336,7 +342,13 @@
             // 
             // groupBox2
             // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Controls.Add(this.button2);
+            this.groupBox2.Controls.Add(this.pictureBox);
+            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.txtImage);
+            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Controls.Add(this.btnUserList);
+            this.groupBox2.Controls.Add(this.btnSelect);
             this.groupBox2.Controls.Add(this.btnUserModify);
             this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Controls.Add(this.label12);
@@ -347,8 +359,53 @@
             this.groupBox2.Controls.Add(this.txtUserID);
             this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Controls.Add(this.txtUserName);
+            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
+            // 
+            // button2
+            // 
+            resources.ApplyResources(this.button2, "button2");
+            this.button2.Name = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // pictureBox
+            // 
+            resources.ApplyResources(this.pictureBox, "pictureBox");
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.TabStop = false;
+            // 
+            // button1
+            // 
+            resources.ApplyResources(this.button1, "button1");
+            this.button1.Name = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // txtImage
+            // 
+            resources.ApplyResources(this.txtImage, "txtImage");
+            this.txtImage.Name = "txtImage";
+            // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
+            // 
+            // btnUserList
+            // 
+            resources.ApplyResources(this.btnUserList, "btnUserList");
+            this.btnUserList.Name = "btnUserList";
+            this.btnUserList.UseVisualStyleBackColor = true;
+            this.btnUserList.Click += new System.EventHandler(this.btnUserList_Click);
+            // 
+            // btnSelect
+            // 
+            resources.ApplyResources(this.btnSelect, "btnSelect");
+            this.btnSelect.Name = "btnSelect";
+            this.btnSelect.UseVisualStyleBackColor = true;
+            this.btnSelect.Click += new System.EventHandler(this.button1_Click);
             // 
             // btnUserModify
             // 
@@ -408,18 +465,11 @@
             resources.ApplyResources(this.txtUserName, "txtUserName");
             this.txtUserName.Name = "txtUserName";
             // 
-            // btnUserList
-            // 
-            resources.ApplyResources(this.btnUserList, "btnUserList");
-            this.btnUserList.Name = "btnUserList";
-            this.btnUserList.UseVisualStyleBackColor = true;
-            this.btnUserList.Click += new System.EventHandler(this.btnUserList_Click);
-            // 
             // tbLogs
             // 
-            resources.ApplyResources(this.tbLogs, "tbLogs");
             this.tbLogs.Controls.Add(this.btnLogs2);
             this.tbLogs.Controls.Add(this.btnLogs);
+            resources.ApplyResources(this.tbLogs, "tbLogs");
             this.tbLogs.Name = "tbLogs";
             this.tbLogs.UseVisualStyleBackColor = true;
             // 
@@ -491,6 +541,7 @@
             this.tbUsers.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.tbLogs.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -502,7 +553,6 @@
         private System.Windows.Forms.TabControl tbc;
         private System.Windows.Forms.TabPage tbDevice;
         private System.Windows.Forms.TabPage tbConfig;
-        private System.Windows.Forms.TabPage tbUsers;
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.TextBox txtUser;
         private System.Windows.Forms.Label label4;
@@ -550,6 +600,13 @@
         private System.Windows.Forms.Button btnPT;
         private System.Windows.Forms.Button btEN;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button btnSelect;
+        private System.Windows.Forms.TextBox txtImage;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.PictureBox pictureBox;
+        private System.Windows.Forms.TabPage tbUsers;
+        private System.Windows.Forms.Button button2;
     }
 }
 

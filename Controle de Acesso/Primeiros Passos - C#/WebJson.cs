@@ -13,6 +13,7 @@ namespace ExemploAPI
             ServicePointManager.Expect100Continue = false;
         }
 
+        // Método para enviar requisição POST
         static public string Send(string uri, string data, string session = null)
         {
             if (session != null)
@@ -52,8 +53,7 @@ namespace ExemploAPI
             }
         }
 
-        // Rotina com parser Json de saída (a entrada 'data' poderia ter a mesma logica, mas para não complicar muito vou fazer apenas a saida)
-        // Veja como seria a rotina completa neste outro exemplo: https://github.com/controlid/RepCid/blob/master/test-CS-Futronic/RestJSON.cs
+        // Método para enviar requisição POST com retorno tipado
         static public T Send<T>(string uri, string data, string session = null)
         {
             if (session != null)
@@ -72,7 +72,74 @@ namespace ExemploAPI
                     streamWriter.Write(data);
                 }
 
-                // Fica até menor a rotina!
+                var response = (HttpWebResponse)request.GetResponse();
+                var serializer = new DataContractJsonSerializer(typeof(T));
+                return (T)serializer.ReadObject(response.GetResponseStream());
+            }
+            catch (WebException e)
+            {
+                using (WebResponse response = e.Response)
+                {
+                    HttpWebResponse httpResponse = (HttpWebResponse)response;
+                    Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
+                    using (Stream responseData = response.GetResponseStream())
+                    using (var reader = new StreamReader(responseData))
+                    {
+                        throw new Exception(reader.ReadToEnd());
+                    }
+                }
+            }
+        }
+
+        // Método para enviar requisição GET
+        static public string Get(string uri, string session = null)
+        {
+            if (session != null)
+                uri += ".fcgi?session=" + session;
+            else
+                uri += ".fcgi";
+
+            try
+            {
+                var request = (HttpWebRequest)WebRequest.Create(uri);
+                request.ContentType = "image/jpeg";
+                request.Method = "GET";
+
+                var response = (HttpWebResponse)request.GetResponse();
+                using (var streamReader = new StreamReader(response.GetResponseStream()))
+                {
+                    return streamReader.ReadToEnd();
+                }
+            }
+            catch (WebException e)
+            {
+                using (WebResponse response = e.Response)
+                {
+                    HttpWebResponse httpResponse = (HttpWebResponse)response;
+                    Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
+                    using (Stream responseData = response.GetResponseStream())
+                    using (var reader = new StreamReader(responseData))
+                    {
+                        throw new Exception(reader.ReadToEnd());
+                    }
+                }
+            }
+        }
+
+        // Método para enviar requisição GET com retorno tipado
+        static public T Get<T>(string uri, string session = null)
+        {
+            if (session != null)
+                uri += ".fcgi?session=" + session;
+            else
+                uri += ".fcgi";
+
+            try
+            {
+                var request = (HttpWebRequest)WebRequest.Create(uri);
+                request.ContentType = "image/jpeg";
+                request.Method = "GET";
+
                 var response = (HttpWebResponse)request.GetResponse();
                 var serializer = new DataContractJsonSerializer(typeof(T));
                 return (T)serializer.ReadObject(response.GetResponseStream());
