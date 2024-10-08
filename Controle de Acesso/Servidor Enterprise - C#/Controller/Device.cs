@@ -11,8 +11,8 @@ namespace idAccess_Rest
 
     class Device
     {
-        public static string IPAddress;
-        public static string ServerIp;
+        public static string IPAddress = null;
+        public static string ServerIp = null;
         private string session = null;
         Util config = new Util();
 
@@ -27,7 +27,47 @@ namespace idAccess_Rest
             IPAddress = IPTerminal;
             ServerIp = IPServer;
         }
+        public string[] IniciaServidor(out bool success)
+        {
+            List<string> response = new List<string>();
+            response.Add("Iniciando servidor local...\r\n");
 
+            try
+            {
+                // Configurando o binding do serviço WCF
+                var binding = new WebHttpBinding();
+                binding.MaxReceivedMessageSize = 2147483647;
+                binding.MaxBufferSize = 2147483647;
+                binding.MaxBufferPoolSize = 2147483647;
+
+                // Iniciar o servidor sem definir um IP, apenas no localhost com a porta 8000
+                Uri baseAddress = new Uri("http://localhost:8000/");
+                WebServiceHost host = new WebServiceHost(typeof(Server), baseAddress);
+
+                ServiceEndpoint ep = host.AddServiceEndpoint(typeof(IServer), binding, "");
+
+                // Desabilitar a página de ajuda HTTP do WCF
+                ServiceDebugBehavior sdb = host.Description.Behaviors.Find<ServiceDebugBehavior>();
+                if (sdb != null)
+                {
+                    sdb.HttpHelpPageEnabled = false;
+                }
+
+                // Abrir o host do servidor
+                host.Open();
+
+                response.Add("Servidor iniciado com sucesso no endereço " + baseAddress + ".\r\n");
+                success = true;
+            }
+            catch (Exception ex)
+            {
+                success = false;
+                response.Add("Erro ao iniciar o servidor local:");
+                response.Add("  - " + ex.Message + "\r\n");
+            }
+
+            return response.ToArray();
+        }
         public string[] CadastrarNoSevidor(out bool success)
         {
             List<string> response = new List<string>();
@@ -123,7 +163,7 @@ namespace idAccess_Rest
 
             return response.ToArray();
         }
-
+        
         public string[] ChangeType(bool isOnline)
         {
             List<string> response = new List<string>();
@@ -134,14 +174,14 @@ namespace idAccess_Rest
                     "{" +
                         "\"online_client\" : {" +
                                 "\"server_id\" : \"-1\"," +
-                                "\"extract_template\" : \"1\"" + /* se estiver com zero vai enviar a imagem ao invés do template biométrico para o servidor */
+                                "\"extract_template\" : \"1\"" + // se estiver com zero vai enviar a imagem ao invés do template biométrico para o servidor
 
                             "}," +
                          "\"general\" : {" +
                             "\"online\" : \"" + (isOnline ? 1 : 0) + "\"," +
 
-                            "\"local_identification\" : \"1\"" + /* se estiver com zero chama as funções "new_card" e " UserTemplate" */
-                                                                 /* se estiver com valor 1 chama a função "UserIdentified", na qual já vem o id do usuário no caso de biometria */
+                            "\"local_identification\" : \"1\"" + // se estiver com zero chama as funções "new_card" e " UserTemplate"
+                                                                 // se estiver com valor 1 chama a função "UserIdentified", na qual já vem o id do usuário no caso de biometria
 
                             "}" +
                         "}"

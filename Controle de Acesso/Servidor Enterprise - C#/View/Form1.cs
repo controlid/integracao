@@ -19,6 +19,9 @@ namespace idAccess_Rest
     {
         int day; int month; int year; int hour; int minute; int second;
 
+        public static string ip_server;
+        public static string ip_terminal;
+
         public static TextBox txtLog;
         public static void Log(string[] value)
         {
@@ -258,6 +261,23 @@ namespace idAccess_Rest
         private void button1_Click(object sender, EventArgs e)
         {
             txtLog.Clear();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            List<string> response = new List<string>();
+            device = new Device();
+            bool success = true;
+            device.IniciaServidor(out success);
+            if(success)
+            {
+                response.Add("Servidor iniciado com sucesso.");
+            }
+            else
+            {
+                response.Add("Falha ao iniciar o servidor.");
+            }
+            Log(response.ToArray());
         }
     }
 }
