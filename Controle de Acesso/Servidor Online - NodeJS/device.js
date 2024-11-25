@@ -158,7 +158,7 @@ class Device
             console.info('Execution time: %dms', end)
             console.log("setImageListSamePhoto success: ", response.data);
         } catch (error) {
-            console.log("Error performing setImageListSamePhoto: ", error.data);
+            console.log("Error performing setImageListSamePhoto: ", error.response.data);
         }       
     }
 
