@@ -7,6 +7,8 @@ operate an iDFace on online mode
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 var dateFormat = require('dateformat');
 const { fstat } = require('fs');
 const fs = require('fs');
@@ -48,6 +50,23 @@ var access_answer = {
             {
                 action: 'sec_box', 
                 parameters: 'id=65793=1, reason=1' 
+            }
+        ],
+        message:"Online access"
+    }
+};
+
+var catra_access_answer = {
+    result: {
+        event: 7, 
+        user_name: 'John Doe',
+        user_id: 1000,
+        user_image: true, 
+        portal_id: 1,
+        actions: [
+            {
+                action: 'catra', 
+                parameters: 'allow=clockwise' 
             }
         ],
         message:"Online access"
@@ -110,11 +129,11 @@ app.post('/new_card.fcgi', function (req, res) {
     console.log("Length: " + req.body.length);
     console.log(req.body);
     if(pending){
-    res.json(access_answer);
-       pending = !pending
+        res.json(access_answer);
+        pending = !pending
     } else {
-       res.json(access_pending_answer);
-      pending = !pending
+        res.json(access_pending_answer);
+        pending = !pending
     }
 })
 
@@ -135,8 +154,34 @@ app.post('/new_user_identified.fcgi', function (req, res) {
     console.log("Length: " + req.body.length);
     console.log(req.body);
     res.json(access_answer);
-  })
+})
 
+// Endpoint new face image
+app.post('/new_biometric_template.fcgi', function (req, res) {
+    console.log("endpoint: NEW BIOMETRIC TEMPLATE");
+    console.log("Data: ");
+    console.log("Length: " + req.body.length);
+    console.log(req.body);
+    pending = false;
+    res.json(catra_access_answer);
+})
+
+var image_file = args.imageFile
+// Endpoint new face capture
+app.post('/new_face_capture.fcgi', function (req, res) {
+    console.log("endpoint: NEW FACE CAPTURE");
+    console.log("Data: ");
+    console.log("Length: " + req.body.length);
+    console.log(req.body);
+    const imageData = req.body.image.replace(/ /g, '+'); // adjust field name if different
+    if (imageData && image_file != "") {
+        const buffer = Buffer.from(imageData, "base64");
+        fs.writeFileSync(image_file, buffer);
+        console.log(`Image saved: ${image_file}`);
+    }
+    pending = false;
+    res.json(catra_access_answer);
+})
 
 // Endpoint new face
 app.post('/face_create.fcgi', function (req, res) {
@@ -337,15 +382,19 @@ function getCardValue(cardNumber) {
 */
 
 // Run online mode
-async function runOnline () {
+async function runOnline (local_identification) {
     await device.login();
 
     await device.disableOnline();
     await device.destroyOnlineObject(5);
     await device.createOnlineObject(5, ip.address(), 8000);
     await device.setOnline(5);
-    await device.enableOnlinePRO();
+    await device.enableOnlinePRO(local_identification);
 
+    startServer();
+}
+
+async function restartOnline () {
     startServer();
 }
 
@@ -484,6 +533,7 @@ async function idPasswordTest(userId, userName, password) {
     11 - PIN registration test
     12 - Biometric registration test
     13 - ID + password registration test
+    14 - Restart the server (come back from contingency)
 */
 var test = args.test;
 
@@ -492,7 +542,7 @@ if (test == 1) {
 } else if (test == 2) {
     createUsers();
 } else if (test == 3) {
-    runOnline();
+    runOnline(args.localIdentification);
 } else if (test == 4) {
     disableOnlineMode();
 } else if (test == 5) {
@@ -513,5 +563,7 @@ if (test == 1) {
     biometricTest(args.userId, args.userName);
 } else if (test == 13) {
     idPasswordTest(args.userId, args.userName, args.password);
+} else if (test == 14) {
+    restartOnline();
 }
 
