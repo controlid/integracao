@@ -8,6 +8,7 @@
     "start": "node ./app"
   },
   "dependencies": {
+    "ansi-regex": "^6.2.2",
     "axios": "^1.6.0",
     "body-parser": "^1.19.0",
     "console-stamp": "^3.0.3",

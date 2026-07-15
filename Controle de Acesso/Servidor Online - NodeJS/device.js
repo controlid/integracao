@@ -251,11 +251,11 @@ class Device
     }
 
     // Enable online mode
-    async enableOnlinePRO() {
+    async enableOnlinePRO(local_identification) {
         try {
             const response = await axios.post('http://'+this.ip+'/set_configuration.fcgi?session='+this.session,{
                 "general": {
-                    "local_identification": "1",
+                    "local_identification": local_identification,
                     "online": "1"
                 },
                 "online_client": {

@@ -1,3 +1,5 @@
+const { string } = require("yargs");
+
 var yargs = require("yargs")
 .parserConfiguration({
   "duplicate-arguments-array": true,
@@ -82,6 +84,18 @@ const args = yargs
     demandOption: true,
     type: 'string',
     default: '1234'
+  })
+  .option('imageFile', {
+    describe: 'File in which to save images received from the device',
+    demandOption: true,
+    type: 'string',
+    default: "",
+  })
+  .option('localIdentification', {
+    describe: 'Run identification on device',
+    demandOption: true,
+    type: 'string',
+    default: '1'
   })
   .argv;
 
