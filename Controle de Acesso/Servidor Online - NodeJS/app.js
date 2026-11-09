@@ -130,6 +130,9 @@ app.post('/new_user_id_and_password.fcgi', function (req, res) {
 // Endpoint new user
 
 app.post('/new_user_identified.fcgi', function (req, res) {
+    if (test == 14) {
+        return handleStudentFlow(req, res);
+    }
     console.log("endpoint: NEW USER IDENTIFIED");
     console.log("Data: ");
     console.log("Length: " + req.body.length);
@@ -316,7 +319,7 @@ let device = new Device(deviceIp);
 
 // Start server
 function startServer() {
-    const server = app.listen(8000, function () {
+    const server = app.listen(8080, function () {
         const host = server.address().address;
         const port = server.address().port;
         console.log(`Example app listening at http://${host}:${port}`);
@@ -469,8 +472,89 @@ async function idPasswordTest(userId, userName, password) {
 }
 
 
+/*
+    Test 14 - PIN (CPF) -> pending answer -> server registers the face -> face identification
+
+    1. User types the PIN, which is not registered on the device: it sends event 3 with pin_value
+    2. Server answers --pendingEvent (8 or 4) without actions and then registers user + face on the device
+    3. Device should go back to idle; the user is identified by face and the server releases the turnstile
+*/
+var studentPhoto = null;
+
+function parseIdentificationBody(body) {
+    if (Buffer.isBuffer(body) || typeof body === 'string') {
+        return Object.fromEntries(new URLSearchParams(body.toString()));
+    }
+    return body || {};
+}
+
+async function registerStudentFace() {
+    const start = Date.now();
+    await device.createUser(args.userId, args.userName);
+    const result = await device.setImageList([args.userId], [studentPhoto]);
+    console.log(`[test 14] face registration finished in ${Date.now() - start}ms: ` + JSON.stringify(result));
+}
+
+function handleStudentFlow(req, res) {
+    const body = parseIdentificationBody(req.body);
+    const event = Number(body.event);
+    console.log(`[test 14] new_user_identified: event=${body.event} user_id=${body.user_id} ` +
+                `pin_value=${body.pin_value} identifier_id=${body.identifier_id}`);
+
+    if (event == 3 && body.pin_value === String(args.pinValue)) {
+        console.log(`[test 14] PIN matched, answering event ${args.pendingEvent} without actions`);
+        res.json({
+            result: {
+                event: args.pendingEvent,
+                user_id: args.userId,
+                user_name: args.userName,
+                user_image: true,
+                portal_id: 1,
+                message: "Registrando rosto\nAguarde...",
+                badge_color: "#3700ff"
+            }
+        });
+        registerStudentFace();
+        return;
+    }
+
+    if (Number(body.user_id) == args.userId) {
+        console.log("[test 14] user identified by face, releasing turnstile");
+        res.json({
+            result: {
+                event: 7,
+                user_id: args.userId,
+                user_name: args.userName,
+                user_image: false,
+                portal_id: 1,
+                actions: [
+                    {
+                        action: 'catra',
+                        parameters: 'allow=clockwise'
+                    }
+                ],
+                message: "Acesso liberado"
+            }
+        });
+        return;
+    }
+
+    console.log("[test 14] outside the flow, answering not identified");
+    res.json(not_identified_answer);
+}
+
+async function studentPendingFlowTest() {
+    studentPhoto = fs.readFileSync(args.photo, {encoding: 'base64'});
+
+    // The user must not exist, so that the PIN is not identified locally
+    await device.login();
+    await device.destroyUser(args.userId);
+
+    await runOnline();
+}
+
 // Test definition
-/* 
+/*
     1 - Remote enroll test
     2 - Create multiple users
     3 - Set online mode
@@ -484,6 +568,7 @@ async function idPasswordTest(userId, userName, password) {
     11 - PIN registration test
     12 - Biometric registration test
     13 - ID + password registration test
+    14 - PIN -> pending answer (event 8 or 4) -> face identification
 */
 var test = args.test;
 
@@ -513,5 +598,7 @@ if (test == 1) {
     biometricTest(args.userId, args.userName);
 } else if (test == 13) {
     idPasswordTest(args.userId, args.userName, args.password);
+} else if (test == 14) {
+    studentPendingFlowTest();
 }
 

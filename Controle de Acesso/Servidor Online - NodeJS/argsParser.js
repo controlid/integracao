@@ -83,6 +83,18 @@ const args = yargs
     type: 'string',
     default: '1234'
   })
+  .option('pendingEvent', {
+    describe: 'Event returned by the server after the PIN (test 14): 8 (access pending) or 4 (identification pending)',
+    demandOption: true,
+    type: 'number',
+    default: 8
+  })
+  .option('photo', {
+    describe: 'Photo registered as the user face after the pending answer (test 14)',
+    demandOption: true,
+    type: 'string',
+    default: 'picture.jpg'
+  })
   .argv;
 
   module.exports = args;

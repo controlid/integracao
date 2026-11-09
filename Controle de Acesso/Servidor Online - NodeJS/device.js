@@ -203,7 +203,7 @@ class Device
                     {
                         "id": id,
                         "name": "node",
-                        "ip": serverip+":"+port,
+                        "ip": "192.168.15.10:8080",
                         "public_key": ""
                     }
                 ]
